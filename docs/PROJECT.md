@@ -141,9 +141,9 @@ Telefon-Agent und Orchestrator sehen **keine medizinischen Inhalte**. Alles läu
 
 | | Gabriel Suter | Manuel Fitz |
 |---|---|---|
-| Rolle | Voice | Full Stack · Hosting |
-| Bauen | Voice: Twilio → Gradium → Gemini → Gradium (gradbot), Dialog-Tools | Vollmacht-Schema, Policy Engine, Orchestrator (zuerst mit simuliertem Anruf), Dokument-Pipeline, Dashboard ✅, Hosting |
-| Demo | spricht den Pitch | bedient Dashboard, spielt die MPA |
+| Rolle | Idee, Konzept, Bau | Hosting und Deployment |
+| Gemacht / baut | Recherche, Docs, Pitch, Diagramme, Brand, Testdokumente, Dashboard ✅, Backend mit Policy Engine und Orchestrator, Telefonteil (Twilio, gradbot, Gemini, Dialog-Tools) | Frontend auf Azure, Tunnel/Domain fürs Backend |
+| Demo | spricht den Pitch | geplant: bedient Dashboard, spielt die MPA |
 
 **Schnittstelle zwischen uns** (morgens festlegen, dann unabhängig bauen):
 
