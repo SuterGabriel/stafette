@@ -1,0 +1,82 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4JRG44TPZ3CYG3ZPHX3REXA",
+  "session_id": "6d51b432-d195-485a-a55e-500dfe806f78",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-10T11:17:19.4952958Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "README.md",
+    "docs/ARCHITECTURE.md",
+    "docs/DEMO.md",
+    "docs/PITCH.md",
+    "docs/POLICY.md",
+    "docs/PROJECT.md",
+    "docs/RESEARCH.md",
+    "docs/STACK.md",
+    "docs/diagramme.html"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-5-5",
+  "turn_id": "9b767bbb80b1",
+  "checkpoint_transcript_start": 501,
+  "transcript_lines_at_start": 501,
+  "compact_transcript_start": 60,
+  "token_usage": {
+    "input_tokens": 18,
+    "cache_creation_tokens": 42851,
+    "cache_read_tokens": 2419560,
+    "output_tokens": 26100,
+    "api_call_count": 9
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "claude-skill-toolu_019xVpwVjRhyTqa1LyM34wNE",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "artifact-diagramming"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "fba1594a3af1",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 186,
+        "end": 187,
+        "entry_ids": [
+          "aabe7fcc-de55-4c1c-bf94-5f2976920043"
+        ],
+        "tool_use_id": "toolu_019xVpwVjRhyTqa1LyM34wNE"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_019xVpwVjRhyTqa1LyM34wNE"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: artifact-diagramming",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 6
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-10T11:17:19.4208024Z",
+    "agent_lines": 191,
+    "agent_removed": 159,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 191,
+    "total_lines_changed": 350,
+    "agent_percentage": 100,
+    "metric_version": 2
+  }
+}
