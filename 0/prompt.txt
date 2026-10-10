@@ -72,3 +72,7 @@ Weisst du was gut wäre ist ein Architektur Diagramm wie auch die Ansicht der En
 ---
 
 Die drei Diagramme sind gut. Was wir nun aber noch brauchen ist ein Component Diagramm sprich ein Diagramm welches alle Services auflistet die wir brauchen.
+
+---
+
+Okey kannst du mir dies lösen so das dies nun funktioniert ist und aktualisiert ist.
