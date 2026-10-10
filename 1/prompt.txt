@@ -83,3 +83,8 @@ Die Demo dauert aus der aktuellen Sicht auch nicht so lange.
 <status>completed</status>
 <summary>Background command "Render full 57s tech video" completed (exit code 0)</summary>
 </task-notification>
+
+---
+
+Was noch wichtig ist für das Video.
+Der Prozess, die Dokumente, von der Klinik an den Ai Agenten geschickt wird und verarbeitet wird. Das Ziel ist mehr von dem Produkt und Weg zu zeigen.
