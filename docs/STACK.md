@@ -14,7 +14,8 @@ Recherche vom 9.10.2026 in [RESEARCH.md](RESEARCH.md#3-tech-stack-verifiziert). 
 | Policy Engine | Python, pure functions + Pydantic | Testbar, deterministisch |
 | Backend | FastAPI, **ein Prozess auf Port 8000** | Dashboard-Routen und Twilio-Routen im selben Server, ein Tunnel genügt |
 | Dashboard | Next.js 15.5.27 (`dashboard/`) | Läuft ohne Backend auf Demo-Daten |
-| Tunnel | ngrok, `ngrok http 8000` | Twilio braucht eine öffentliche URL |
+| Tunnel | ngrok mit fester Domain `runny-lagoon-overhead.ngrok-free.dev` → Port 8000 | Twilio braucht eine öffentliche URL |
+| Hosting | **Frontend auf Vercel**, **Backend auf dem Laptop** hinter ngrok | Vercel Functions können keine WebSockets (Twilio Media Stream), keine langen SSE-Verbindungen und keinen gemeinsamen Zustand im Speicher. Nach dem Hack: Render, Railway oder Fly.io |
 | Mail-Versand | **Im MVP simuliert** | `send_mandate_letter` erzeugt das PDF und ein Event „an hinterlegte Adresse gesendet“, verschickt aber nichts. HIN nach dem Hack |
 | Entwicklung | **Claude Code** (Antigravity optional) + **Entire** | Entire ist für beide aktiviert |
 

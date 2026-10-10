@@ -14,7 +14,7 @@ Der Telefonanruf ist das grösste Risiko, die Agent-Schleife ist das, was die Ju
 
 Der simulierte Anruf in Strang B ist gleichzeitig das Fallback, falls das Telefon morgen nicht will.
 
-**Wer:** Gabriel baut beide Stränge, Manuel übernimmt Hosting und Deployment (Frontend auf Azure).
+**Wer:** Gabriel baut beide Stränge, Manuel übernimmt Hosting und Deployment (Frontend auf Vercel).
 
 ## Zeitplan Samstag
 

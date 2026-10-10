@@ -32,14 +32,17 @@ app = FastAPI(title="Stafette backend")
 app.include_router(docs_routes.router)
 app.include_router(voice_routes.router)
 
-# The dashboard runs on localhost:3000 locally and on Azure when hosted.
-# Add the Azure URL to CORS_ORIGINS (comma-separated) in .env.
+# The dashboard runs on localhost:3000 locally and on Vercel when hosted.
+# CORS_ORIGINS: exact origins (comma-separated). CORS_ORIGIN_REGEX: e.g. the
+# project's Vercel preview deployments, https://stafette-.*\.vercel\.app
 _origins = [o.strip() for o in os.environ.get("CORS_ORIGINS", "http://localhost:3000").split(",") if o.strip()]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=_origins,
+    allow_origin_regex=os.environ.get("CORS_ORIGIN_REGEX", "").strip() or None,
     allow_methods=["GET", "POST"],
-    allow_headers=["Content-Type"],
+    # ngrok-skip-browser-warning lets a hosted dashboard pass ngrok's free-domain warning page.
+    allow_headers=["Content-Type", "ngrok-skip-browser-warning"],
 )
 
 _KEEPALIVE_S = 15.0
@@ -67,7 +70,7 @@ async def events(request: Request) -> StreamingResponse:
                 try:
                     snap = await asyncio.wait_for(queue.get(), timeout=_KEEPALIVE_S)
                 except asyncio.TimeoutError:
-                    yield ": keepalive\n\n"  # keeps proxies (ngrok, Azure) from closing the stream
+                    yield ": keepalive\n\n"  # keeps proxies (ngrok, Vercel) from closing the stream
                     continue
                 yield f"data: {json.dumps({'state': snap}, ensure_ascii=False)}\n\n"
         finally:

@@ -56,7 +56,7 @@ Alle Diagramme (Architektur, Entscheidungslogik, UML-Ablauf, Komponenten, Anruf)
 | Konzept, Recherche, Docs, Pitch, Diagramme | ✅ fertig |
 | Brand, synthetische Testdokumente | ✅ fertig |
 | Dashboard (`dashboard/`) | ✅ läuft auf Demo-Daten, inkl. „Übersicht geprüft“ für Dr. Keller |
-| Hosting Frontend (Azure) | 🔄 in Arbeit |
+| Hosting Frontend (Vercel) | 🔄 in Arbeit |
 | Backend (`backend/`) | ⬜ als Nächstes: Gerüst, Policy Engine, `/state` + `/events` |
 | Telefon (Twilio + gradbot) | ⬜ als Nächstes: Bridge, Session, Dialog-Tools, erster Anruf |
 
@@ -145,7 +145,7 @@ Details: [docs/DEMO.md](docs/DEMO.md) · Skript: [docs/PITCH.md](docs/PITCH.md)
 | Wer | Was |
 |---|---|
 | **Gabriel Suter** | Idee, Konzept und Recherche · Docs, Pitch und Diagramme · Brand und Testdokumente · Dashboard · Backend und Telefonteil |
-| **Manuel Fitz** | Hosting und Deployment (Frontend auf Azure) |
+| **Manuel Fitz** | Hosting und Deployment (Frontend auf Vercel) |
 
 ---
 
@@ -165,7 +165,7 @@ Details: [docs/DEMO.md](docs/DEMO.md) · Skript: [docs/PITCH.md](docs/PITCH.md)
 | Problem | Lösung |
 |---|---|
 | Dashboard zeigt „Demo-Daten“ | `NEXT_PUBLIC_API_URL` fehlt in `dashboard/.env.local`, oder das Backend läuft nicht. |
-| Gehostetes Dashboard erreicht das Backend nicht | ngrok-URL hat sich geändert (feste Domain nutzen) oder CORS lässt die Azure-Domain nicht zu. |
+| Gehostetes Dashboard erreicht das Backend nicht | ngrok-URL hat sich geändert (feste Domain nutzen) oder CORS lässt die Vercel-Domain nicht zu. |
 | Anruf bricht nach Sekunden ab | Twilio hält „Hallo“ für einen Anrufbeantworter: `TWILIO_MACHINE_DETECTION=Disable`. |
 | Agent unterbricht sich selbst | Echo vom Lautsprecher. Handy am Ohr oder Headset, kein Lautsprecher auf der Bühne. |
 | Agent antwortet auf Englisch oder mit OpenAI | `LLM_BASE_URL` / `LLM_MODEL` nicht auf Gemini gesetzt (gradbot nutzt sonst OpenAI). |

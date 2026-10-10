@@ -49,4 +49,4 @@ Ablauf: `place_call` → Policy Engine → Twilio wählt → nach dem Abheben `/
 | `POST /reset` | Demo zurücksetzen |
 | `GET /healthz` | `{"status": "ok"}` |
 
-Gehostetes Dashboard (Azure): dessen URL in `CORS_ORIGINS` eintragen und das Backend über die feste ngrok-Domain erreichbar machen.
+Gehostetes Dashboard (Vercel): dessen URL in `CORS_ORIGINS` eintragen (Vorschau-Deployments: `CORS_ORIGIN_REGEX`) und das Backend über die feste ngrok-Domain erreichbar machen.
