@@ -334,7 +334,7 @@ def test_sections_match_dashboard_contract(offline) -> None:
     assert wire["sections"] == result["sections"]
     assert wire["missing"] == result["missing"]
     assert wire["documents"] == 6
-    blocked = [e["text"] for e in wire["events"] if e["decision"] == "BLOCKED" and "verworfen" in e["text"]]
+    blocked = [e["text"] for e in wire["events"] if e["decision"] == "BLOCKED" and "Claim rejected" in e["text"]]
     assert len(blocked) == len(result["rejected"])
     _assert_no_injection({"events": blocked})
     store.reset()

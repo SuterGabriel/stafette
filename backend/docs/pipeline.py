@@ -171,12 +171,29 @@ def process(paths: list[str | Path], mandate_sources: Iterable[object]) -> dict:
     }
 
 
+# The app is English; the reasons stay German in `rejected` (tests and data), only the protocol is translated.
+_REASONS_EN = [
+    (re.compile(r"^kein wörtliches Zitat$"), "no verbatim quote"),
+    (re.compile(r"^Seite (\d+) existiert nicht$"), r"page \1 does not exist"),
+    (re.compile(r"^Zitat nicht auf Seite (\d+) gefunden$"), r"quote not found on page \1"),
+    (re.compile(r"^Kontaktdaten oder Anweisung im Dokument, nicht übernommen$"),
+     "contact data or instruction in the document, not taken over"),
+]
+
+
+def _reason_en(reason: str) -> str:
+    for pattern, english in _REASONS_EN:
+        if pattern.match(reason):
+            return pattern.sub(english, reason)
+    return reason
+
+
 def publish(result: dict) -> None:
     """Hand the result to the dashboard (backend/docs/README.md) and log every rejected claim."""
     store.set_documents(sections=result["sections"], missing=result["missing"],
                         documents=result["documents"], source_count=result["source_count"])
     for r in result["rejected"]:
-        store.add_event("BLOCKED", f"Angabe verworfen ({r['source_document_id']}, S. {r['page']}): {r['reason']}",
+        store.add_event("BLOCKED", f"Claim rejected ({r['source_document_id']}, p. {r['page']}): {_reason_en(r['reason'])}",
                         model=MODEL_READER)
 
 
