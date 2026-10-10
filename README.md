@@ -49,16 +49,18 @@ Alle Diagramme (Architektur, Entscheidungslogik, UML-Ablauf, Komponenten, Anruf)
 
 ---
 
-## Stand (10.10.2026, 13:45)
+## Stand (10.10.2026, 16:30)
 
 | Teil | Stand |
 |---|---|
 | Konzept, Recherche, Docs, Pitch, Diagramme | ✅ fertig |
-| Brand, synthetische Testdokumente | ✅ fertig |
-| Dashboard (`dashboard/`) | ✅ läuft auf Demo-Daten, inkl. „Übersicht geprüft“ für Dr. Keller |
-| Hosting Frontend (Vercel) | 🔄 in Arbeit |
-| Backend (`backend/`) | ⬜ als Nächstes: Gerüst, Policy Engine, `/state` + `/events` |
-| Telefon (Twilio + gradbot) | ⬜ als Nächstes: Bridge, Session, Dialog-Tools, erster Anruf |
+| Dashboard (`dashboard/`) | ✅ ein Handy auf der Bühne, wechselt mit der Geschichte zwischen Anna und Dr. Keller |
+| Policy Engine (`backend/policy/`) | ✅ alle Testfälle aus POLICY.md grün |
+| Telefon (Twilio + gradbot + Gemini, Stimme Livia) | ✅ gebaut; Testmodus spielt Anrufe ohne Telefon durch dieselben Tools |
+| Dokument-Pipeline (`backend/docs/`, Gemini) | ✅ liest die Testakten live, findet Dr. Brunner als Lücke |
+| Orchestrator (`backend/agent/`) | ✅ Unterschrift → Anruf → Akten → Frage an Anna → Vollmacht v2 → nächster Anruf |
+| Entire (Checkpoints, Graph, Brain) | ✅ eingerichtet |
+| Hosting Frontend (Vercel) | 🔄 in Arbeit; Backend läuft auf dem Laptop hinter ngrok |
 
 Ist- und Soll-Struktur im Detail: [docs/STACK.md](docs/STACK.md#repo-struktur-ist-und-soll).
 
@@ -86,18 +88,18 @@ git clone https://github.com/SuterGabriel/stafette && cd stafette
 ```bash
 cd dashboard
 npm install
-npm run dev        # http://localhost:3000
+npm run dev        # http://localhost:3000 (oder der nächste freie Port)
 ```
 
 Ohne Backend läuft alles auf Demo-Daten (unten rechts steht „Demo-Daten“).
 
 | Seite | Inhalt |
 |---|---|
-| `/` | Demo-Bühne: Annas App und Dr. Kellers Übergabe nebeneinander |
+| `/` | Demo-Bühne: ein Handy, wechselt automatisch zwischen Anna und Dr. Keller; Umschalter oben, Testmodus unten |
 | `/anna` | nur Annas App |
-| `/keller` | nur Dr. Kellers Übergabe |
+| `/keller` | nur Dr. Kellers App |
 
-### 3. Backend und Telefon *(folgt)*
+### 3. Backend und Telefon
 
 `backend/.env` mit den eigenen Keys anlegen (wird nie committet):
 

@@ -133,6 +133,14 @@ def check(action: str, args: dict, m: Mandate, state: PlanState, now: datetime) 
             return Blocked("unknown_action")
 ```
 
+**Umgesetzt in `backend/policy/engine.py`**, mit drei Regeln über die Skizze hinaus:
+
+- `add_source` darf nur Name, Fachrichtung und Grund enthalten. Bringt der Vorschlag Kontaktdaten mit (z. B. eine 0900-Nummer aus Dokument 06), ist er `Blocked("contact_details_not_allowed")`. Die Nummer kommt nie aus einem Dokument.
+- `confirm_channel` verlangt eine Quelle aus der Vollmacht (`unknown_source` sonst).
+- `end_call` nimmt nur die fünf festgelegten Ergebnisse an (`invalid_outcome` sonst).
+
+Ausserdem: Unbekannte Aktionen werden vor allem anderen blockiert, Empfängeradressen werden ohne Gross-/Kleinschreibung und Leerzeichen verglichen, und die Anrufzeit-Regel lässt sich mit `DEMO_RELAX_CALL_HOURS=true` für die Demo lockern. Tests: `backend/tests/test_engine.py`.
+
 Default ist **Blocked**. Jede Entscheidung geht als Event ins Dashboard (`decision` = `ALLOWED` | `BLOCKED` | `APPROVAL`, dazu `model` = vorschlagendes Modell, siehe `dashboard/lib/types.ts`). Nach einem Ja des Patienten erzeugt die Engine **Vollmacht v2**; die alte Version bleibt im Log.
 
 > Für die Demo die Anrufzeiten-Regel auf Samstagabend anpassen oder per Demo-Flag lockern, sonst blockt sie sich selbst.
