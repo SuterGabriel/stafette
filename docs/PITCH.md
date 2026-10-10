@@ -62,6 +62,9 @@ Kurz Entire-Checkpoint der Policy Engine zeigen.
 | Data protection? | Wir speichern nichts dauerhaft. Der Agent am Telefon kennt keine medizinischen Daten. Ausbaustufe: Extraktion lokal mit Gemma 4 in der Schweiz. |
 | Will practices talk to an AI? | Agent stellt sich als KI vor und handelt mit schriftlicher Vollmacht des Patienten, der ein gesetzliches Recht auf seine Daten hat. [Feedback aus den Freitags-Anrufen einbauen.] |
 | Who pays? | Die neue Praxis pro Patient. Später Kantone / E-GD-Betreiber für die Migration von Altdaten. |
+| How do you reach practices? | Wir starten bei aufnehmenden Hausarztpraxen und gewinnen Piloten über die Entlastung der MPA. Die frühere Praxis installiert nichts: Stafette kontaktiert sie transparent im Patientenauftrag, nur innerhalb der geprüften Vollmacht. Danach Skalierung über Schweizer Praxissoftware (amétiq, Axenita, vitomed haben bereits OneDoc-Anbindungen), ohne heute eine Partnerschaft zu behaupten. |
+| Why would a practice pay? | Doctolib verlangt in Frankreich 99 €/Monat für eine Telefon-KI, die nur Anrufe annimmt. Wir sparen die Zeit fürs Nachfordern von Akten. |
+| What about Doctolib? | Doctolib automatisiert den Praxiseingang (Termine, Anrufe, Konsultationsnotizen). Wir schliessen einen praxisübergreifenden Beschaffungsprozess ab. In der Schweiz nicht belegt präsent, langfristig eher Integrationspartner. |
 | How is this different from a voice bot? | Ziel statt Skript: Er plant, erkennt Lücken, plant Rückrufe, holt Einwilligungen. Der Voice-Teil ist nur eines seiner Werkzeuge. |
 | What if the LLM hallucinates? | Handeln kann es nur über Tools, die durch deterministischen Code laufen. Aussagen in der Übersicht erscheinen nur, wenn das Zitat auf der Quellseite steht. |
 | What did you build today vs. before? | Alles heute, die Entire-Checkpoints zeigen es Commit für Commit. |
