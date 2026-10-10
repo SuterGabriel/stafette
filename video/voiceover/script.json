@@ -1,0 +1,43 @@
+{
+  "voice": "Lxc7YlPC8ckLJA8H",
+  "voice_name": "Kelly",
+  "note": "One line per scene; keys match the labels in src/tech/TechStack.tsx. The brand is spelled 'Staffette' so the TTS says it right.",
+  "lines": [
+    {
+      "scene": "Intro",
+      "text": "How does it work? Gemini proposes. Code decides."
+    },
+    {
+      "scene": "Mandate",
+      "text": "Anna says one sentence. Gemini turns it into a mandate: who may be contacted, who gets the records, and until when. Anna signs."
+    },
+    {
+      "scene": "Policy",
+      "text": "The orchestrator plans every next step, but it can only emit tool calls. Each one hits our policy engine, plain code: allowed, blocked, or ask Anna."
+    },
+    {
+      "scene": "Call",
+      "text": "Gemini leads the call, Twilio carries it, and Gradium gives it a Swiss voice. Try to redirect the records, and the tool call is blocked. It can't, not won't."
+    },
+    {
+      "scene": "Records",
+      "text": "The records go over HIN, straight to Doctor Keller's practice, never to us. Staffette reads them on her behalf: Gemini extracts, code checks every quote against its page, and hidden instructions are dropped."
+    },
+    {
+      "scene": "Reading",
+      "text": "Even a crooked phone photo: every quote points back to its exact spot."
+    },
+    {
+      "scene": "Gap",
+      "text": "Then the agentic part. The discharge letter mentions a cardiologist. No records, not in the mandate. So it asks Anna first."
+    },
+    {
+      "scene": "Stack",
+      "text": "And we built it with agents. Entire records every step."
+    },
+    {
+      "scene": "Outro",
+      "text": "Staffette. Switch doctors, your medical history follows."
+    }
+  ]
+}

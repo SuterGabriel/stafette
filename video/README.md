@@ -8,7 +8,9 @@ npm install
 npm run dev                  # Remotion Studio im Browser
 npm run render:intro         # out/logo-intro.mp4
 npm run render:intro-dark    # out/logo-intro-dark.mp4
-npm run render:tech          # out/tech-stack.mp4
+npm run render:tech          # out/tech-stack.mp4 (stumm, zum Live-Sprechen)
+npm run voiceover            # Sprechtext mit Gradium neu vertonen
+npm run render:tech-voice    # out/tech-stack-voiceover.mp4 (mit Gradium-Stimme)
 ```
 
 ## Kompositionen
@@ -17,6 +19,7 @@ npm run render:tech          # out/tech-stack.mp4
 |---|---|
 | `LogoIntro` | Logo-Animation, heller Hintergrund (Standard), 5 s, 1920×1080, 30 fps |
 | `LogoIntroDark` | dasselbe auf Ink-Hintergrund |
+| `TechStackVoiceover` | `TechStack` mit Gradium-Sprecherin, Szenen wachsen mit dem Text (ca. 84 s) |
 | `TechStack` | „How it’s built“, 67 s, gleicher Look: Titel → Vollmacht → Policy → Anruf → Dokumentenweg → Foto → Lücke → Stack → Schlussbild |
 
 Ablauf: Die zwei Stäbe gleiten entlang ihrer Achse herein und treffen sich wie bei einer Stabübergabe
@@ -53,3 +56,25 @@ Choreografie, `dur` bestimmt, wie lange die Szene stehen bleibt.
 Code: `src/tech/` (`ui.tsx` Bausteine, `scenes.tsx` Titel, Vollmacht, Policy, Anruf, Foto, Stack, `records.tsx` Dokumentenweg,
 `closing.tsx` Lücke und Schlussbild,
 `TechStack.tsx` Timeline). Partner erscheinen als Typo-Kacheln, ohne Logo-Dateien.
+
+## Voiceover mit Gradium
+
+Sprechtext: `voiceover/script.json` (eine Zeile pro Szene, Schlüssel = Szenen-Label in `TechStack.tsx`).
+Die Marke steht dort als „Staffette“, damit die Stimme sie richtig ausspricht.
+
+```powershell
+cd video
+npm run voiceover                                   # alle Zeilen mit der Stimme aus script.json (Kelly)
+uv run --project ../backend python scripts/voiceover.py --voice <uid>          # andere Stimme
+uv run --project ../backend python scripts/voiceover.py --samples <uid> <uid>  # Hörproben vergleichen
+npm run render:tech-voice
+```
+
+- Braucht `GRADIUM_API_KEY` in `backend/.env` und die Python-Umgebung des Backends (`uv sync` in `backend/`).
+- Schreibt `public/voice/<szene>.wav` und `src/tech/voiceover.json` (Längen). Beides ist eingecheckt, Rendern
+  geht also auch ohne Key.
+- Gradium liefert WAV im Streaming-Format ohne Längenangabe im Header; das Skript trägt die echten Längen ein.
+- Jede Zeile startet 10 Frames nach Szenenbeginn. Ist sie länger als die Szene, wird die Szene verlängert.
+  Kürzerer Text ergibt ein kürzeres Video.
+- Stimmen zur Auswahl (englisch, ruhig): Kelly `Lxc7YlPC8ckLJA8H` (Standard), Declan `I7GYfpcKbafFrYUv`,
+  Christopher `fs2Qj_X2Z2WvWJSU`.

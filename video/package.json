@@ -6,7 +6,9 @@
     "dev": "remotion studio",
     "render:intro": "remotion render LogoIntro out/logo-intro.mp4",
     "render:intro-dark": "remotion render LogoIntroDark out/logo-intro-dark.mp4",
-    "render:tech": "remotion render TechStack out/tech-stack.mp4"
+    "render:tech": "remotion render TechStack out/tech-stack.mp4",
+    "voiceover": "uv run --project ../backend python scripts/voiceover.py",
+    "render:tech-voice": "remotion render TechStackVoiceover out/tech-stack-voiceover.mp4"
   },
   "dependencies": {
     "@remotion/cli": "^4.0.417",

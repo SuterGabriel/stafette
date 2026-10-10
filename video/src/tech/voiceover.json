@@ -1,0 +1,50 @@
+{
+  "voice": "Lxc7YlPC8ckLJA8H",
+  "lines": [
+    {
+      "scene": "Intro",
+      "file": "voice/intro.wav",
+      "seconds": 4.48
+    },
+    {
+      "scene": "Mandate",
+      "file": "voice/mandate.wav",
+      "seconds": 10.08
+    },
+    {
+      "scene": "Policy",
+      "file": "voice/policy.wav",
+      "seconds": 11.52
+    },
+    {
+      "scene": "Call",
+      "file": "voice/call.wav",
+      "seconds": 11.44
+    },
+    {
+      "scene": "Records",
+      "file": "voice/records.wav",
+      "seconds": 13.68
+    },
+    {
+      "scene": "Reading",
+      "file": "voice/reading.wav",
+      "seconds": 4.56
+    },
+    {
+      "scene": "Gap",
+      "file": "voice/gap.wav",
+      "seconds": 8.72
+    },
+    {
+      "scene": "Stack",
+      "file": "voice/stack.wav",
+      "seconds": 4.08
+    },
+    {
+      "scene": "Outro",
+      "file": "voice/outro.wav",
+      "seconds": 4.32
+    }
+  ]
+}

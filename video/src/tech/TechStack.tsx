@@ -4,12 +4,13 @@
  * (speaker notes in video/README.md). `speed` stretches a scene's choreography, `dur` adds the hold.
  * Scenes overlap by OVERLAP frames so each one crossfades into the next.
  */
-import { AbsoluteFill, Sequence, useCurrentFrame } from "remotion";
+import { AbsoluteFill, Audio, Sequence, staticFile, useCurrentFrame } from "remotion";
 import { FONT_FAMILY } from "../fonts";
 import { GapScene, OutroScene } from "./closing";
 import { RecordsScene } from "./records";
 import { CallScene, MandateScene, PolicyScene, ScanScene, StackScene, TitleScene } from "./scenes";
 import { C, Mark, prog, SpeedContext } from "./ui";
+import voiceover from "./voiceover.json";
 
 const OVERLAP = 12;
 const SCENES = [
@@ -25,10 +26,27 @@ const SCENES = [
 ];
 const STEPS = SCENES.slice(1, -1); // what the progress bar counts
 
-const starts = SCENES.reduce<number[]>((acc, s, i) => [...acc, i === 0 ? 0 : acc[i - 1] + SCENES[i - 1].dur - OVERLAP], []);
-export const TECH_STACK_FRAMES = starts[starts.length - 1] + SCENES[SCENES.length - 1].dur;
+// Voiceover (scripts/voiceover.py → voiceover.json): each line starts VOICE_DELAY frames into its scene,
+// and a scene grows when its line would not fit before the crossfade.
+const VOICE_DELAY = 10;
+const VOICE_TAIL = 18;
+const voiceFor = (label: string) => voiceover.lines.find((l) => l.scene === label);
 
-const Header = () => {
+type Timeline = { durs: number[]; starts: number[]; total: number };
+const timeline = (voiced: boolean): Timeline => {
+  const durs = SCENES.map((s) => {
+    const line = voiced ? voiceFor(s.label) : undefined;
+    return line ? Math.max(s.dur, VOICE_DELAY + Math.ceil(line.seconds * 30) + VOICE_TAIL + OVERLAP) : s.dur;
+  });
+  const starts = durs.reduce<number[]>((acc, d, i) => [...acc, i === 0 ? 0 : acc[i - 1] + durs[i - 1] - OVERLAP], []);
+  return { durs, starts, total: starts[starts.length - 1] + durs[durs.length - 1] };
+};
+const SILENT = timeline(false);
+const VOICED = timeline(true);
+export const TECH_STACK_FRAMES = SILENT.total;
+export const TECH_STACK_VOICED_FRAMES = VOICED.total;
+
+const Header = ({ starts }: { starts: number[] }) => {
   const frame = useCurrentFrame();
   const show = prog(frame, starts[1], 20) * (1 - prog(frame, starts[starts.length - 1] - 6, 14));
   const current = starts.reduce((idx, s, i) => (frame >= s + OVERLAP / 2 ? i : idx), 0);
@@ -64,20 +82,31 @@ const Header = () => {
   );
 };
 
-export const TechStack = () => (
-  <AbsoluteFill
-    style={{
-      background: `radial-gradient(ellipse at 50% 45%, #ffffff 0%, ${C.paper} 70%)`,
-      fontFamily: FONT_FAMILY,
-    }}
-  >
-    {SCENES.map(({ label, dur, speed, Comp }, i) => (
-      <Sequence key={label} from={starts[i]} durationInFrames={dur} name={label}>
-        <SpeedContext.Provider value={speed}>
-          <Comp dur={dur} />
-        </SpeedContext.Provider>
-      </Sequence>
-    ))}
-    <Header />
-  </AbsoluteFill>
-);
+export const TechStack = ({ voiced = false }: { voiced?: boolean }) => {
+  const { durs, starts } = voiced ? VOICED : SILENT;
+  return (
+    <AbsoluteFill
+      style={{
+        background: `radial-gradient(ellipse at 50% 45%, #ffffff 0%, ${C.paper} 70%)`,
+        fontFamily: FONT_FAMILY,
+      }}
+    >
+      {SCENES.map(({ label, speed, Comp }, i) => {
+        const line = voiced ? voiceFor(label) : undefined;
+        return (
+          <Sequence key={label} from={starts[i]} durationInFrames={durs[i]} name={label}>
+            <SpeedContext.Provider value={speed}>
+              <Comp dur={durs[i]} />
+            </SpeedContext.Provider>
+            {line && (
+              <Sequence from={VOICE_DELAY} name={`voice: ${label}`}>
+                <Audio src={staticFile(line.file)} />
+              </Sequence>
+            )}
+          </Sequence>
+        );
+      })}
+      <Header starts={starts} />
+    </AbsoluteFill>
+  );
+};

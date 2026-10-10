@@ -1,6 +1,6 @@
 import { Composition } from "remotion";
 import { LogoIntro } from "./LogoIntro";
-import { TECH_STACK_FRAMES, TechStack } from "./tech/TechStack";
+import { TECH_STACK_FRAMES, TECH_STACK_VOICED_FRAMES, TechStack } from "./tech/TechStack";
 
 const claim = {
   setup: "Switch doctors.",
@@ -14,5 +14,14 @@ export const RemotionRoot = () => (
     <Composition id="LogoIntro" {...intro} defaultProps={{ dark: false, ...claim }} />
     <Composition id="LogoIntroDark" {...intro} defaultProps={{ dark: true, ...claim }} />
     <Composition id="TechStack" component={TechStack} durationInFrames={TECH_STACK_FRAMES} fps={30} width={1920} height={1080} />
+    <Composition
+      id="TechStackVoiceover"
+      component={TechStack}
+      durationInFrames={TECH_STACK_VOICED_FRAMES}
+      fps={30}
+      width={1920}
+      height={1080}
+      defaultProps={{ voiced: true }}
+    />
   </>
 );
