@@ -119,6 +119,22 @@ td code { white-space: nowrap; }
 td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; color: var(--teal); font-weight: 700; background: var(--bg); }
 .pill { display: inline-block; font-size: 11.5px; font-weight: 600; padding: 1px 8px; border-radius: 999px; border: 1px solid currentColor; white-space: nowrap; }
 .pill.p { color: var(--teal); } .pill.open { color: var(--warn); } .pill.ok { color: var(--ok); }
+.panel { fill: var(--zone); stroke: var(--line); stroke-width: 1.2; }
+.panel-live { fill: var(--gem-bg); stroke: var(--teal); stroke-width: 1.2; opacity: 0.55; }
+.toolbox { fill: var(--warn-bg); stroke: var(--warn); stroke-width: 1.2; }
+.gate { fill: var(--surface); stroke: var(--fg); stroke-width: 2.2; }
+.edge-ok { fill: none; stroke: var(--ok); stroke-width: 1.6; }
+.ah-ok { fill: var(--ok); }
+.step { font-family: var(--font-display); font-size: 15px; font-weight: 800; fill: var(--fg); }
+.stepno { fill: var(--teal); stroke: none; }
+
+.team { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+.member { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; align-items: start; min-width: 0; }
+.avatar { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: 15px; color: var(--bg); background: var(--fg); grid-row: span 3; }
+.avatar.m { background: var(--teal); }
+.member h3 { margin: 0; font-size: 17px; letter-spacing: -0.01em; }
+.member .role { font-size: 12.5px; font-weight: 700; color: var(--teal); letter-spacing: 0.04em; text-transform: uppercase; }
+.member ul { margin: 4px 0 0; padding-left: 18px; font-size: 13.5px; color: var(--muted); display: grid; gap: 2px; }
 @media (prefers-reduced-motion: no-preference) { nav a { transition: border-color .15s, color .15s; } }
 </style>
 
@@ -136,6 +152,8 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
     <a href="#entscheidung">Entscheidungslogik</a>
     <a href="#ablauf">Ablauf (UML)</a>
     <a href="#komponenten">Komponenten und Dienste</a>
+    <a href="#anruf">Ein Anruf</a>
+    <a href="#team">Team</a>
   </nav>
 </header>
 
@@ -790,5 +808,208 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
   </div>
 </section>
 
-<footer>Stafette · {Tech: Europe} Agentic AI Hack, Zürich, 10. Oktober 2026 · Grundlage: ARCHITECTURE.md und POLICY.md</footer>
+<!-- ============================ 5. EIN ANRUF ============================ -->
+<section id="anruf">
+  <p class="eyebrow">Sicht 5 · Telefonteil</p>
+  <h2>Ein Anruf, Schritt für Schritt</h2>
+  <p>Gleiche Mechanik wie in gradium-ai/digigrad (Twilio, Bridge, gradbot), mit zwei Unterschieden: Stafette ruft nur aus, und jeder Tool-Call des Gesprächs läuft durch die Policy Engine.</p>
+  <figure>
+    <div class="canvas">
+    <svg viewBox="0 0 1000 1170" role="img" aria-label="Ablauf eines Anrufs: Der Orchestrator schlägt place_call vor, die Policy Engine erlaubt ihn, Twilio wählt das Handy der MPA. Nach dem Abheben ruft Twilio über ngrok die Bridge auf, die die Signatur prüft, die Quelle lädt und einen Audio-Stream öffnet. Im Gespräch spricht zuerst der feste Opener, dann läuft Gradium STT, Gemini und Gradium TTS im Kreis; jeder Tool-Call geht durch check(). Am Ende meldet end_call das Ergebnis an den Orchestrator.">
+      <defs>
+        <marker id="k-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
+        <marker id="k-ok" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="ah-ok" d="M0,0 L10,5 L0,10 z"/></marker>
+      </defs>
+
+      <!-- 1: decide to call -->
+      <circle class="stepno" cx="44" cy="30" r="12"/><text class="m b inv" x="44" y="35" style="font-size:12px">1</text>
+      <text class="step" x="66" y="35">Der Agent will die Praxis anrufen</text>
+      <rect class="n-gem" x="30" y="56" width="240" height="70" rx="8"/>
+      <text class="b m" x="150" y="84">Orchestrator</text>
+      <text class="mono m" x="150" y="104">place_call(praxis_seefeld)</text>
+      <path class="edge" d="M270,91 H338" marker-end="url(#k-ar)"/>
+      <text class="lbl m" x="305" y="83">Vorschlag</text>
+      <rect class="gate" x="340" y="56" width="270" height="70" rx="8"/>
+      <text class="b m" x="475" y="80">Policy Engine · check()</text>
+      <text class="lbl m" x="475" y="98">in Vollmacht · weniger als 3 Anrufe</text>
+      <text class="lbl m" x="475" y="113">innerhalb der Anrufzeit</text>
+      <path class="edge-ok" d="M610,91 H678" marker-end="url(#k-ok)"/>
+      <text class="mono m t-ok" x="645" y="83" style="font-size:10px">ALLOWED</text>
+      <rect class="n-ext" x="680" y="56" width="290" height="70" rx="8"/>
+      <text class="b m" x="825" y="84">Twilio REST · calls.create</text>
+      <text class="lbl m" x="825" y="103">Nummer aus der Vollmacht, nie vom Telefon</text>
+
+      <!-- 2: phone rings -->
+      <circle class="stepno" cx="44" cy="170" r="12"/><text class="m b inv" x="44" y="175" style="font-size:12px">2</text>
+      <text class="step" x="66" y="175">Das Handy der „Praxis“ klingelt</text>
+      <rect class="n-ext" x="30" y="196" width="240" height="64" rx="8"/>
+      <rect class="icon" x="46" y="208" width="22" height="40" rx="5"/><circle class="dot" cx="57" cy="241" r="2.5"/>
+      <text class="b" x="84" y="222">Handy der MPA</text>
+      <text class="lbl" x="84" y="240">Manuel spielt die Praxis,</text>
+      <text class="lbl" x="84" y="254">am Ohr, kein Lautsprecher</text>
+      <path class="edge" d="M740,126 V228 H272" marker-end="url(#k-ar)"/>
+      <text class="lbl m" x="500" y="220">Twilio wählt die Nummer</text>
+      <path class="edge" d="M900,126 V328" marker-end="url(#k-ar)"/>
+      <text class="lbl e" x="890" y="290">nach dem Abheben:</text>
+      <text class="mono e" x="890" y="306">POST /twilio/twiml (über ngrok)</text>
+
+      <!-- 3: bridge -->
+      <rect class="panel" x="30" y="330" width="940" height="190" rx="12"/>
+      <circle class="stepno" cx="58" cy="360" r="12"/><text class="m b inv" x="58" y="365" style="font-size:12px">3</text>
+      <text class="step" x="80" y="365">bridge.py</text>
+      <text class="lbl" x="160" y="365">läuft auf dem Laptop, FastAPI Port 8000</text>
+      <text class="b" x="80" y="400">① Ist es wirklich Twilio?</text>
+      <text x="300" y="400">Signatur prüfen (HMAC mit TWILIO_AUTH_TOKEN), sonst abweisen</text>
+      <text class="b" x="80" y="432">② Welcher Anruf?</text>
+      <text x="300" y="432">Parameter <tspan class="mono">room</tspan> → Quelle, Vollmacht v1 und Ziel des Gesprächs laden</text>
+      <text class="lbl" x="300" y="451">Keine Caller-ID-Weiche wie in digigrad: Stafette ruft nur aus, eingehende Anrufe werden abgewiesen.</text>
+      <text class="b" x="80" y="485">③ Audio verbinden</text>
+      <text class="mono" x="300" y="485">&lt;Connect&gt;&lt;Stream url="wss://…/twilio/stream"&gt;</text>
+      <text class="lbl" x="300" y="503">zurückgeben → Twilio öffnet die Audio-Leitung</text>
+
+      <path class="edge" d="M500,520 V566" marker-end="url(#k-ar)"/>
+      <text x="514" y="548">Zweiweg-Audio</text>
+      <text class="mono sub" x="614" y="548">WS /twilio/stream · 8 kHz μ-law</text>
+
+      <!-- 4: live loop -->
+      <rect class="panel-live" x="30" y="570" width="940" height="420" rx="12"/>
+      <rect class="backend" x="30" y="570" width="940" height="420" rx="12"/>
+      <circle class="stepno" cx="58" cy="600" r="12"/><text class="m b inv" x="58" y="605" style="font-size:12px">4</text>
+      <text class="step" x="80" y="605">Das Gespräch</text>
+      <text class="mono sub" x="200" y="605">gradbot.run()</text>
+
+      <rect class="note" x="54" y="620" width="892" height="50" rx="6"/>
+      <text class="lbl b" x="68" y="640">Zuerst, fix und vorgerendert (nicht vom LLM formuliert):</text>
+      <text class="it" x="68" y="659">«Grüezi, hier ist ein KI-Assistent der Firma Stafette. Ich rufe im Auftrag von Anna Muster an … Darf ich das Gespräch transkribieren?»</text>
+
+      <rect class="n-ext" x="54" y="694" width="130" height="64" rx="8"/>
+      <text class="b m" x="119" y="722">MPA spricht</text>
+      <text class="lbl m" x="119" y="740">am Telefon</text>
+      <path class="edge" d="M184,726 H212" marker-end="url(#k-ar)"/>
+      <rect class="n-gem" x="214" y="694" width="160" height="64" rx="8"/>
+      <text class="b m" x="294" y="722">Gradium STT</text>
+      <text class="lbl m" x="294" y="740">Sprache → Text (de)</text>
+      <path class="edge" d="M374,726 H402" marker-end="url(#k-ar)"/>
+      <rect class="n-gem" x="404" y="694" width="180" height="64" rx="8"/>
+      <text class="b m" x="494" y="716">Gemini</text>
+      <text class="mono m t-teal" x="494" y="733">gemini-3.6-flash</text>
+      <text class="lbl m" x="494" y="749">antwortet oder wählt ein Tool</text>
+      <path class="edge" d="M584,726 H612" marker-end="url(#k-ar)"/>
+      <rect class="n-gem" x="614" y="694" width="160" height="64" rx="8"/>
+      <text class="b m" x="694" y="722">Gradium TTS</text>
+      <text class="lbl m" x="694" y="740">Schweizer Stimme</text>
+      <path class="edge" d="M774,726 H802" marker-end="url(#k-ar)"/>
+      <rect class="n-ext" x="804" y="694" width="142" height="64" rx="8"/>
+      <text class="b m" x="875" y="722">zurück ans</text>
+      <text class="b m" x="875" y="740">Telefon</text>
+
+      <path class="edge" d="M494,760 V808" marker-start="url(#k-ar)" marker-end="url(#k-ar)"/>
+      <text class="lbl" x="502" y="788">Tool-Call · Ergebnis</text>
+
+      <!-- what the agent lacks -->
+      <rect class="n-ext" x="54" y="810" width="250" height="160" rx="8"/>
+      <text class="b" x="70" y="834">Was der Telefon-Agent nicht hat</text>
+      <text class="lbl" x="70" y="856">Diagnosen, Befunde, Akten.</text>
+      <text class="lbl" x="70" y="872">Kein Tool liefert sie.</text>
+      <text class="b" x="70" y="902" style="font-size:11.5px">Was er sagen darf</text>
+      <text class="lbl" x="70" y="922">Name und Geburtsdatum von Anna,</text>
+      <text class="lbl" x="70" y="938">Empfängerin Dr. Keller</text>
+      <text class="mono sub" x="70" y="956" style="font-size:9.5px">may_disclose_on_call</text>
+
+      <!-- tools -->
+      <rect class="toolbox" x="330" y="810" width="330" height="160" rx="8"/>
+      <text class="b" x="346" y="834">Tools (Function Calls)</text>
+      <text class="mono" x="346" y="860">request_records</text>
+      <text class="mono" x="346" y="880">confirm_channel</text>
+      <text class="mono" x="346" y="900">identify_principal</text>
+      <text class="mono" x="346" y="920">confirm_recipient</text>
+      <text class="mono" x="510" y="860">set_recipient</text>
+      <text class="mono" x="510" y="880">accept_fee</text>
+      <text class="mono" x="510" y="900">end_call(outcome)</text>
+      <text class="lbl" x="346" y="954">jedes Tool nur mit erlaubten Argumenten</text>
+
+      <path class="edge" d="M660,890 H698" marker-end="url(#k-ar)"/>
+      <text class="lbl m" x="679" y="882">jeder</text>
+
+      <!-- gate -->
+      <rect class="gate" x="700" y="810" width="246" height="160" rx="8"/>
+      <text class="b" x="716" y="834">Policy Engine · check()</text>
+      <text class="mono t-ok" x="716" y="864" style="font-size:11px">ALLOWED</text>
+      <text class="lbl" x="800" y="864">Tool läuft</text>
+      <text class="mono t-bad" x="716" y="894" style="font-size:11px">BLOCKED</text>
+      <text class="lbl" x="800" y="894">Grund an Gemini,</text>
+      <text class="lbl" x="800" y="908">es lehnt höflich ab</text>
+      <text class="mono t-warn" x="716" y="938" style="font-size:11px">APPROVAL</text>
+      <text class="lbl" x="800" y="938">Anna wird gefragt</text>
+      <text class="lbl" x="716" y="960">jeder Entscheid → Protokoll</text>
+
+      <path class="edge" d="M500,990 V1028" marker-end="url(#k-ar)"/>
+
+      <!-- 5: after the call -->
+      <rect class="panel" x="30" y="1030" width="940" height="125" rx="12"/>
+      <circle class="stepno" cx="58" cy="1060" r="12"/><text class="m b inv" x="58" y="1065" style="font-size:12px">5</text>
+      <text class="step" x="80" y="1065">Wenn der Anruf endet</text>
+      <text class="mono b" x="80" y="1100">end_call(outcome)</text>
+      <text class="lbl" x="80" y="1118">requested · needs_consent · closed</text>
+      <text class="lbl" x="80" y="1134">refused · callback → Orchestrator</text>
+      <text class="b" x="310" y="1100">Transkript</text>
+      <text class="lbl" x="310" y="1118">nur wenn die MPA zustimmt,</text>
+      <text class="lbl" x="310" y="1134">in-memory mit Ablaufzeit</text>
+      <text class="b" x="540" y="1100">Keine Aufnahme</text>
+      <text class="lbl" x="540" y="1118">kein WAV, kein Memory,</text>
+      <text class="lbl" x="540" y="1134">nichts auf der Festplatte</text>
+      <text class="b" x="770" y="1100">Annas App</text>
+      <text class="lbl" x="770" y="1118">Station aktualisiert, Hinweis bei</text>
+      <text class="lbl" x="770" y="1134">BLOCKED, Event im Protokoll</text>
+    </svg>
+    </div>
+    <figcaption><b>Lesart:</b> Schritte 2 bis 4 entsprechen dem Ablauf in digigrad. Neu sind Schritt 1 (der Anruf selbst ist ein Tool-Call, den die Policy Engine erlauben muss) und das Tor rechts in Schritt 4: Gemini kann am Telefon nur über die gelben Tools handeln, und jedes geht durch <code>check()</code>.</figcaption>
+  </figure>
+
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Thema</th><th>digigrad (Vorlage)</th><th>Stafette</th></tr></thead>
+    <tbody>
+      <tr><td><b>Richtung</b></td><td>Ein- und ausgehend</td><td>Nur ausgehend; eingehende Anrufe werden abgewiesen</td></tr>
+      <tr><td><b>Wer ist dran?</b></td><td>Caller-ID entscheidet: Besitzer → Assistent, Fremde → Rezeption</td><td>Entfällt. Der <code>room</code>-Parameter bestimmt Quelle und Vollmacht</td></tr>
+      <tr><td><b>Sprachmodell</b></td><td>OpenAI (<code>gpt-4o-mini</code>)</td><td>Gemini <code>gemini-3.6-flash</code> über die OpenAI-kompatible Schnittstelle</td></tr>
+      <tr><td><b>Stimme</b></td><td>Geklonte Stimme des Besitzers</td><td>Schweizer Standardstimme von Gradium, kein Cloning</td></tr>
+      <tr><td><b>Gesprächsbeginn</b></td><td>Vorgerenderter Opener im Modus <code>business</code></td><td>Übernommen, mit KI-Offenlegung und Frage nach Transkription</td></tr>
+      <tr><td><b>Tools</b></td><td>Memory, Websuche, Mail, Business-Suche, Auflegen</td><td>Sieben Vollmacht-Tools, jedes durch <code>check()</code></td></tr>
+      <tr><td><b>Nach dem Anruf</b></td><td>Transkript, Aufnahme, neue Memories, Telegram-Zusammenfassung</td><td>Nur <code>end_call(outcome)</code>, Event und, mit Zustimmung, Transkript in-memory</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- ============================ TEAM ============================ -->
+<section id="team">
+  <p class="eyebrow">Team</p>
+  <h2>Wer baut was</h2>
+  <div class="team">
+    <div class="member">
+      <div class="avatar" aria-hidden="true">GS</div>
+      <h3>Gabriel Suter</h3>
+      <span class="role">Voice</span>
+      <ul>
+        <li>Telefonteil: Twilio, gradbot, Gemini im Dialog</li>
+        <li>Dialog-Tools, die durch <code>check()</code> laufen</li>
+        <li>Demo: spricht den Pitch</li>
+      </ul>
+    </div>
+    <div class="member">
+      <div class="avatar m" aria-hidden="true">MF</div>
+      <h3>Manuel Fitz</h3>
+      <span class="role">Full Stack · Hosting</span>
+      <ul>
+        <li>Dashboard ✓: Annas App, Dr. Kellers Übergabe</li>
+        <li>Vollmacht-Schema, Policy Engine, Orchestrator, Dokument-Pipeline</li>
+        <li>Hosting: Tunnel, Deployment</li>
+        <li>Demo: bedient das Dashboard, spielt die MPA am Telefon</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>Stafette · Gabriel Suter und Manuel Fitz · {Tech: Europe} Agentic AI Hack, Zürich, 10. Oktober 2026 · Grundlage: ARCHITECTURE.md, POLICY.md, STACK.md und gradium-ai/digigrad</footer>
 </div>

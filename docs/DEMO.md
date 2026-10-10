@@ -4,7 +4,7 @@
 
 Der Telefonanruf ist das grösste Risiko, die Agent-Schleife ist das, was die Jury bewertet. Darum getrennt bauen und um 15:00 zusammenführen.
 
-| | Strang A – Voice (Gabriel) | Strang B – Agent (Teammate) |
+| | Strang A – Voice (Gabriel Suter) | Strang B – Agent (Manuel Fitz) |
 |---|---|---|
 | bis 12:30 | Twilio → Gradium STT → Gemini → Gradium TTS, durchgehend | Vollmacht-Schema, Policy Engine, Tests grün |
 | bis 15:00 | Tools im Dialog, `end_call` mit Outcome, Injection blockt | Orchestrator-Schleife mit **simuliertem** Anruf (Text statt Telefon), Plan-State |

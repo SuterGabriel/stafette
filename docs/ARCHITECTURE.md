@@ -133,7 +133,7 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     autonumber
-    participant MPA as MPA (Teammate)
+    participant MPA as MPA (Manuel)
     participant GRA as Gradium STT/TTS
     participant LLM as Gemini (Dialog)
     participant PE as Policy Engine

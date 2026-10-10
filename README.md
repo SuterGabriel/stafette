@@ -72,11 +72,12 @@ Der Agent bekommt ein **Ziel**, keinen Befehl: *„Die neue Praxis hat eine voll
 
 ## Team
 
-| Wer | Fokus |
-|---|---|
-| Gabriel | Voice-Pipeline, Guardrails, Backend |
-| Teammate | Dashboard, Dokument-Pipeline, Pitch |
-| (Matchmaking 10:00) | Ggf. Frontend/Design oder Business |
+| Wer | Rolle | Baut | In der Demo |
+|---|---|---|---|
+| **Gabriel Suter** | Voice | Telefonteil: Twilio, gradbot, Gemini im Dialog, Dialog-Tools | spricht den Pitch |
+| **Manuel Fitz** | Full Stack · Hosting | Vollmacht-Schema, Policy Engine, Orchestrator, Dokument-Pipeline, Dashboard, Hosting | bedient das Dashboard, spielt die MPA |
+
+Aufteilung wie in [docs/PROJECT.md](docs/PROJECT.md#6-rollen-heute).
 
 ## Regeln für uns
 
