@@ -1,6 +1,7 @@
 # Stafette Dashboard
 
 Next.js 15 · React 19 · TypeScript · Manrope lokal gebündelt (läuft auch offline).
+Animationen mit [Magic UI](https://magicui.design) (Tailwind v4 ohne Preflight + `motion`).
 
 ## Starten
 
@@ -47,8 +48,23 @@ components/
   AnnaApp.tsx       Start → Verstanden → Vollmacht → Fortschritt
   KellerSheet.tsx   Übergabe mit Fundstellen und Zitaten
   Logo.tsx, Icons.tsx
+  MotionProvider.tsx  respektiert „Bewegung reduzieren“ des Systems
+  ui/               Magic-UI-Komponenten (BlurFade, NumberTicker, BorderBeam, …)
 lib/
   types.ts          gemeinsame Typen mit dem Backend
   mock.ts           Demo-Daten (passen zu /fixtures)
   useStafette.ts    State-Hook: Mock oder Live via SSE
 ```
+
+## Magic UI
+
+Komponenten liegen als eigener Code in `components/ui/` und werden mit der shadcn-CLI geholt:
+
+```powershell
+npx shadcn@latest add "https://magicui.design/r/<name>.json"
+```
+
+Tailwind ist nur für diese Komponenten da: `globals.css` importiert Theme und Utilities, aber **keinen Preflight**,
+damit die handgeschriebenen Styles unverändert gelten. Farben in den Komponenten an die Design-Tokens anpassen,
+nicht die Tailwind-Defaults (`text-black` usw.) stehen lassen. Die CLI schreibt Keyframes manchmal kaputt
+in `globals.css` (z. B. `boxShadow` statt `box-shadow`), nach dem Hinzufügen kurz prüfen.

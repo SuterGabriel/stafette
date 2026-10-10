@@ -1,3 +1,9 @@
+/* Tailwind v4 without preflight: only Magic UI (components/ui) uses utilities,
+   the hand-written styles below stay authoritative. */
+@layer theme, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
 /* Stafette design tokens and components. One typeface (Manrope), one accent. */
 :root {
   --ink: #0e2a3b;
@@ -66,6 +72,7 @@ a:hover { color: var(--ink); }
   color: var(--text-2);
 }
 .status-pill--live { color: var(--ok-text); border-color: var(--petrol); }
+.status-pill--offline { color: var(--red); border-color: var(--red); background: var(--red-bg); }
 
 /* ---------- Logo ---------- */
 .logo { display: inline-flex; align-items: center; gap: 8px; font-weight: 800; font-size: 17px; letter-spacing: -0.3px; }
@@ -236,4 +243,36 @@ a:hover { color: var(--ink); }
   .phone { height: auto; min-height: 780px; border-radius: 24px; }
   .sheet { padding: 24px 20px; }
   .sheet-src { text-align: left; }
+}
+
+/* ---------- Magic UI ---------- */
+/* Keyframes for pulsating-button and typing-animation (registered by the shadcn CLI, fixed by hand) */
+@theme inline {
+  --animate-blink-cursor: blink-cursor 1.2s step-end infinite;
+  --animate-pulse: pulse var(--duration) ease-out infinite;
+  @keyframes blink-cursor {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 var(--pulse-color); }
+    50% { box-shadow: 0 0 0 var(--distance) var(--pulse-color); }
+  }
+}
+
+/* Stage backdrop: dots fade out towards the edges */
+.stage { position: relative; isolation: isolate; }
+.stage-dots {
+  z-index: -1;
+  color: rgb(14 42 59 / 0.14);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 100%);
+}
+
+/* Each Anna screen fills the phone between header and bottom edge */
+.screen { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+.ask { position: relative; overflow: hidden; }
+.btn-label { display: inline-flex; align-items: center; gap: 10px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-pulse, .animate-blink-cursor { animation: none; }
 }

@@ -5,11 +5,19 @@
  *   2. Mandate: plain-language summary of what the agent may do, then sign
  *   3. Progress: timeline of sources, the one open question, optional protocol
  * Screens 1–2 are local UI state; screen 3 renders the live StafetteState.
+ * Motion via Magic UI (components/ui): screens and new stations blur in,
+ * the approval card carries a border beam so the agent's question stands out.
  */
 import { useState } from "react";
+import { useReducedMotion } from "motion/react";
 import type { StafetteState, Station } from "@/lib/types";
 import { Logo } from "./Logo";
 import { CheckIcon, MicIcon, ShieldIcon } from "./Icons";
+import { BlurFade } from "./ui/blur-fade";
+import { BorderBeam } from "./ui/border-beam";
+import { NumberTicker } from "./ui/number-ticker";
+import { PulsatingButton } from "./ui/pulsating-button";
+import { TypingAnimation } from "./ui/typing-animation";
 
 type Screen = "start" | "heard" | "mandate" | "progress";
 
@@ -22,6 +30,8 @@ type Props = {
 export function AnnaApp({ state, onDecide, onReset }: Props) {
   const [screen, setScreen] = useState<Screen>("start");
   const [showLog, setShowLog] = useState(false);
+  const reduceMotion = useReducedMotion();
+  const progress = countDone(state.stations);
 
   const restart = () => {
     setScreen("start");
@@ -42,29 +52,39 @@ export function AnnaApp({ state, onDecide, onReset }: Props) {
       </header>
 
       {screen === "start" && (
-        <>
+        <BlurFade key="start" className="screen">
           <div className="phone-body phone-body--start">
             <h1 className="h1">Neue Hausärztin? Ich hole Ihre Unterlagen.</h1>
             <p className="muted">Sagen Sie mir, zu wem Sie wechseln und wo Sie bisher in Behandlung waren.</p>
           </div>
           <footer className="phone-foot">
-            <button className="btn btn--accent" onClick={() => setScreen("heard")}>
-              <MicIcon /> Sprechen
-            </button>
+            <PulsatingButton
+              className="btn btn--accent"
+              pulseColor="rgb(11 117 119 / 0.35)"
+              distance="6px"
+              duration="2s"
+              onClick={() => setScreen("heard")}
+            >
+              <span className="btn-label">
+                <MicIcon /> Sprechen
+              </span>
+            </PulsatingButton>
             <button className="btn btn--soft" onClick={() => setScreen("heard")}>
               Schreiben
             </button>
           </footer>
-        </>
+        </BlurFade>
       )}
 
       {screen === "heard" && (
-        <>
+        <BlurFade key="heard" className="screen">
           <div className="phone-body">
             <div className="eyebrow">Sie haben gesagt</div>
             <p className="said">
-              „Ich wechsle zu Dr. Keller in Winterthur. Ich war bei der Hausarztpraxis Seefeld und letztes Jahr im Spital
-              Musterstadt.“
+              <TypingAnimation duration={22} cursorStyle="line" className="leading-[inherit] tracking-normal">
+                „Ich wechsle zu Dr. Keller in Winterthur. Ich war bei der Hausarztpraxis Seefeld und letztes Jahr im
+                Spital Musterstadt.“
+              </TypingAnimation>
             </p>
             <div className="eyebrow">Ich habe verstanden</div>
             <dl className="rows">
@@ -90,11 +110,11 @@ export function AnnaApp({ state, onDecide, onReset }: Props) {
               Nochmals sagen
             </button>
           </footer>
-        </>
+        </BlurFade>
       )}
 
       {screen === "mandate" && (
-        <>
+        <BlurFade key="mandate" className="screen">
           <div className="phone-body">
             <h1 className="h1 h1--sm">Das darf ich für Sie tun</h1>
             <p className="muted">Nicht mehr und nicht weniger. Alles andere frage ich Sie zuerst.</p>
@@ -139,58 +159,66 @@ export function AnnaApp({ state, onDecide, onReset }: Props) {
               Zurück
             </button>
           </footer>
-        </>
+        </BlurFade>
       )}
 
       {screen === "progress" && (
-        <div className="phone-body phone-body--scroll">
+        <BlurFade key="progress" className="phone-body phone-body--scroll">
           <h1 className="h1 h1--xs">Ihre Unterlagen für Dr. Keller</h1>
           <p className="muted small">
-            {doneLabel(state.stations)} · aktualisiert {state.updatedAt}
+            <NumberTicker value={progress.done} /> von {progress.total}{" "}
+            Stellen erledigt · aktualisiert {state.updatedAt}
           </p>
 
           {state.approval && (
-            <section className="ask" aria-live="polite">
-              <h2>{state.approval.question}</h2>
-              <p>{state.approval.body}</p>
-              <p className="why">{state.approval.why}</p>
-              <div className="ask-btns">
-                <button className="btn btn--accent btn--sm" onClick={() => onDecide(true)}>
-                  Ja, anfragen
-                </button>
-                <button className="btn btn--outline-light btn--sm" onClick={() => onDecide(false)}>
-                  Nein
-                </button>
-              </div>
-            </section>
+            <BlurFade key={state.approval.id}>
+              <section className="ask" aria-live="polite">
+                {!reduceMotion && (
+                  <BorderBeam size={120} duration={5} borderWidth={2} colorFrom="#ff7a59" colorTo="#7fd3c9" />
+                )}
+                <h2>{state.approval.question}</h2>
+                <p>{state.approval.body}</p>
+                <p className="why">{state.approval.why}</p>
+                <div className="ask-btns">
+                  <button className="btn btn--accent btn--sm" onClick={() => onDecide(true)}>
+                    Ja, anfragen
+                  </button>
+                  <button className="btn btn--outline-light btn--sm" onClick={() => onDecide(false)}>
+                    Nein
+                  </button>
+                </div>
+              </section>
+            </BlurFade>
           )}
 
           {state.approvalResult === "yes" && (
-            <div className="confirm">
+            <BlurFade className="confirm">
               <CheckIcon /> Dr. Brunner wird angefragt.
-            </div>
+            </BlurFade>
           )}
 
           <ol className="timeline">
             {state.stations.map((s, i) => (
-              <li key={s.id} className={`stop stop--${s.status}`}>
-                <div className="stop-rail">
-                  <span className="dot">{s.status === "done" && <CheckIcon size={12} />}</span>
-                  {i < state.stations.length - 1 && <span className="line" />}
-                </div>
-                <div className="stop-body">
-                  <div className="stop-name">{s.name}</div>
-                  <div className="stop-detail">{s.detail}</div>
-                  {s.guard && (
-                    <div className="guard">
-                      <ShieldIcon />
-                      <div>
-                        <strong>Bitte abgelehnt</strong>
-                        <span>{s.guard}</span>
-                      </div>
-                    </div>
-                  )}
-                </div>
+              <li key={s.id}>
+                <BlurFade delay={i * 0.08} className={`stop stop--${s.status}`}>
+                  <div className="stop-rail">
+                    <span className="dot">{s.status === "done" && <CheckIcon size={12} />}</span>
+                    {i < state.stations.length - 1 && <span className="line" />}
+                  </div>
+                  <div className="stop-body">
+                    <div className="stop-name">{s.name}</div>
+                    <div className="stop-detail">{s.detail}</div>
+                    {s.guard && (
+                      <BlurFade className="guard">
+                        <ShieldIcon />
+                        <div>
+                          <strong>Bitte abgelehnt</strong>
+                          <span>{s.guard}</span>
+                        </div>
+                      </BlurFade>
+                    )}
+                  </div>
+                </BlurFade>
               </li>
             ))}
           </ol>
@@ -224,14 +252,13 @@ export function AnnaApp({ state, onDecide, onReset }: Props) {
               <div className="log-foot">Vollmacht v{state.mandate.version} · sha256 {state.mandate.hash}</div>
             </div>
           )}
-        </div>
+        </BlurFade>
       )}
     </div>
   );
 }
 
-function doneLabel(stations: Station[]) {
+function countDone(stations: Station[]) {
   const relevant = stations.filter((s) => s.status !== "skipped");
-  const done = relevant.filter((s) => s.status === "done").length;
-  return `${done} von ${relevant.length} Stellen erledigt`;
+  return { done: relevant.filter((s) => s.status === "done").length, total: relevant.length };
 }

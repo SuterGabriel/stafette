@@ -5,6 +5,8 @@
  * - With NEXT_PUBLIC_API_URL set: loads GET /state, then listens to GET /events (SSE).
  *   Each SSE message is `{"state": StafetteState}`. Answers go to POST /approvals/:id.
  * - Without it: runs fully on mock data, so the frontend can be built and demoed alone.
+ * - With it but the backend unreachable: falls back to mock data (`offline`) so the demo
+ *   stays clickable, and switches back to live as soon as the event stream connects.
  */
 import { useCallback, useEffect, useState } from "react";
 import { applyDecision, initialState } from "./mock";
@@ -15,18 +17,27 @@ const API = process.env.NEXT_PUBLIC_API_URL;
 export function useStafette() {
   const [state, setState] = useState<StafetteState>(initialState);
   const [connected, setConnected] = useState(false);
+  const [offline, setOffline] = useState(false);
 
   useEffect(() => {
     if (!API) return;
     let es: EventSource | null = null;
 
-    fetch(`${API}/state`)
-      .then((r) => r.json())
-      .then((s: StafetteState) => setState(s))
-      .catch(() => {});
+    const loadState = () =>
+      fetch(`${API}/state`)
+        .then((r) => r.json())
+        .then((s: StafetteState) => {
+          setState(s);
+          setOffline(false);
+        })
+        .catch(() => setOffline(true));
 
+    loadState();
     es = new EventSource(`${API}/events`);
-    es.onopen = () => setConnected(true);
+    es.onopen = () => {
+      setConnected(true);
+      loadState();
+    };
     es.onerror = () => setConnected(false);
     es.onmessage = (msg) => {
       try {
@@ -43,7 +54,7 @@ export function useStafette() {
     async (approve: boolean) => {
       const approvalId = state.approval?.id;
       if (!approvalId) return;
-      if (API) {
+      if (API && !offline) {
         await fetch(`${API}/approvals/${approvalId}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -53,16 +64,16 @@ export function useStafette() {
         setState((s) => applyDecision(s, approve));
       }
     },
-    [state.approval?.id],
+    [state.approval?.id, offline],
   );
 
   const reset = useCallback(async () => {
-    if (API) {
+    if (API && !offline) {
       await fetch(`${API}/reset`, { method: "POST" }).catch(() => {});
     } else {
       setState(initialState);
     }
-  }, []);
+  }, [offline]);
 
-  return { state, decide, reset, live: Boolean(API), connected };
+  return { state, decide, reset, live: Boolean(API), connected, offline };
 }

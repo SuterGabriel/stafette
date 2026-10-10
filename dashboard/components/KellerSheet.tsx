@@ -3,11 +3,14 @@
  * What the new doctor receives: an administrative handover index.
  * Every line carries its source; clicking shows the verbatim quote.
  * Deliberately no assessment or recommendation (keeps it out of medical-device territory).
+ * New lines blur in as documents arrive, so the sheet visibly fills during the demo.
  */
 import { useState } from "react";
 import type { StafetteState } from "@/lib/types";
 import { Logo } from "./Logo";
 import { CheckIcon, ClockIcon } from "./Icons";
+import { BlurFade } from "./ui/blur-fade";
+import { NumberTicker } from "./ui/number-ticker";
 
 export function KellerSheet({ state, alwaysShowQuotes = false }: { state: StafetteState; alwaysShowQuotes?: boolean }) {
   const [openId, setOpenId] = useState<string | null>("vhf");
@@ -34,7 +37,10 @@ export function KellerSheet({ state, alwaysShowQuotes = false }: { state: Stafet
           </div>
           <div className="sheet-src">
             <div>
-              <b>{state.documents} Dokumente</b> aus {state.sourceCount} Quellen
+              <b>
+                <NumberTicker value={state.documents} /> Dokumente
+              </b>{" "}
+              aus {state.sourceCount} Quellen
             </div>
             <div>{state.mandate.sources.slice(0, state.sourceCount).join(" · ")}</div>
           </div>
@@ -44,10 +50,10 @@ export function KellerSheet({ state, alwaysShowQuotes = false }: { state: Stafet
           <section key={sec.title} className="sheet-sec">
             <h2>{sec.title}</h2>
             <div className="sheet-items">
-              {sec.items.map((it) => {
+              {sec.items.map((it, i) => {
                 const open = alwaysShowQuotes || openId === it.id;
                 return (
-                  <div key={it.id}>
+                  <BlurFade key={it.id} delay={i * 0.06} inView>
                     <button
                       className="finding"
                       aria-expanded={open}
@@ -60,12 +66,14 @@ export function KellerSheet({ state, alwaysShowQuotes = false }: { state: Stafet
                       <span className="ref">{it.ref}</span>
                     </button>
                     {open && (
-                      <blockquote className="quote">
-                        <p>„{it.quote}“</p>
-                        <cite>{it.quoteSrc}</cite>
-                      </blockquote>
+                      <BlurFade offset={4} blur="4px" duration={0.3}>
+                        <blockquote className="quote">
+                          <p>„{it.quote}“</p>
+                          <cite>{it.quoteSrc}</cite>
+                        </blockquote>
+                      </BlurFade>
                     )}
-                  </div>
+                  </BlurFade>
                 );
               })}
             </div>
@@ -83,9 +91,11 @@ export function KellerSheet({ state, alwaysShowQuotes = false }: { state: Stafet
 
         <div className="sheet-review">
           {reviewedAt ? (
-            <div className="confirm" role="status">
-              <CheckIcon /> Von Dr. Keller geprüft · {reviewedAt}
-            </div>
+            <BlurFade>
+              <div className="confirm" role="status">
+                <CheckIcon /> Von Dr. Keller geprüft · {reviewedAt}
+              </div>
+            </BlurFade>
           ) : (
             <button className="btn btn--ink btn--auto" onClick={() => setReviewedAt("10:52")}>
               Übersicht geprüft
