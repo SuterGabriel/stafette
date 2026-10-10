@@ -84,6 +84,7 @@ async def run_bridge(ws: WebSocket) -> None:
     stop = asyncio.Event()
     tool_tasks: set[asyncio.Task] = set()
     turn = {"start": 0.0, "last": 0.0}
+    after_tool = {"v": False}
 
     async def producer() -> None:
         """Twilio -> gradbot."""
@@ -146,8 +147,10 @@ async def run_bridge(ws: WebSocket) -> None:
                 elif kind == "tts_text" and (text := (getattr(msg, "text", "") or "").strip()):
                     log.info("call %s | AGENT: %s", call.id, text)
                     call.transcript.append(("agent", text))
-                    store.add_call_line("agent", text.replace("Staffette", "Stafette"))
+                    store.add_call_line("agent", text.replace("Staffette", "Stafette"), new_turn=after_tool["v"])
+                    after_tool["v"] = False
                 elif kind == "tool_call":
+                    after_tool["v"] = True          # the agent's next words are a new turn, not a continuation
                     handle = gradbot.ToolHandle(msg.tool_call_handle, msg.tool_call)
                     task = asyncio.create_task(handle_tool_call(handle, call))
                     tool_tasks.add(task)

@@ -51,12 +51,24 @@ def fix_request(body: dict) -> dict:
     return body
 
 
-def fix_chunk(chunk: dict) -> dict:
-    """Add the missing `index` to tool_call deltas and remember their signatures."""
+def fix_chunk(chunk: dict, ids: dict[str, int] | None = None) -> dict:
+    """Add the missing `index` to tool_call deltas and remember their signatures.
+
+    `ids` lives for one streamed response: every new tool-call id gets the next index, so two
+    tool calls arriving in separate chunks stay two calls (gradbot merges deltas by index).
+    A delta without id continues the previous call.
+    """
+    ids = {} if ids is None else ids
     for choice in chunk.get("choices", []):
         part = choice.get("delta") or choice.get("message") or {}
         for i, call in enumerate(part.get("tool_calls") or []):
-            call.setdefault("index", i)
+            if "index" not in call:
+                if call.get("id"):
+                    ids.setdefault(call["id"], len([k for k in ids if k != "_last"]))
+                    ids["_last"] = ids[call["id"]]
+                    call["index"] = ids[call["id"]]
+                else:
+                    call["index"] = ids.get("_last", i)
             call.setdefault("type", "function")
             extra = call.pop("extra_content", None)
             if extra and call.get("id"):
@@ -94,10 +106,11 @@ async def chat_completions(request: Request):
                 log.warning("LLM upstream %s: %s", upstream.status_code, text[:300])
                 yield f"data: {text}\n\n"
                 return
+            ids: dict[str, int] = {}
             async for line in upstream.aiter_lines():
                 if line.startswith("data: ") and line[6:].strip() != "[DONE]":
                     try:
-                        line = "data: " + json.dumps(fix_chunk(json.loads(line[6:])), ensure_ascii=False)
+                        line = "data: " + json.dumps(fix_chunk(json.loads(line[6:]), ids), ensure_ascii=False)
                     except json.JSONDecodeError:
                         pass
                 yield line + "\n"

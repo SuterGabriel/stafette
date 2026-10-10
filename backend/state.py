@@ -296,12 +296,14 @@ class StateStore:
         self._state.call = call
         self._publish()
 
-    def add_call_line(self, who: str, text: str, keep: int = 14) -> None:
+    def add_call_line(self, who: str, text: str, keep: int = 14, new_turn: bool = False) -> None:
+        """STT and TTS arrive word by word: consecutive pieces of one speaker form one bubble,
+        unless `new_turn` (the agent restarts after a tool call)."""
         if self._state.call is None:
             return
         lines = self._state.call.lines
-        if lines and lines[-1].who == who and who == "agent":
-            lines[-1].text = f"{lines[-1].text} {text}".strip()   # TTS arrives in pieces: one bubble per turn
+        if lines and lines[-1].who == who and not new_turn:
+            lines[-1].text = f"{lines[-1].text} {text}".strip()
         else:
             lines.append(CallLine(who=who, text=text))  # type: ignore[arg-type]
         del lines[:-keep]
