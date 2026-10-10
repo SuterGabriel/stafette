@@ -97,6 +97,8 @@ async def run_bridge(ws: WebSocket) -> None:
                     if now < guard_until:
                         held.append(audio)
                         continue
+                    if held:
+                        log.info("call %s | opener done, forwarding %d held frames", call.id, len(held))
                     while held:
                         await input_handle.send_audio(held.pop(0))
                     if not (turn["start"] and now - turn["start"] < BARGE_GUARD_S):
@@ -117,8 +119,11 @@ async def run_bridge(ws: WebSocket) -> None:
             while not stop.is_set():
                 msg = await output_handle.receive()
                 if msg is None:
+                    log.warning("call %s | gradbot output closed", call.id)
                     return
                 kind = getattr(msg, "msg_type", None)
+                if kind != "audio":
+                    log.info("call %s | gradbot msg %s", call.id, kind)
                 if kind == "audio":
                     now = time.monotonic()
                     if getattr(msg, "interrupted", False) and turn["start"] and now - turn["start"] >= BARGE_GUARD_S:

@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import logging
 import os
 
 from dotenv import load_dotenv
@@ -26,6 +27,17 @@ from state import store
 from voice import routes as voice_routes
 
 load_dotenv()
+
+# Our own INFO lines (what the practice says, what the agent says, tool decisions) and
+# gradbot's internal log (STT turns, LLM requests) via RUST_LOG, e.g. RUST_LOG=info.
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
+os.environ.setdefault("RUST_LOG", "info")
+try:
+    import gradbot
+
+    gradbot.init_logging()
+except Exception:  # noqa: BLE001 - logging must never stop the backend
+    logging.getLogger(__name__).warning("gradbot logging not initialised")
 
 app = FastAPI(title="Stafette backend")
 

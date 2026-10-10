@@ -83,6 +83,16 @@ def env(name: str, default: str = "") -> str:
     return os.environ.get(name, default).strip()
 
 
+def prerendered_opener() -> bool:
+    """Fallback: play the opener as a pre-rendered clip outside gradbot.
+
+    Default is off: gradbot speaks the opener itself (verbatim from the instructions),
+    so it knows it asked a question and its silence nudge follows up if the answer
+    ("Ja") is too short to be recognised. With the clip, gradbot waited forever.
+    """
+    return env("PRERENDERED_OPENER").lower() in {"1", "true", "yes"}
+
+
 def relax_call_hours() -> bool:
     return env("DEMO_RELAX_CALL_HOURS").lower() in {"1", "true", "yes"}
 
@@ -150,7 +160,8 @@ async def dial(source_id: str) -> Call | Decision:
     call = Call(id=secrets.token_urlsafe(8), source_id=source_id, source_name=source.name, to=env("DEMO_TO_NUMBER"))
     CALLS[call.id] = call
     PLAN.calls_made[source_id] = PLAN.calls(source_id) + 1
-    call.opener_task = asyncio.create_task(_prepare_opener(call))
+    if prerendered_opener():
+        call.opener_task = asyncio.create_task(_prepare_opener(call))
 
     from twilio.rest import Client
 

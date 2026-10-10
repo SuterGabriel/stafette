@@ -13,7 +13,7 @@ import gradbot
 
 from contracts import CALL_OUTCOMES
 from voice import calls
-from voice.calls import SPOKEN_BRAND, Call, env, voice_id
+from voice.calls import OPENER, SPOKEN_BRAND, Call, env, prerendered_opener, voice_id
 
 SCOPE_LABELS = {
     "reports": "Berichte",
@@ -25,12 +25,25 @@ SCOPE_LABELS = {
 }
 
 
+def _opening(prerendered: bool) -> str:
+    if prerendered:
+        return ("Deine Begrüssung wurde bereits abgespielt: Du hast dich als KI vorgestellt und gefragt, "
+                "ob du das Gespräch transkribieren darfst. Stell dich nicht nochmals vor.")
+    return f"""Deine erste Äusserung ist genau dieser Text, wörtlich und ohne Zusatz:
+«{OPENER}»
+Danach wartest du auf die Antwort. Sagt die Praxis Ja, bedanke dich kurz und trag sofort dein Anliegen vor.
+Sagt sie Nein, sag, dass du nichts aufzeichnest, und trag dein Anliegen trotzdem vor.
+Kommt keine verständliche Antwort, frag freundlich: «Darf ich kurz fortfahren?» und trag dann dein Anliegen vor.
+Stell dich danach nicht nochmals vor."""
+
+
 def instructions(call: Call) -> str:
     scope = ", ".join(SCOPE_LABELS[s] for s in calls.MANDATE.scope)
     return f"""Du bist der KI-Assistent von {SPOKEN_BRAND} und telefonierst mit der Praxis „{call.source_name}“.
 Du rufst im Auftrag der Patientin {calls.MANDATE.principal.name} an. Sie wechselt zu ihrer neuen Hausärztin
-{calls.MANDATE.recipient.name}. Deine Begrüssung wurde bereits abgespielt: Du hast dich als KI vorgestellt und gefragt,
-ob du das Gespräch transkribieren darfst. Stell dich nicht nochmals vor.
+{calls.MANDATE.recipient.name}.
+
+{_opening(prerendered_opener())}
 
 Ziel des Anrufs:
 1. Bitte die Praxis, die Unterlagen ({scope}) direkt an {calls.MANDATE.recipient.name} per HIN-Mail zu senden.
@@ -87,10 +100,12 @@ def session_config(call: Call):
         instructions=instructions(call),
         language=gradbot.Lang.De,
         tools=tool_defs(),
-        # Opener is pre-rendered and played by the bridge; the model waits for the practice.
-        assistant_speaks_first=False,
-        # Turn-taking values from gradium-ai/digigrad, tuned on real phone calls.
-        silence_timeout_s=float(env("GRADBOT_SILENCE_TIMEOUT_S", "8.0")),
+        # The agent speaks the fixed opener itself, so gradbot knows a question is pending.
+        # (Fallback PRERENDERED_OPENER: the bridge plays a clip and the model waits.)
+        assistant_speaks_first=not prerendered_opener(),
+        # Seconds of silence after the agent's turn before gradbot nudges it to continue,
+        # e.g. when a short "Ja" was not recognised. digigrad uses 8.0; we follow up sooner.
+        silence_timeout_s=float(env("GRADBOT_SILENCE_TIMEOUT_S", "6.0")),
         flush_duration_s=float(env("GRADBOT_FLUSH_DURATION_S", "0.5")),
         stt_extra_config=json.dumps({"padding_bonus": float(env("GRADBOT_STT_PADDING_BONUS", "1.5"))}),
     )

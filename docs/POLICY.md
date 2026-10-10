@@ -171,6 +171,8 @@ Default ist **Blocked**. Jede Entscheidung geht als Event ins Dashboard (`decisi
 
 > „Grüezi, hier ist ein KI-Assistent der Firma Stafette. Ich rufe im Auftrag von Anna Muster an, wegen der Übermittlung ihrer Unterlagen an ihre neue Hausärztin. Darf ich das Gespräch für eine Notiz transkribieren?“
 
+*Umsetzung:* Der Text steht wörtlich in den Anweisungen, der Agent spricht ihn als ersten Satz selbst (`assistant_speaks_first`). Ein vorgerenderter Clip ausserhalb von gradbot (`PRERENDERED_OPENER=true`) bleibt als Rückfall; dabei weiss gradbot aber nicht, dass gefragt wurde, und bleibt nach einem zu kurzen „Ja“ stumm.
+
 - Ja → Transkript im Dashboard (nur in-memory, TTL).
 - Nein → nur strukturierte Ereignisse (`end_call(outcome)`), kein Transkript.
 
