@@ -19,11 +19,18 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
+from docs import routes as docs_routes
 from state import store
+from voice import routes as voice_routes
 
 load_dotenv()
 
 app = FastAPI(title="Stafette backend")
+
+# Each part owns its own router file, so nobody has to edit main.py:
+# docs/routes.py (Manuel) and voice/routes.py (Gabriel).
+app.include_router(docs_routes.router)
+app.include_router(voice_routes.router)
 
 # The dashboard runs on localhost:3000 locally and on Azure when hosted.
 # Add the Azure URL to CORS_ORIGINS (comma-separated) in .env.

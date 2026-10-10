@@ -24,7 +24,16 @@ store.set_documents(sections=result["sections"], missing=result["missing"],
                     documents=4, source_count=2)
 ```
 
-Das ersetzt die Demo-Daten auf Dr. Kellers Blatt und pusht sofort ans Dashboard. Ein Endpoint `POST /docs/ingest` in `main.py` kann das später auslösen.
+Das ersetzt die Demo-Daten auf Dr. Kellers Blatt und pusht sofort ans Dashboard.
+
+Endpoints wie `POST /docs/ingest` gehören in **`docs/routes.py`**. `main.py` bindet diesen Router schon ein und muss nicht angefasst werden.
+
+## Zusammenarbeit ohne Konflikte
+
+- Nur `backend/docs/` und `backend/tests/test_docs.py` ändern. `main.py`, `state.py` und `contracts.py` gehören Gabriel; wenn dort etwas fehlt, kurz melden.
+- Abhängigkeiten sind schon in `pyproject.toml` (`google-genai`, `pymupdf`). Neue Pakete vorher absprechen; bei einem Konflikt in `uv.lock` einfach `uv lock` ausführen.
+- Vor jedem Push `git pull --rebase`, kleine Commits.
+- `entire enable` im Repo ausführen, damit deine Agent-Sessions als Checkpoints erfasst werden.
 
 ## Regeln
 
