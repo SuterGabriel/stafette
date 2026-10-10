@@ -36,7 +36,8 @@ Agent lehnt ab. Dashboard: rotes BLOCKED.
 > "It doesn't refuse because it's polite. It refuses because it can't. The rules are code, and the medical data was never in its context."
 
 **1:45 – Der agentische Moment**
-Dokumente vom Spital ziehen. Übersicht erscheint, Klick auf eine Diagnose → Quellseite mit markiertem Zitat.
+Dokumente vom Spital ziehen. Übersicht erscheint, Klick auf eine Angabe → Quellseite mit markiertem Zitat. Dann das schiefe Handyfoto:
+> "This is a crooked phone photo of a referral letter. Gemini reads it, and every line it extracts points back to the exact spot on the photo."
 Dann legt der Agent **selbst** eine neue Karte an: *Dr. Brunner, Kardiologie – erwähnt, keine Unterlagen.*
 > "Nobody told it about the cardiologist. It read the discharge letter, found the gap, and wants to call her. But she's not in the mandate, so it asks Anna first."
 
@@ -44,7 +45,9 @@ Freigabe-Popup → „Ja“ → Vollmacht v2 → Anruf startet.
 > "Full autonomy inside hard limits. The model proposes actions. Code decides whether they're allowed."
 
 **2:25 – Wie gebaut (Diagramm, 20 s)**
-> "Gemini compiles the mandate, orchestrates the plan and reads messy scans. Gradium carries the voice in real time. And every step of how we built this is auditable with Entire."
+> "Gemini compiles the mandate, plans the next step, leads the call and reads messy scans. Gradium gives it a voice. Entire records how we built it."
+
+*(„leads the call“, nicht „makes the call“: Den Anruf selbst führen Twilio und Gradium aus.)*
 Kurz Entire-Checkpoint der Policy Engine zeigen.
 
 **2:45 – Business + Close**

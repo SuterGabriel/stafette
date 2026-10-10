@@ -39,8 +39,8 @@ Der simulierte Anruf in Strang B ist gleichzeitig das Fallback, falls das Telefo
 ## Demo-Ablauf (≈ 3 Minuten, Details in PITCH.md)
 
 1. **Ziel** sprechen → Vollmacht erscheint, Plan-Board legt 2 Karten an, Vollmacht-PDF zur Unterschrift (ein Klick „unterschreiben“ im Demo)
-2. **Anruf** Praxis A live auf der Bühne: KI-Offenlegung, „wir brauchen eine unterschriebene Vollmacht“ → kommt an die hinterlegte Adresse; Injection-Versuch → BLOCKED
-3. **Dokumente** von Spital B kommen rein → Übersicht mit Quellen
+2. **Anruf** Praxis A live auf der Bühne: KI-Offenlegung, „wir brauchen eine unterschriebene Vollmacht“ → kommt an die hinterlegte Adresse (Versand simuliert: Event + PDF im Dashboard); Injection-Versuch → BLOCKED
+3. **Dokumente** von Spital B kommen rein → Übersicht mit Quellen; Handyfoto mit markiertem Zitat (Gemini beim Namen nennen)
 4. **Lücke:** Agent legt selbst eine neue Karte „Dr. Brunner, Kardiologie“ an → Freigabe-Frage → Ja → Vollmacht v2 → Anruf startet
 5. **Wie gebaut:** Diagramm + Entire-Checkpoint
 6. **Business**
@@ -71,4 +71,4 @@ Alles synthetisch, Namen frei erfunden.
 - Dashboard im Vollbild, Schrift gross, Plan-Board gut sichtbar
 - Twilio-Guthaben prüfen, Geo-Permission CH an, Demo-Flag für Anrufzeiten an
 - Handy-Hotspot bereit
-- Tabs: Dashboard, Diagramm, Entire
+- Tabs: Dashboard, Diagramm (`docs/diagramme.html`), Entire

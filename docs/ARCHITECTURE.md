@@ -44,7 +44,7 @@ flowchart LR
     VA -->|Anruf-Ergebnis| ORC
     ORC -->|Vollmacht zur Unterschrift| P
     P -->|unterschrieben| ORC
-    ORC -->|Vollmacht per Mail| PRAX
+    ORC -->|Vollmacht per Mail, im MVP simuliert| PRAX
     PRAX -->|Akten direkt| NEU
     NEU -->|Eingang| DP --> VER --> GAP
     GAP -->|neue Lücke| ORC

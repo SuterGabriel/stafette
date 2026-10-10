@@ -58,7 +58,7 @@ Der **Orchestrator** (plant) und der **Dialog-Agent** (telefoniert) handeln auss
 | `place_call(source_id)` | Orchestrator | Quelle in Vollmacht, Anrufzeit erlaubt, `max_calls_per_source` nicht überschritten |
 | `schedule_callback(source_id, at)` | Orchestrator | wie `place_call`, für den geplanten Zeitpunkt |
 | `prepare_mandate_letter(source_id)` | Orchestrator | Quelle in Vollmacht; erzeugt Vollmacht + Entbindung vom Berufsgeheimnis als PDF, geht **an den Patienten** zur Unterschrift |
-| `send_mandate_letter(source_id)` | Orchestrator | Nur wenn unterschrieben; geht an die **im System der Praxis hinterlegte** bzw. selbst recherchierte Adresse, nie an eine am Telefon genannte |
+| `send_mandate_letter(source_id)` | Orchestrator | Nur wenn unterschrieben; geht an die **im System der Praxis hinterlegte** bzw. selbst recherchierte Adresse, nie an eine am Telefon genannte. **Im MVP simuliert:** PDF + Event, kein echter Versand |
 | `add_source(name, specialty, reason)` | Orchestrator | immer **needs approval** |
 | `ask_principal(question)` | beide | immer erlaubt, erzeugt Freigabe im Dashboard |
 | `mark_done(reason)` | Orchestrator | nur wenn alle Quellen in Endzustand |
@@ -67,6 +67,7 @@ Der **Orchestrator** (plant) und der **Dialog-Agent** (telefoniert) handeln auss
 | `confirm_recipient()` | Dialog | gibt nur den Empfänger aus der Vollmacht zurück |
 | `confirm_channel(source_id)` | Dialog | sagt der Praxis, dass die unterschriebene Vollmacht an ihre hinterlegte Adresse kommt; löst `send_mandate_letter` beim Orchestrator aus |
 | `set_recipient(address)` | Dialog | nur identisch mit Vollmacht, sonst **BLOCKED** |
+| `accept_fee(amount)` | Dialog | immer **needs approval** (steht in `requires_human_approval`) |
 | `end_call(outcome)` | Dialog | immer erlaubt; `outcome` ∈ `requested`, `needs_consent`, `closed`, `refused`, `callback` |
 
 Es gibt **kein** Tool, das medizinische Inhalte liefert.
@@ -96,6 +97,8 @@ def check(action: str, args: dict, m: Mandate, state: PlanState, now: datetime) 
     match action:
         case "add_source":
             return NeedsApproval(f"Darf ich {args['name']} ({args['specialty']}) hinzufügen? Grund: {args['reason']}")
+        case "accept_fee":
+            return NeedsApproval(f"Die Praxis verlangt {args['amount']} Franken. Einverstanden?")
         case "place_call" | "schedule_callback":
             if args["source_id"] not in source_ids:
                 return Blocked("unknown_source")
@@ -130,7 +133,7 @@ def check(action: str, args: dict, m: Mandate, state: PlanState, now: datetime) 
             return Blocked("unknown_action")
 ```
 
-Default ist **Blocked**. Jede Entscheidung geht als Event ins Dashboard. Nach einem Ja des Patienten erzeugt die Engine **Vollmacht v2**; die alte Version bleibt im Log.
+Default ist **Blocked**. Jede Entscheidung geht als Event ins Dashboard (`decision` = `ALLOWED` | `BLOCKED` | `APPROVAL`, dazu `model` = vorschlagendes Modell, siehe `dashboard/lib/types.ts`). Nach einem Ja des Patienten erzeugt die Engine **Vollmacht v2**; die alte Version bleibt im Log.
 
 > Für die Demo die Anrufzeiten-Regel auf Samstagabend anpassen oder per Demo-Flag lockern, sonst blockt sie sich selbst.
 

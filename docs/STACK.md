@@ -12,10 +12,11 @@ Verifiziert am 9.10.2026, Quellen in [RESEARCH.md](RESEARCH.md#3-tech-stack-veri
 | Dialog + Orchestrator | **`gemini-3.6-flash`** | GA, Pipecat-Default, günstig, Function Calling |
 | Policy-Compiler + Extraktion | **`gemini-3.8-flash`** | Stärkstes Flash, Structured Output, PDFs bis 1000 Seiten |
 | Policy Engine | Python, pure functions + Pydantic | Testbar, deterministisch |
-| Backend | FastAPI | Twilio-WebSocket, SSE fürs Dashboard |
-| Dashboard | Next.js | Gabriel kennt es |
-| Tunnel | ngrok (feste Domain, wenn möglich) | Twilio braucht öffentliche URL |
-| Entwicklung | **Antigravity CLI (`agy`)** + **Entire** | Gemini CLI wird eingestellt und von Entire nicht unterstützt |
+| Backend | FastAPI auf Port **8000** | Twilio-WebSocket, SSE fürs Dashboard |
+| Dashboard | Next.js 15 (`dashboard/`) | Gabriel kennt es; läuft ohne Backend auf Demo-Daten |
+| Tunnel | ngrok, `ngrok http 8000` (feste Domain, wenn möglich) | Twilio braucht öffentliche URL |
+| Mail-Versand | **Im MVP simuliert** | `send_mandate_letter` erzeugt das PDF und ein Event „an hinterlegte Adresse gesendet“, verschickt aber nichts. Kein Mail-Dienst nötig, keine echte Adresse im Spiel. HIN erst nach dem Hack. |
+| Entwicklung | **Claude Code** und/oder **Antigravity CLI (`agy`)** + **Entire** | Entire ist für beide aktiviert. Gemini CLI wird eingestellt und von Entire nicht unterstützt |
 
 > ⚠️ **Nicht** `gemini-flash-latest` verwenden, das zeigt auf 3.5. `gemini-3.7-flash` ist deprecated. Live-Variante (`gemini-3.8-live`) bewusst **nicht** im MVP: Twilio-Audioformat und gemeldete Latenzen machen die kaskadierte Pipeline sicherer, und nur sie liefert Gradium-Stimme und Transkripte fürs Dashboard.
 
@@ -24,7 +25,8 @@ Verifiziert am 9.10.2026, Quellen in [RESEARCH.md](RESEARCH.md#3-tech-stack-veri
 ```
 stafette/
 ├── backend/
-│   ├── main.py              # FastAPI: /twilio/twiml, /ws, /events (SSE), /docs/ingest
+│   ├── main.py              # FastAPI :8000 – Dashboard: /state, /events (SSE), /approvals/{id}, /reset
+│   │                        #               Twilio: /twilio/twiml, /ws · Dokumente: /docs/ingest
 │   ├── agent/
 │   │   ├── orchestrator.py  # Ziel-Schleife: nach jedem Event gemini-3.6-flash fragen (nur Tool-Calls)
 │   │   ├── plan_state.py    # Karte pro Quelle, Zustandsmaschine
@@ -44,7 +46,7 @@ stafette/
 │   │   ├── verify.py        # Zitat muss im Seitentext vorkommen
 │   │   └── gaps.py          # Erwähnte Quellen ohne Unterlagen -> Event an Orchestrator
 │   └── events.py            # In-memory Event Log mit TTL
-├── dashboard/               # Next.js
+├── dashboard/               # Next.js 15, Typen in lib/types.ts = Vertrag mit dem Backend
 ├── fixtures/                # Synthetische Dokumente
 └── *.md
 ```
@@ -53,12 +55,25 @@ stafette/
 
 ### Google DeepMind / Gemini
 
-Vier sichtbare Rollen, damit die Juroren sehen, dass Gemini nicht nur ein Chatfenster ist:
+Fünf sichtbare Rollen, damit die Juroren sehen, dass Gemini nicht nur ein Chatfenster ist. Mehr Google-Produkte hängen wir bewusst nicht an; diese Rollen sauber zeigen ist wichtiger.
 
 1. **Compiler** (`gemini-3.8-flash`): Gesprochenes Ziel → Vollmacht-JSON per Structured Output (`response_format` mit `mime_type: "application/json"` und `schema`). Bei jeder Freigabe neu als v2, v3 …
-2. **Orchestrator** (`gemini-3.6-flash`): Entscheidet nach jedem Ereignis den nächsten Schritt, antwortet nur mit Tool-Calls. Optional Google-Search-Grounding für die Kontaktsuche.
+2. **Orchestrator** (`gemini-3.6-flash`): Entscheidet nach jedem Ereignis den nächsten Schritt, antwortet nur mit Tool-Calls.
 3. **Dialog-Agent** (`gemini-3.6-flash` in Pipecat): führt das Telefonat, handelt nur über Tools.
-4. **Leser** (`gemini-3.8-flash`): Multimodale Extraktion aus Scans und schiefen Fotos, mit Seite, Zitat und erwähnten Ärzten.
+4. **Leser** (`gemini-3.8-flash`): Multimodale Extraktion aus Scans und schiefen Fotos, mit Seite, Zitat und erwähnten Ärzten. Beim Handyfoto (kein Textlayer) liefert Gemini zusätzlich die **Bounding Box** des Zitats, damit das Dashboard es auf dem Foto markieren kann. Das ist der stärkste Gemini-Moment der Demo.
+5. **Kontaktsuche** (`search_contact`): Google-Search-Grounding der Gemini API. Läuft als **eigener** Gemini-Aufruf innerhalb des Tools, nicht im Orchestrator-Request, damit der Orchestrator weiterhin nur Tool-Calls ausgibt. Wird als Erstes gestrichen, wenn die Zeit knapp ist (DEMO.md).
+
+**Sichtbar machen:** Jedes Event trägt das Feld `model` (z. B. `gemini-3.6-flash`), das Dashboard zeigt es neben dem Entscheid. Entschieden hat immer die Policy Engine. So steht „The model proposes, code decides“ direkt im Protokoll.
+
+**Falls Fallback gradbot:** gradbot spricht nur OpenAI-kompatible Endpoints. Ohne diese Einstellung telefoniert der Agent mit OpenAI und Gemini fällt raus:
+
+```
+LLM_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai/
+LLM_MODEL=gemini-3.6-flash
+OPENAI_API_KEY=<Gemini-Key>   # Name ist von gradbot vorgegeben, Inhalt ist der Gemini-Key
+```
+
+Tool-Calls über diese Schnittstelle **vor 12:30 mit einem echten Anruf testen**.
 
 ```python
 from pipecat.services.google.llm import GoogleLLMService
@@ -68,7 +83,7 @@ llm = GoogleLLMService(
 )
 ```
 
-Stretch: Gemma 4 lokal für die Extraktion (Datenschutz-Story).
+Gemma 4 lokal für die Extraktion wird **nicht** gebaut, nur im Pitch als Ausbaustufe erwähnt (Datenschutz-Frage).
 
 ### Gradium
 
@@ -111,6 +126,11 @@ entire status && entire doctor
 entire checkpoint list
 entire checkpoint explain <id>
 
+# ngrok (Windows: winget install --id Ngrok.Ngrok -e)
+ngrok config add-authtoken <token von dashboard.ngrok.com>
+ngrok update                 # winget liefert 3.3.1, ngrok verlangt evtl. eine neuere Version
+ngrok http 8000              # Projekt-Backend; im Pipecat-Beispiel ist es 7860
+
 # Pipecat
 uv add "pipecat-ai[gradium]"
 uv add "pipecat-ai[google]"
@@ -119,6 +139,9 @@ uv sync
 cp env.example .env
 ngrok http 7860
 uv run bot.py --transport twilio
+
+# Dashboard
+cd dashboard && npm install && npm run dev   # http://localhost:3000, ohne Backend auf Demo-Daten
 
 # Fallback
 pip install gradbot
@@ -129,7 +152,8 @@ pip install gradbot
 - [ ] Gemini API Key, `gemini-3.6-flash` und `gemini-3.8-flash` einmal aufgerufen
 - [ ] Gradium API Key, Schweizer Stimme getestet
 - [ ] Twilio upgegradet, Nummer gekauft, CH-Geo-Permission an
-- [ ] ngrok installiert, eingeloggt
+- [x] ngrok installiert (3.3.1 via winget)
+- [ ] ngrok Authtoken hinterlegt, `ngrok update`, `ngrok http 8000` gibt eine URL
 - [ ] **Hello-World:** Twilio ruft Handy an, Gradium sagt einen Satz (im Beispiel-Repo, nicht im Projekt-Repo)
 - [ ] Antigravity CLI + Entire installiert, `entire doctor` grün
 - [ ] Leeres Projekt-Repo, aber **noch kein Projektcode**
@@ -145,6 +169,9 @@ TWILIO_AUTH_TOKEN=
 TWILIO_FROM_NUMBER=
 DEMO_TO_NUMBER=
 PUBLIC_URL=https://xxxx.ngrok.app
+DEMO_RELAX_CALL_HOURS=true
 ```
+
+Dashboard: `dashboard/.env.local` mit `NEXT_PUBLIC_API_URL=http://localhost:8000`.
 
 > Accounts, Keys, Testdokumente und ein Hello-World im fremden Beispiel-Repo sind übliche Vorbereitung. Projektcode vorher zu schreiben kann gegen die Regeln sein; bei der Opening nachfragen.

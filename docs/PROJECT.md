@@ -72,7 +72,10 @@ Am ehesten **die neue Praxis**, pro neuem Patienten – sie spart MPA-Zeit. Spä
 | **Compiler** | `gemini-3.8-flash` | Annas Satz → Vollmacht als JSON (Structured Output) |
 | **Orchestrator** | `gemini-3.6-flash` | Entscheidet nach jedem Ereignis den nächsten Schritt, antwortet nur mit Tool-Calls |
 | **Telefon-Dialog** | `gemini-3.6-flash` | Führt das Gespräch, handelt nur über erlaubte Tools |
-| **Leser** | `gemini-3.8-flash` | Liest PDFs, Scans und Handyfotos, extrahiert Angaben mit Seite und Zitat, erkennt erwähnte Ärzte |
+| **Leser** | `gemini-3.8-flash` | Liest PDFs, Scans und Handyfotos, extrahiert Angaben mit Seite und Zitat, erkennt erwähnte Ärzte. Markiert das Zitat direkt auf dem schiefen Handyfoto (stärkster Gemini-Moment) |
+| **Kontaktsuche** | Google-Search-Grounding | Findet die Nummer einer neu erkannten Praxis (eigener Aufruf im Tool `search_contact`) |
+
+Jedes Event im Dashboard zeigt, welches Modell den Schritt vorgeschlagen hat. Entschieden hat immer die Policy Engine.
 
 ### Gradium – Ohr und Stimme am Telefon
 
@@ -139,7 +142,9 @@ Telefon-Agent und Orchestrator sehen **keine medizinischen Inhalte**. Alles läu
 1. `check(action, args) → Allowed | NeedsApproval | Blocked` – eine gemeinsame Funktion
 2. `place_call(source_id)` – Orchestrator startet Anruf (bei Teammate zuerst `sim_call`)
 3. `end_call(outcome)` – Telefon meldet `requested`, `needs_consent`, `closed`, `refused` oder `callback`
-4. Events: `{type, source_id, action, decision, reason, text, ts}` → Dashboard
+4. Dashboard-Vertrag steht schon in `dashboard/lib/types.ts`:
+   - Backend auf Port 8000 liefert `GET /state`, `GET /events` (SSE, jede Nachricht der **ganze** `StafetteState`), `POST /approvals/{id}` mit `{"approve": true|false}`, `POST /reset`
+   - Event: `{id, ts, decision, text, model}` mit `decision` ∈ `ALLOWED`, `BLOCKED`, `APPROVAL` (= `NeedsApproval` der Engine) und `model` = vorschlagendes Modell
 
 **Zeitplan:** 12:30 Anruf läuft durchgehend · 15:00 Integration · **17:30 Feature Freeze** · **19:00 Opt-in** · 20:00 Demo
 
@@ -153,4 +158,4 @@ Telefon-Agent und Orchestrator sehen **keine medizinischen Inhalte**. Alles läu
 - Wir sagen **„Inhaltsverzeichnis mit Fundstellen“**, nicht „Diagnose“ oder „medizinische Zusammenfassung“.
 - Wer länger als **30 Minuten** am selben Bug hängt, sagt es laut.
 
-**Mehr Details:** ARCHITECTURE.md · POLICY.md · STACK.md · DEMO.md · PITCH.md · RESEARCH.md
+**Mehr Details:** ARCHITECTURE.md · POLICY.md · STACK.md · DEMO.md · PITCH.md · RESEARCH.md · diagramme.html (Architektur, Entscheidungslogik, UML-Ablauf, Komponenten)
