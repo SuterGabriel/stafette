@@ -1,0 +1,100 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4K5979B58MHDXDM9J7QE168",
+  "session_id": "bc1c0db1-f49e-4e46-898d-99d075d5f56f",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-10T15:00:45.3860102Z",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "save_step_count": 3,
+  "files_touched": [
+    "dashboard/app/layout.tsx"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-5-5",
+  "turn_id": "48a1a5992969",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 296,
+    "cache_creation_tokens": 331692,
+    "cache_read_tokens": 27854662,
+    "output_tokens": 144139,
+    "api_call_count": 147
+  },
+  "session_metrics": {
+    "turn_count": 10
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-10T15:00:44.9527895Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 38,
+    "human_modified": 1802,
+    "human_removed": 0,
+    "total_committed": 65,
+    "total_lines_changed": 1964,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 4,
+      "user_lines_removed": 4,
+      "agent_lines_added": 1802,
+      "agent_lines_removed": 494,
+      "user_added_per_file": {
+        "README.md": 1,
+        "backend/.env.example": 1,
+        "docs/STACK.md": 2
+      },
+      "user_removed_per_file": {
+        "README.md": 1,
+        "backend/.env.example": 1,
+        "docs/STACK.md": 2
+      }
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 1816,
+      "user_lines_removed": 1774,
+      "agent_lines_added": 1802,
+      "agent_lines_removed": 494,
+      "user_added_per_file": {
+        "backend/agent/orchestrator.py": 175,
+        "backend/state.py": 358,
+        "backend/tests/test_api.py": 101,
+        "backend/tests/test_sim_call.py": 51,
+        "backend/tests/test_voice.py": 109,
+        "backend/voice/calls.py": 183,
+        "backend/voice/tools.py": 98,
+        "dashboard/app/layout.tsx": 1,
+        "dashboard/app/page.tsx": 112,
+        "dashboard/components/AnnaApp.tsx": 322,
+        "dashboard/components/KellerSheet.tsx": 191,
+        "dashboard/lib/mock.ts": 115
+      },
+      "user_removed_per_file": {
+        "backend/agent/orchestrator.py": 166,
+        "backend/state.py": 358,
+        "backend/tests/test_api.py": 101,
+        "backend/tests/test_sim_call.py": 51,
+        "backend/tests/test_voice.py": 109,
+        "backend/voice/calls.py": 183,
+        "backend/voice/tools.py": 98,
+        "dashboard/app/layout.tsx": 1,
+        "dashboard/app/page.tsx": 112,
+        "dashboard/components/AnnaApp.tsx": 322,
+        "dashboard/components/KellerSheet.tsx": 158,
+        "dashboard/lib/mock.ts": 115
+      }
+    }
+  ]
+}
