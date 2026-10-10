@@ -1,0 +1,113 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4K2JC2N1VW0P47YJXAFZQYZ",
+  "session_id": "6d51b432-d195-485a-a55e-500dfe806f78",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-10T14:13:20.9042736Z",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "backend/agent/__init__.py",
+    "backend/agent/orchestrator.py",
+    "backend/agent/routes.py",
+    "backend/main.py",
+    "backend/state.py",
+    "backend/tests/conftest.py",
+    "backend/tests/test_api.py",
+    "backend/voice/bridge.py",
+    "backend/voice/calls.py",
+    "dashboard/app/anna/page.tsx",
+    "dashboard/app/globals.css",
+    "dashboard/app/keller/page.tsx",
+    "dashboard/app/page.tsx",
+    "dashboard/components/AnnaApp.tsx",
+    "dashboard/components/KellerSheet.tsx",
+    "dashboard/lib/mock.ts",
+    "dashboard/lib/types.ts",
+    "dashboard/lib/useStafette.ts"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-5-5",
+  "turn_id": "9c4d90932061",
+  "checkpoint_transcript_start": 2370,
+  "transcript_lines_at_start": 2370,
+  "compact_transcript_start": 330,
+  "token_usage": {
+    "input_tokens": 66,
+    "cache_creation_tokens": 74249,
+    "cache_read_tokens": 24696179,
+    "output_tokens": 44093,
+    "api_call_count": 33
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "claude-skill-toolu_019xVpwVjRhyTqa1LyM34wNE",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "artifact-diagramming"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "fba1594a3af1",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 186,
+        "end": 187,
+        "entry_ids": [
+          "aabe7fcc-de55-4c1c-bf94-5f2976920043"
+        ],
+        "tool_use_id": "toolu_019xVpwVjRhyTqa1LyM34wNE"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_019xVpwVjRhyTqa1LyM34wNE"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: artifact-diagramming",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 59
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-10T14:13:20.0875752Z",
+    "agent_lines": 661,
+    "agent_removed": 148,
+    "human_added": 14,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 675,
+    "total_lines_changed": 835,
+    "agent_percentage": 96.88622754491017,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 2924,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "video/.gitignore": 2,
+        "video/README.md": 26,
+        "video/package-lock.json": 2668,
+        "video/package.json": 21,
+        "video/remotion.config.ts": 4,
+        "video/src/LogoIntro.tsx": 154,
+        "video/src/Root.tsx": 12,
+        "video/src/brand.ts": 9,
+        "video/src/fonts.ts": 10,
+        "video/src/index.ts": 4,
+        "video/tsconfig.json": 14
+      }
+    }
+  ]
+}

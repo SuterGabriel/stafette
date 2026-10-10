@@ -1,0 +1,7 @@
+Sind die Aufgaben für mich und Manuel noch korrekt nun ?
+
+---
+
+Gut nun gehen wir meine Tasks an. Bevor ich einen echten Anruf mache können wir die Demo Website entsprechend anpassen das es dann wirklich einen Anruf macht ect ect... Sprich das die Demo chronologisch die Demo macht. Weil ich möchte den Anruf direkt in der Demo von der Web App prüfen. Nehmen wir dazu für beide Cases sprich Arzt und Patientin die Mobile Ansicht: 
+
+Bau mir dies mal um dann machen wir das andere.
