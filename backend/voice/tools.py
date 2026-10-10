@@ -13,7 +13,8 @@ from datetime import datetime
 from contracts import MODEL_DIALOG, Allowed, Blocked, NeedsApproval
 from policy.engine import check
 from state import store
-from voice.calls import MANDATE, PLAN, Call, decision_text, relax_call_hours
+from voice import calls
+from voice.calls import Call, decision_text, relax_call_hours
 
 log = logging.getLogger(__name__)
 
@@ -32,7 +33,7 @@ STATION_BY_OUTCOME = {
 
 
 def _decide(action: str, args: dict):
-    decision = check(action, args, MANDATE, PLAN, datetime.now(), relax_call_hours=relax_call_hours())
+    decision = check(action, args, calls.MANDATE, calls.PLAN, datetime.now(), relax_call_hours=relax_call_hours())
     store.add_event(decision, decision_text(action, args, decision), model=MODEL_DIALOG)
     return decision
 
@@ -58,7 +59,7 @@ def _act(name: str, args: dict, decision, call: Call) -> dict:
             store.set_station(call.source_id, guard=GUARD_RECIPIENT)
             return {"ok": False, "reason": decision.reason,
                     "say": f"Das kann ich leider nicht ändern. Ich darf die Unterlagen nur an "
-                           f"{MANDATE.recipient.name} senden lassen."}
+                           f"{calls.MANDATE.recipient.name} senden lassen."}
         return {"ok": False, "reason": decision.reason, "say": "Das darf ich im Auftrag der Patientin nicht tun."}
 
     if isinstance(decision, NeedsApproval):
@@ -71,15 +72,15 @@ def _act(name: str, args: dict, decision, call: Call) -> dict:
     assert isinstance(decision, Allowed)
     match name:
         case "identify_principal":
-            facts = MANDATE.disclosable()
+            facts = calls.MANDATE.disclosable()
             return {"ok": True, "name": facts.get("principal.name"), "geburtsdatum": facts.get("principal.birth_date"),
                     "neue_aerztin": facts.get("recipient.name")}
         case "confirm_recipient":
-            return {"ok": True, "empfaengerin": MANDATE.recipient.name, "kanal": "HIN-Mail"}
+            return {"ok": True, "empfaengerin": calls.MANDATE.recipient.name, "kanal": "HIN-Mail"}
         case "request_records":
-            return {"ok": True, "say": f"Bitte senden Sie die Unterlagen direkt an {MANDATE.recipient.name} per HIN-Mail."}
+            return {"ok": True, "say": f"Bitte senden Sie die Unterlagen direkt an {calls.MANDATE.recipient.name} per HIN-Mail."}
         case "set_recipient":
-            return {"ok": True, "empfaengerin": MANDATE.recipient.name}
+            return {"ok": True, "empfaengerin": calls.MANDATE.recipient.name}
         case "confirm_channel":
             letter = _decide("send_mandate_letter", {"source_id": call.source_id})
             if not isinstance(letter, Allowed):

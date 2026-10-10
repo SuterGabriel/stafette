@@ -9,7 +9,6 @@ Nothing here is persisted. A restart or POST /reset returns to the seed.
 from __future__ import annotations
 
 import asyncio
-import copy
 import time
 from typing import Literal
 
@@ -81,6 +80,19 @@ class Section(_Wire):
     items: list[Finding]
 
 
+class CallLine(_Wire):
+    who: Literal["agent", "practice"]
+    text: str
+
+
+class CallView(_Wire):
+    """The call in progress, shown live in Anna's app. Never contains medical content."""
+    source_name: str
+    status: Literal["ringing", "connected", "ended", "failed"]
+    outcome: str | None = None
+    lines: list[CallLine] = []
+
+
 class StafetteState(_Wire):
     patient: Patient
     doctor: Doctor
@@ -95,6 +107,7 @@ class StafetteState(_Wire):
     source_count: int
     updated_at: str
     reviewed_at: str | None = None
+    call: CallView | None = None
 
     def wire(self) -> dict:
         return self.model_dump(by_alias=True, mode="json")
@@ -177,13 +190,43 @@ def seed_state() -> StafetteState:
     })
 
 
+def fresh_state() -> StafetteState:
+    """Start of the live demo: Anna has not signed yet, nothing has happened."""
+    return StafetteState.model_validate({
+        "patient": {"name": "Anna Muster", "birth": "12.03.1984", "address": "Seestrasse 12, 8008 Zürich"},
+        "doctor": {"name": "Dr. med. Lea Keller", "city": "Winterthur"},
+        "mandate": {
+            "version": 1,
+            "hash": "—",
+            "sources": ["Hausarztpraxis Seefeld", "Spital Musterstadt"],
+            "recipient": "Dr. med. Lea Keller, Winterthur",
+            "scope": "Berichte, Laborwerte, Medikamente, Röntgen",
+            "validUntil": "31. Oktober",
+        },
+        "stations": [
+            {"id": "praxis_a", "name": "Hausarztpraxis Seefeld", "detail": "Noch nicht kontaktiert", "status": "waiting"},
+            {"id": "spital_b", "name": "Spital Musterstadt", "detail": "Noch nicht kontaktiert", "status": "waiting"},
+        ],
+        "approval": None,
+        "approvalResult": None,
+        "events": [],
+        "sections": [],
+        "missing": None,
+        "documents": 0,
+        "sourceCount": 0,
+        "updatedAt": now_hm(),
+        "reviewedAt": None,
+        "call": None,
+    })
+
+
 # --- Store -------------------------------------------------------------------
 
 class StateStore:
     """Holds the current state and notifies SSE subscribers on every change."""
 
     def __init__(self) -> None:
-        self._state = seed_state()
+        self._state = fresh_state()
         self._subscribers: set[asyncio.Queue[dict]] = set()
         self._event_seq = 100
 
@@ -212,8 +255,50 @@ class StateStore:
             q.put_nowait(snap)
 
     # mutations
-    def reset(self) -> None:
-        self._state = seed_state()
+    def reset(self, *, story: bool = False) -> None:
+        """Back to the live start (default) or to the finished demo story (tests, offline look)."""
+        self._state = seed_state() if story else fresh_state()
+        self._publish()
+
+    def set_mandate(self, *, version: int, hash: str, sources: list[str]) -> None:
+        m = self._state.mandate
+        m.version, m.hash, m.sources = version, hash, sources
+        self._publish()
+
+    def add_station(self, station: Station) -> None:
+        if all(s.id != station.id for s in self._state.stations):
+            self._state.stations.append(station)
+        self._publish()
+
+    def set_approval(self, approval: PendingApproval | None) -> None:
+        self._state.approval = approval
+        if approval is not None:
+            self._state.approval_result = None
+        self._publish()
+
+    def set_call(self, *, source_name: str | None = None, status: str | None = None,
+                 outcome: str | None = None, clear_lines: bool = False) -> None:
+        call = self._state.call
+        if call is None or clear_lines:
+            call = CallView(source_name=source_name or "", status=status or "ringing")
+        if source_name is not None:
+            call.source_name = source_name
+        if status is not None:
+            call.status = status  # type: ignore[assignment]
+        if outcome is not None:
+            call.outcome = outcome
+        self._state.call = call
+        self._publish()
+
+    def add_call_line(self, who: str, text: str, keep: int = 14) -> None:
+        if self._state.call is None:
+            return
+        lines = self._state.call.lines
+        if lines and lines[-1].who == who and who == "agent":
+            lines[-1].text = f"{lines[-1].text} {text}".strip()   # TTS arrives in pieces: one bubble per turn
+        else:
+            lines.append(CallLine(who=who, text=text))  # type: ignore[arg-type]
+        del lines[:-keep]
         self._publish()
 
     def add_event(self, decision: Decision | str, text: str, model: str | None = None) -> StafetteEvent:
@@ -247,34 +332,16 @@ class StateStore:
         self._publish()
 
     def answer_approval(self, approval_id: str, approve: bool) -> bool:
-        """Anna's answer from her app. Same outcome as applyDecision() in dashboard/lib/mock.ts.
+        """Record Anna's answer and close the question. What follows is the orchestrator's job.
 
         Returns False if there is no pending approval with this id.
         """
         st = self._state
         if st.approval is None or st.approval.id != approval_id:
             return False
-        st = copy.deepcopy(st)
-        for s in st.stations:
-            if s.id == "dr_brunner":
-                if approve:
-                    s.status, s.detail = "active", "Wird angefragt. Vollmacht ergänzt."
-                else:
-                    s.status, s.detail = "skipped", "Nicht angefragt"
         st.approval = None
         st.approval_result = "yes" if approve else "no"
-        if approve:
-            st.mandate.version += 1
-            st.mandate.sources.append("Dr. Sabine Brunner, Kardiologie")
-            st.missing = "Kardiologischer Bericht von Dr. med. Sabine Brunner. Die Patientin hat die Anfrage freigegeben."
-        else:
-            st.missing = None
-        self._state = st
-        if approve:
-            self.add_event("ALLOWED", f"Freigabe erteilt · Vollmacht v{st.mandate.version}")
-            self.add_event("ALLOWED", "place_call(dr_brunner)", model="gemini-3.6-flash")
-        else:
-            self.add_event("BLOCKED", "Freigabe abgelehnt · Quelle verworfen")
+        self._publish()
         return True
 
     def mark_reviewed(self) -> None:

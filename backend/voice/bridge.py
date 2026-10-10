@@ -16,6 +16,7 @@ import time
 import gradbot
 from fastapi import WebSocket, WebSocketDisconnect
 
+from state import store
 from voice.audio import GRADBOT_INPUT_RATE, GRADBOT_OUTPUT_RATE, TWILIO_RATE, resample_ulaw
 from voice.calls import CALLS, OPENER, Call
 from voice.session import session_config
@@ -47,6 +48,7 @@ async def run_bridge(ws: WebSocket) -> None:
         await ws.close()
         return
     log.info("call %s connected (stream %s)", call.id, stream_sid)
+    store.set_call(source_name=call.source_name, status="connected")
 
     async def send_audio(ulaw_8k: bytes) -> None:
         if ulaw_8k:
@@ -74,6 +76,7 @@ async def run_bridge(ws: WebSocket) -> None:
         await send_audio(call.opener_ulaw)
         guard_until += len(call.opener_ulaw) / TWILIO_RATE + 0.3
         call.transcript.append(("agent", OPENER))
+        store.add_call_line("agent", OPENER.replace("Staffette", "Stafette"))
 
     stop = asyncio.Event()
     tool_tasks: set[asyncio.Task] = set()
@@ -131,9 +134,11 @@ async def run_bridge(ws: WebSocket) -> None:
                 elif kind == "stt_text" and (text := (getattr(msg, "text", "") or "").strip()):
                     log.info("call %s | PRAXIS: %s", call.id, text)
                     call.transcript.append(("practice", text))
+                    store.add_call_line("practice", text)
                 elif kind == "tts_text" and (text := (getattr(msg, "text", "") or "").strip()):
                     log.info("call %s | AGENT: %s", call.id, text)
                     call.transcript.append(("agent", text))
+                    store.add_call_line("agent", text.replace("Staffette", "Stafette"))
                 elif kind == "tool_call":
                     handle = gradbot.ToolHandle(msg.tool_call_handle, msg.tool_call)
                     task = asyncio.create_task(handle_tool_call(handle, call))
@@ -161,6 +166,7 @@ async def run_bridge(ws: WebSocket) -> None:
             await ws.close()            # closing the stream ends the TwiML, Twilio hangs up
         except Exception:  # noqa: BLE001
             pass
+        store.set_call(status="ended", outcome=call.outcome or "aufgelegt")
         log.info("call %s ended (outcome %s)", call.id, call.outcome)
 
 

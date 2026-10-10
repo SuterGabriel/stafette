@@ -10,7 +10,7 @@
  */
 import { useState } from "react";
 import { useReducedMotion } from "motion/react";
-import type { StafetteState, Station } from "@/lib/types";
+import type { CallView, StafetteState, Station } from "@/lib/types";
 import { Logo } from "./Logo";
 import { CheckIcon, MicIcon, ShieldIcon } from "./Icons";
 import { BlurFade } from "./ui/blur-fade";
@@ -25,11 +25,13 @@ type Props = {
   state: StafetteState;
   onDecide: (approve: boolean) => void;
   onReset: () => void;
+  /** Anna signed the mandate: the agent starts working (live: first call). */
+  onStart?: () => void;
 };
 
-export function AnnaApp({ state, onDecide, onReset }: Props) {
+export function AnnaApp({ state, onDecide, onReset, onStart }: Props) {
   const [screen, setScreen] = useState<Screen>("start");
-  const [showLog, setShowLog] = useState(false);
+  const [showLog, setShowLog] = useState(true);
   const reduceMotion = useReducedMotion();
   const progress = countDone(state.stations);
 
@@ -152,7 +154,13 @@ export function AnnaApp({ state, onDecide, onReset }: Props) {
             </p>
           </div>
           <footer className="phone-foot">
-            <button className="btn btn--ink" onClick={() => setScreen("progress")}>
+            <button
+              className="btn btn--ink"
+              onClick={() => {
+                onStart?.();
+                setScreen("progress");
+              }}
+            >
               Unterschreiben und starten
             </button>
             <button className="btn btn--ghost" onClick={() => setScreen("heard")}>
@@ -193,9 +201,11 @@ export function AnnaApp({ state, onDecide, onReset }: Props) {
 
           {state.approvalResult === "yes" && (
             <BlurFade className="confirm">
-              <CheckIcon /> Dr. Brunner wird angefragt.
+              <CheckIcon /> Vollmacht ergänzt. Ich frage dort an.
             </BlurFade>
           )}
+
+          {state.call && <CallCard call={state.call} />}
 
           <ol className="timeline">
             {state.stations.map((s, i) => (
@@ -255,6 +265,53 @@ export function AnnaApp({ state, onDecide, onReset }: Props) {
         </BlurFade>
       )}
     </div>
+  );
+}
+
+const CALL_STATUS: Record<CallView["status"], string> = {
+  ringing: "Es klingelt …",
+  connected: "Im Gespräch",
+  ended: "Gespräch beendet",
+  failed: "Anruf fehlgeschlagen",
+};
+
+const CALL_OUTCOME: Record<string, string> = {
+  requested: "die Praxis schickt die Unterlagen",
+  needs_consent: "die Praxis wartet auf die Vollmacht",
+  closed: "niemand erreicht",
+  refused: "die Praxis lehnt ab",
+  callback: "Rückruf vereinbart",
+};
+
+/** The agent's phone call, live: status plus the last lines of the conversation. */
+function CallCard({ call }: { call: CallView }) {
+  const live = call.status === "ringing" || call.status === "connected";
+  const outcome = call.status === "ended" && call.outcome ? ` · ${CALL_OUTCOME[call.outcome] ?? call.outcome}` : "";
+  return (
+    <BlurFade className={`call call--${call.status}`}>
+      <div className="call-head" aria-live="polite">
+        <span className={`call-dot ${live ? "call-dot--live" : ""}`} />
+        <div>
+          <div className="call-title">
+            {live ? "Ich telefoniere mit" : "Telefonat mit"} {call.sourceName}
+          </div>
+          <div className="call-status">
+            {CALL_STATUS[call.status]}
+            {outcome}
+          </div>
+        </div>
+      </div>
+      {call.lines.length > 0 && (
+        <div className="call-lines">
+          {call.lines.slice(-6).map((line, i) => (
+            <p key={`${i}-${line.text.slice(0, 12)}`} className={`call-line call-line--${line.who}`}>
+              <span>{line.who === "agent" ? "KI" : "Praxis"}</span>
+              {line.text}
+            </p>
+          ))}
+        </div>
+      )}
+    </BlurFade>
   );
 }
 

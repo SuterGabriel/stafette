@@ -61,6 +61,17 @@ export type Section = {
   items: Finding[];
 };
 
+/** One line of the live call: what the agent said or what the practice said. */
+export type CallLine = { who: "agent" | "practice"; text: string };
+
+/** The call in progress, shown live in Anna's app. Never contains medical content. */
+export type CallView = {
+  sourceName: string;
+  status: "ringing" | "connected" | "ended" | "failed";
+  outcome?: string | null;
+  lines: CallLine[];
+};
+
 export type StafetteState = {
   patient: { name: string; birth: string; address: string };
   doctor: { name: string; city: string };
@@ -76,4 +87,6 @@ export type StafetteState = {
   updatedAt: string;
   /** Time Dr. Keller confirmed the handover summary, e.g. "10:52"; null until then. */
   reviewedAt?: string | null;
+  /** Live call, set by the backend while the agent is on the phone. */
+  call?: CallView | null;
 };

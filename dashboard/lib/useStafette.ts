@@ -75,5 +75,19 @@ export function useStafette() {
     }
   }, [offline]);
 
-  return { state, decide, reset, live: Boolean(API), connected, offline };
+  /** Anna signed: the agent starts calling (live). Offline the mock story is already "running". */
+  const start = useCallback(async () => {
+    if (API && !offline) {
+      await fetch(`${API}/agent/start`, { method: "POST" }).catch(() => {});
+    }
+  }, [offline]);
+
+  /** Records arrived at Dr. Keller: the backend reads them and fills the sheet. */
+  const ingest = useCallback(async () => {
+    if (API && !offline) {
+      await fetch(`${API}/agent/ingest`, { method: "POST" }).catch(() => {});
+    }
+  }, [offline]);
+
+  return { state, decide, reset, start, ingest, live: Boolean(API), connected, offline };
 }

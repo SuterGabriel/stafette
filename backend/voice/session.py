@@ -12,7 +12,8 @@ import json
 import gradbot
 
 from contracts import CALL_OUTCOMES
-from voice.calls import MANDATE, SPOKEN_BRAND, Call, env, voice_id
+from voice import calls
+from voice.calls import SPOKEN_BRAND, Call, env, voice_id
 
 SCOPE_LABELS = {
     "reports": "Berichte",
@@ -25,14 +26,14 @@ SCOPE_LABELS = {
 
 
 def instructions(call: Call) -> str:
-    scope = ", ".join(SCOPE_LABELS[s] for s in MANDATE.scope)
+    scope = ", ".join(SCOPE_LABELS[s] for s in calls.MANDATE.scope)
     return f"""Du bist der KI-Assistent von {SPOKEN_BRAND} und telefonierst mit der Praxis „{call.source_name}“.
-Du rufst im Auftrag der Patientin {MANDATE.principal.name} an. Sie wechselt zu ihrer neuen Hausärztin
-{MANDATE.recipient.name}. Deine Begrüssung wurde bereits abgespielt: Du hast dich als KI vorgestellt und gefragt,
+Du rufst im Auftrag der Patientin {calls.MANDATE.principal.name} an. Sie wechselt zu ihrer neuen Hausärztin
+{calls.MANDATE.recipient.name}. Deine Begrüssung wurde bereits abgespielt: Du hast dich als KI vorgestellt und gefragt,
 ob du das Gespräch transkribieren darfst. Stell dich nicht nochmals vor.
 
 Ziel des Anrufs:
-1. Bitte die Praxis, die Unterlagen ({scope}) direkt an {MANDATE.recipient.name} per HIN-Mail zu senden.
+1. Bitte die Praxis, die Unterlagen ({scope}) direkt an {calls.MANDATE.recipient.name} per HIN-Mail zu senden.
    Rufe dafür request_records mit dem passenden Umfang auf.
 2. Kündige an, dass die unterschriebene Vollmacht an die bei der Praxis hinterlegte Adresse kommt.
    Rufe dafür confirm_channel auf.

@@ -33,7 +33,8 @@ OPENER = (
     "Darf ich das Gespräch für eine Notiz transkribieren?"
 )
 
-# Demo state: mandate v1 (signed by Anna in her app) and the plan per source.
+# Demo state: the current mandate (v1, v2 after Anna's yes …) and the plan per source.
+# Other modules read these as calls.MANDATE / calls.PLAN so they always see the current version.
 MANDATE = example_mandate()
 PLAN = PlanState(signed={s.id for s in MANDATE.sources})
 
@@ -54,6 +55,19 @@ class Call:
 
 
 CALLS: dict[str, Call] = {}
+
+
+def reset_demo() -> None:
+    """Back to mandate v1, no calls made."""
+    global MANDATE, PLAN
+    MANDATE = example_mandate()
+    PLAN = PlanState(signed={s.id for s in MANDATE.sources})
+    CALLS.clear()
+
+
+def short_hash(mandate=None) -> str:
+    h = (mandate or MANDATE).hash()
+    return f"{h[:4]}…{h[-4:]}"
 
 
 def env(name: str, default: str = "") -> str:
@@ -118,7 +132,12 @@ async def dial(source_id: str) -> Call | Decision:
     detection = env("TWILIO_MACHINE_DETECTION", "Disable")
     if detection and detection != "Disable":
         kwargs["machine_detection"] = detection
-    twilio_call = await asyncio.to_thread(client.calls.create, **kwargs)
+    store.set_call(source_name=source.name, status="ringing", clear_lines=True)
+    try:
+        twilio_call = await asyncio.to_thread(client.calls.create, **kwargs)
+    except Exception:
+        store.set_call(status="failed")
+        raise
     call.twilio_sid = twilio_call.sid
     store.set_station(source_id, status="active", detail=f"Wird gerade angerufen ({time.strftime('%H:%M')}) …")
     log.info("dialling %s for source %s (call %s, sid %s)", call.to, source_id, call.id, call.twilio_sid)

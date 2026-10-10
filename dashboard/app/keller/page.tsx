@@ -3,12 +3,10 @@ import { KellerSheet } from "@/components/KellerSheet";
 import { useStafette } from "@/lib/useStafette";
 
 export default function KellerPage() {
-  const { state } = useStafette();
+  const { state, ingest } = useStafette();
   return (
     <main className="stage">
-      <div className="stage-col--doc">
-        <KellerSheet state={state} />
-      </div>
+      <KellerSheet state={state} onIngest={ingest} />
     </main>
   );
 }
