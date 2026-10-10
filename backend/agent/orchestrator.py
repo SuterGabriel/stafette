@@ -48,6 +48,7 @@ def reset() -> None:
     _pending.clear()
     _queue.clear()
     store.reset()
+    store.set_simulate(calls.SIMULATE)      # test mode survives a reset
 
 
 def _sync_mandate() -> None:

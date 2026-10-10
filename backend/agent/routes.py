@@ -1,10 +1,25 @@
 """Orchestrator endpoints, called from the dashboard (owner: Gabriel)."""
 
 from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel
 
 from agent import orchestrator
+from state import store
+from voice import calls
 
 router = APIRouter(prefix="/agent", tags=["agent"])
+store.set_simulate(calls.SIMULATE)   # show the mode from .env from the first page load on
+
+
+class SimulateRequest(BaseModel):
+    on: bool
+
+
+@router.post("/simulate")
+async def simulate(req: SimulateRequest) -> dict:
+    """Test mode on/off: calls are played by a script through the same tools and policy, no phone rings."""
+    calls.set_simulate(req.on)
+    return {"ok": True, "simulate": req.on}
 
 
 @router.post("/start")

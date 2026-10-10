@@ -298,6 +298,7 @@ function CallCard({ call }: { call: CallView }) {
           <div className="call-status">
             {CALL_STATUS[call.status]}
             {outcome}
+            {call.simulated && " · Testmodus"}
           </div>
         </div>
       </div>

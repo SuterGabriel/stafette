@@ -139,5 +139,19 @@ export function useStafette() {
     }
   }, [offline]);
 
-  return { state, decide, reset, start, ingest, live: Boolean(API), connected, offline };
+  /** Test mode: calls are played by a script through the same tools and policy, no phone rings. */
+  const setSimulate = useCallback(
+    async (on: boolean) => {
+      if (API && !offline) {
+        await api("/agent/simulate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ on }),
+        }).catch(() => {});
+      }
+    },
+    [offline],
+  );
+
+  return { state, decide, reset, start, ingest, setSimulate, live: Boolean(API), connected, offline };
 }

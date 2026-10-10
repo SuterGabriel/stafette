@@ -91,6 +91,7 @@ class CallView(_Wire):
     status: Literal["ringing", "connected", "ended", "failed"]
     outcome: str | None = None
     lines: list[CallLine] = []
+    simulated: bool = False
 
 
 class StafetteState(_Wire):
@@ -108,6 +109,7 @@ class StafetteState(_Wire):
     updated_at: str
     reviewed_at: str | None = None
     call: CallView | None = None
+    simulate_calls: bool = False
 
     def wire(self) -> dict:
         return self.model_dump(by_alias=True, mode="json")
@@ -276,11 +278,15 @@ class StateStore:
             self._state.approval_result = None
         self._publish()
 
+    def set_simulate(self, on: bool) -> None:
+        self._state.simulate_calls = on
+        self._publish()
+
     def set_call(self, *, source_name: str | None = None, status: str | None = None,
-                 outcome: str | None = None, clear_lines: bool = False) -> None:
+                 outcome: str | None = None, clear_lines: bool = False, simulated: bool | None = None) -> None:
         call = self._state.call
         if call is None or clear_lines:
-            call = CallView(source_name=source_name or "", status=status or "ringing")
+            call = CallView(source_name=source_name or "", status=status or "ringing", simulated=bool(simulated))
         if source_name is not None:
             call.source_name = source_name
         if status is not None:

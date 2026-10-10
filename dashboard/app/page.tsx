@@ -19,7 +19,7 @@ const TO_KELLER_AFTER_CALL_MS = 2000;
 const TO_ANNA_AFTER_SHEET_MS = 4000;
 
 export default function DemoPage() {
-  const { state, decide, reset, start, ingest, live, connected, offline } = useStafette();
+  const { state, decide, reset, start, ingest, setSimulate, live, connected, offline } = useStafette();
   const [view, setView] = useState<View>("anna");
   const [news, setNews] = useState<Record<View, boolean>>({ anna: false, keller: false });
 
@@ -93,6 +93,17 @@ export default function DemoPage() {
         <div hidden={view !== "keller"}>
           <KellerSheet state={state} onIngest={ingest} />
         </div>
+
+        {live && !offline && (
+          <label className="sim-toggle">
+            <input
+              type="checkbox"
+              checked={Boolean(state.simulateCalls)}
+              onChange={(e) => setSimulate(e.target.checked)}
+            />
+            Testmodus: Anrufe simulieren, kein Handy klingelt
+          </label>
+        )}
       </div>
 
       <span className={`status-pill ${tone}`}>{status}</span>

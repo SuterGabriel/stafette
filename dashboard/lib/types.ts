@@ -70,6 +70,8 @@ export type CallView = {
   status: "ringing" | "connected" | "ended" | "failed";
   outcome?: string | null;
   lines: CallLine[];
+  /** Played by the test-mode script (same tools and policy), no real phone call. */
+  simulated?: boolean;
 };
 
 export type StafetteState = {
@@ -89,4 +91,6 @@ export type StafetteState = {
   reviewedAt?: string | null;
   /** Live call, set by the backend while the agent is on the phone. */
   call?: CallView | null;
+  /** Test mode on: calls are simulated instead of dialled. */
+  simulateCalls?: boolean;
 };

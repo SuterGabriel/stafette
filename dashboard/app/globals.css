@@ -249,6 +249,8 @@ a:hover { color: var(--ink); }
 .view-tab--on { background: var(--ink); color: var(--white); }
 .view-dot { position: absolute; top: 6px; right: 6px; width: 8px; height: 8px; border-radius: 4px; background: var(--coral); }
 [hidden] { display: none !important; }
+.sim-toggle { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--text-3); cursor: pointer; }
+.sim-toggle input { width: 16px; height: 16px; accent-color: var(--petrol); }
 
 /* ---------- Doctor on a phone ---------- */
 .phone--doc .keller-via { font-size: 15px; }

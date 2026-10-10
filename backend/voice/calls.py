@@ -56,6 +56,15 @@ class Call:
 
 CALLS: dict[str, Call] = {}
 
+# Test mode: calls are played by agent/sim_call.py instead of Twilio (same tools, same policy).
+SIMULATE = os.environ.get("DEMO_SIMULATE_CALLS", "").strip().lower() in {"1", "true", "yes"}
+
+
+def set_simulate(on: bool) -> None:
+    global SIMULATE
+    SIMULATE = on
+    store.set_simulate(on)
+
 
 def reset_demo() -> None:
     """Back to mandate v1, no calls made."""
@@ -92,7 +101,14 @@ def public_ws_url() -> str:
 
 def decision_text(action: str, args: dict, decision: Decision) -> str:
     """Event text in the dashboard's style, e.g. 'set_recipient("x@y.ch") · recipient_not_in_mandate'."""
-    shown = ", ".join(f'"{v}"' if isinstance(v, str) else str(v) for k, v in args.items() if k != "source_id")
+    def fmt(v) -> str:
+        if isinstance(v, str):
+            return f'"{v}"'
+        if isinstance(v, (list, tuple)):
+            return "[" + ", ".join(map(str, v)) + "]"
+        return str(v)
+
+    shown = ", ".join(fmt(v) for k, v in args.items() if k != "source_id")
     target = args.get("source_id", "")
     inner = ", ".join(p for p in (target, shown) if p)
     text = f"{action}({inner})"
@@ -112,6 +128,18 @@ async def dial(source_id: str) -> Call | Decision:
     store.add_event(decision, decision_text("place_call", args, decision), model=MODEL_ORCHESTRATOR)
     if not isinstance(decision, Allowed):
         return decision
+
+    if SIMULATE:
+        from agent import sim_call   # lazy: agent imports voice
+
+        source = next(s for s in MANDATE.sources if s.id == source_id)
+        call = Call(id=secrets.token_urlsafe(8), source_id=source_id, source_name=source.name, to="Testmodus")
+        CALLS[call.id] = call
+        PLAN.calls_made[source_id] = PLAN.calls(source_id) + 1
+        store.set_call(source_name=source.name, status="ringing", clear_lines=True, simulated=True)
+        store.set_station(source_id, status="active", detail=f"Wird gerade angerufen ({time.strftime('%H:%M')}, Testmodus) …")
+        call.opener_task = asyncio.create_task(sim_call.run(call))
+        return call
 
     missing = [n for n in ("TWILIO_ACCOUNT_SID", "TWILIO_AUTH_TOKEN", "TWILIO_FROM_NUMBER", "DEMO_TO_NUMBER")
                if not env(n)]
