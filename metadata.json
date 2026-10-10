@@ -1,0 +1,29 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4JSE8HG8K5K9KN0WSJR9769",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "dashboard/app/globals.css",
+    "dashboard/components/KellerSheet.tsx",
+    "dashboard/lib/mock.ts",
+    "dashboard/lib/types.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 8,
+    "cache_creation_tokens": 8027,
+    "cache_read_tokens": 1550691,
+    "output_tokens": 2935,
+    "api_call_count": 4
+  }
+}
