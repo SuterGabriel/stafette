@@ -5,7 +5,9 @@
 :root {
   --bg: #F7F5F0; --surface: #FFFFFF; --fg: #0E2A3B; --muted: #5A6A75; --line: #D8D2C6;
   --teal: #0F8B8D; --coral: #D9583A;
-  --gem-bg: #E2F1F0; --zone: #EFEBE3; --zone-med: #FBEBE4;
+  --gem-bg: #EEE9FC; --zone: #EFEBE3; --zone-med: #FBEBE4;
+  --gem: #6D4FD3; --gra: #1F74C2; --gra-bg: #E3EFFB; --twi: #D3342C; --twi-bg: #FCE8E6;
+  --pol: #0F8B8D; --pol-bg: #DDF2F1; --ann: #D9583A; --ann-bg: #FCEBE5; --doc: #2B8653; --doc-bg: #E2F3E9;
   --ok: #23804F; --ok-bg: #E3F3EA; --warn: #A86A08; --warn-bg: #FBF0D9; --bad: #C0362C; --bad-bg: #FBE6E3;
   --font-display: Manrope, system-ui, sans-serif;
   --font-body: Manrope, system-ui, sans-serif;
@@ -14,13 +16,17 @@
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #0A1A25; --surface: #10263A; --fg: #E6EDF2; --muted: #93A5B2; --line: #29435A;
   --teal: #43C3C5; --coral: #FF8A6B;
-  --gem-bg: #123A40; --zone: #0E2231; --zone-med: #2B1D1F;
+  --gem-bg: #28224A; --zone: #0E2231; --zone-med: #2B1D1F;
+  --gem: #B7A4FF; --gra: #7DB8F2; --gra-bg: #132C45; --twi: #FF8A80; --twi-bg: #3A1B1B;
+  --pol: #43C3C5; --pol-bg: #0F3436; --ann: #FF8A6B; --ann-bg: #3A2219; --doc: #5FCB8E; --doc-bg: #14352A;
   --ok: #5FCB8E; --ok-bg: #15372A; --warn: #F2B134; --warn-bg: #3A2E12; --bad: #FF7468; --bad-bg: #3D1C1C;
   color-scheme: dark } }
 :root[data-theme="dark"] {
   --bg: #0A1A25; --surface: #10263A; --fg: #E6EDF2; --muted: #93A5B2; --line: #29435A;
   --teal: #43C3C5; --coral: #FF8A6B;
-  --gem-bg: #123A40; --zone: #0E2231; --zone-med: #2B1D1F;
+  --gem-bg: #28224A; --zone: #0E2231; --zone-med: #2B1D1F;
+  --gem: #B7A4FF; --gra: #7DB8F2; --gra-bg: #132C45; --twi: #FF8A80; --twi-bg: #3A1B1B;
+  --pol: #43C3C5; --pol-bg: #0F3436; --ann: #FF8A6B; --ann-bg: #3A2219; --doc: #5FCB8E; --doc-bg: #14352A;
   --ok: #5FCB8E; --ok-bg: #15372A; --warn: #F2B134; --warn-bg: #3A2E12; --bad: #FF7468; --bad-bg: #3D1C1C;
   color-scheme: dark }
 
@@ -50,7 +56,12 @@ code { font-family: var(--font-mono); font-size: 0.88em; }
 .legend { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 12.5px; color: var(--muted); }
 .legend span { display: inline-flex; align-items: center; gap: 7px; }
 .sw { width: 18px; height: 12px; border-radius: 3px; border: 1.3px solid var(--fg); display: inline-block; }
-.sw.gem { background: var(--gem-bg); border-color: var(--teal); }
+.sw.gem { background: var(--gem-bg); border-color: var(--gem); }
+.sw.gra { background: var(--gra-bg); border-color: var(--gra); }
+.sw.twi { background: var(--twi-bg); border-color: var(--twi); }
+.sw.pol { background: var(--pol); border-color: var(--pol); }
+.sw.ann { background: var(--ann-bg); border-color: var(--ann); }
+.sw.doc { background: var(--doc-bg); border-color: var(--doc); }
 .sw.code { background: var(--surface); }
 .sw.core { background: var(--fg); }
 .sw.ext { background: var(--surface); border-style: dashed; border-color: var(--muted); }
@@ -76,12 +87,39 @@ svg .lbl { font-size: 10.5px; fill: var(--muted); }
 svg .inv { fill: var(--bg); }
 svg .t-ok { fill: var(--ok); } svg .t-warn { fill: var(--warn); font-weight: 700; } svg .t-bad { fill: var(--bad); }
 svg .t-coral { fill: var(--coral); font-weight: 600; }
-svg .t-teal { fill: var(--teal); }
+svg .t-teal { fill: var(--gem); }
+svg .t-pol { fill: var(--pol); }
 svg .it { font-style: italic; }
 
-.n-gem { fill: var(--gem-bg); stroke: var(--teal); stroke-width: 1.4; }
+.n-gem { fill: var(--gem-bg); stroke: var(--gem); stroke-width: 1.4; }
+.n-gra { fill: var(--gra-bg); stroke: var(--gra); stroke-width: 1.4; }
+.n-twi { fill: var(--twi-bg); stroke: var(--twi); stroke-width: 1.4; }
+.n-ann { fill: var(--ann-bg); stroke: var(--ann); stroke-width: 1.4; }
+.n-doc { fill: var(--doc-bg); stroke: var(--doc); stroke-width: 1.4; }
+.n-pol { fill: var(--pol); stroke: var(--pol); }
+.n-tool { fill: var(--warn-bg); stroke: var(--warn); stroke-width: 1.4; }
+.p-pol { fill: var(--pol-bg); stroke: var(--pol); stroke-width: 1.2; }
+.p-twi { fill: var(--twi-bg); stroke: var(--twi); stroke-width: 1.2; }
+.p-gra { fill: var(--gra-bg); stroke: var(--gra); stroke-width: 1.2; }
+.p-doc { fill: var(--doc-bg); stroke: var(--doc); stroke-width: 1.2; }
+.p-gem { fill: var(--gem-bg); stroke: var(--gem); stroke-width: 1.2; }
+.ic { fill: none; stroke: var(--fg); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.ic-gem { stroke: var(--gem); } .ic-gra { stroke: var(--gra); } .ic-twi { stroke: var(--twi); } .ic-pol { stroke: var(--pol); }
+.ic-ann { stroke: var(--ann); } .ic-doc { stroke: var(--doc); } .ic-tool { stroke: var(--warn); } .ic-mut { stroke: var(--muted); }
+.ic-inv { stroke: var(--bg); }
+.badge { stroke-width: 1.5; }
+.b-gem { fill: var(--surface); stroke: var(--gem); } .b-gra { fill: var(--surface); stroke: var(--gra); }
+.b-twi { fill: var(--surface); stroke: var(--twi); } .b-ann { fill: var(--surface); stroke: var(--ann); }
+.b-doc { fill: var(--surface); stroke: var(--doc); } .b-mut { fill: var(--surface); stroke: var(--muted); }
+.b-pol { fill: var(--surface); stroke: var(--pol); } .b-fg { fill: var(--surface); stroke: var(--fg); }
+.num-pol { fill: var(--pol); } .num-twi { fill: var(--twi); } .num-gra { fill: var(--gra); } .num-doc { fill: var(--doc); } .num-gem { fill: var(--gem); }
+.edge-twi { fill: none; stroke: var(--twi); stroke-width: 1.6; stroke-dasharray: 6 4; }
+.edge-pol { fill: none; stroke: var(--pol); stroke-width: 1.6; }
+.ah-pol { fill: var(--pol); } .ah-twi { fill: var(--twi); }
+.zone-safe { fill: var(--pol-bg); stroke: none; opacity: 0.6; }
+.lh-ann { fill: var(--ann-bg); } .lh-gem { fill: var(--gem-bg); } .lh-doc { fill: var(--doc-bg); } .lh-gra { fill: var(--gra-bg); }
 .n-code { fill: var(--surface); stroke: var(--fg); stroke-width: 1.3; }
-.n-core { fill: var(--fg); stroke: var(--fg); }
+.n-core { fill: var(--pol); stroke: var(--pol); }
 .n-ext { fill: var(--surface); stroke: var(--muted); stroke-width: 1.2; stroke-dasharray: 5 3; }
 .backend { fill: none; stroke: var(--line); stroke-width: 1.4; }
 .zone { fill: var(--zone); stroke: none; }
@@ -138,6 +176,33 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
 @media (prefers-reduced-motion: no-preference) { nav a { transition: border-color .15s, color .15s; } }
 </style>
 
+<!-- shared icon set (24×24 line icons, colored by the .ic-* class on each <use>) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M6.5 3h3l1.8 4.6-2.3 1.5a11 11 0 0 0 5.9 5.9l1.5-2.3L21 14.5v3a2 2 0 0 1-2.1 2A16.5 16.5 0 0 1 4.5 5.1 2 2 0 0 1 6.5 3z"/></symbol>
+  <symbol id="i-mobile" viewBox="0 0 24 24"><rect x="6.5" y="2" width="11" height="20" rx="2.5"/><path d="M10.5 18.5h3"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 2.5c.7 5 4.5 8.8 9.5 9.5-5 .7-8.8 4.5-9.5 9.5-.7-5-4.5-8.8-9.5-9.5 5-.7 8.8-4.5 9.5-9.5z"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 2.5l8 3v6c0 5-3.4 8.9-8 10.5-4.6-1.6-8-5.5-8-10.5v-6z"/><path d="M8.5 12l2.4 2.4 4.6-5"/></symbol>
+  <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="2.5" width="6" height="11.5" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5v4M8.5 21.5h7"/></symbol>
+  <symbol id="i-speaker" viewBox="0 0 24 24"><path d="M3.5 9.5h3.5L12 5.5v13l-5-4H3.5z"/><path d="M15.5 9.5a3.5 3.5 0 0 1 0 5M18.5 6.5a8 8 0 0 1 0 11"/></symbol>
+  <symbol id="i-wave" viewBox="0 0 24 24"><path d="M3 11v2M6.5 8.5v7M10 5v14M13.5 7.5v9M17 9.5v5M20.5 11v2"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 2.5h8l4.5 4.5v14.5H6z"/><path d="M14 2.5V7h4.5M9 12h6.5M9 15.5h6.5M9 19h4"/></symbol>
+  <symbol id="i-laptop" viewBox="0 0 24 24"><rect x="4.5" y="4.5" width="15" height="10.5" rx="1.5"/><path d="M2.5 19h19"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h11.5M9 12h11.5M9 18h11.5"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5l5 5"/></symbol>
+  <symbol id="i-clinic" viewBox="0 0 24 24"><path d="M3.5 21V9l8.5-5.5L20.5 9v12z"/><path d="M12 10.5v6M9 13.5h6M3 21h18"/></symbol>
+  <symbol id="i-wrench" viewBox="0 0 24 24"><path d="M14.5 6.2a4.2 4.2 0 0 0-5.3 5.3L3.5 17.2l3.3 3.3 5.7-5.7a4.2 4.2 0 0 0 5.3-5.3l-2.6 2.6-2.5-.6-.6-2.5z"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a13.5 13.5 0 0 1 0 18M12 3a13.5 13.5 0 0 0 0 18"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5l8.5 6 8.5-6"/></symbol>
+  <symbol id="i-screen" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12.5" rx="2"/><path d="M8.5 20.5h7M12 16.5v4"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.3l2.8 2.8 5.2-5.6"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5v.2"/></symbol>
+  <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7 18.5h10.5a4 4 0 0 0 .4-8 6 6 0 0 0-11.6 1.3A3.4 3.4 0 0 0 7 18.5z"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></symbol>
+  <symbol id="i-git" viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="9" r="2.5"/><path d="M6 8.5v7M18 11.5c0 3-3 4-9.5 5"/></symbol>
+  <symbol id="i-code" viewBox="0 0 24 24"><path d="M8.5 7L3.5 12l5 5M15.5 7l5 5-5 5"/></symbol>
+</svg>
+
 <div class="wrap">
 <header>
   <div class="brand">
@@ -146,7 +211,7 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
   </div>
   <h1>Wie der Agent handelt und wer entscheidet, was er darf</h1>
   <p class="claim">The model proposes actions. Code decides whether they're allowed.</p>
-  <p>Drei Sichten auf dasselbe System: welche Teile miteinander sprechen, nach welchen Regeln die Policy Engine jeden Vorschlag prüft, und wie ein Arztwechsel von Annas Satz bis zur Übergabe abläuft.</p>
+  <p>Fünf Sichten auf dasselbe System: welche Teile miteinander sprechen, nach welchen Regeln die Policy Engine jeden Vorschlag prüft, wie ein Arztwechsel abläuft, welche Dienste wir brauchen und was bei einem Anruf passiert. Farben stehen überall für dieselbe Rolle: <span style="color:var(--gem);font-weight:700">Gemini</span>, <span style="color:var(--gra);font-weight:700">Gradium</span>, <span style="color:var(--twi);font-weight:700">Twilio und alte Praxen</span>, <span style="color:var(--pol);font-weight:700">Policy Engine</span>, <span style="color:var(--ann);font-weight:700">Anna</span>, <span style="color:var(--doc);font-weight:700">neue Praxis</span>.</p>
   <nav aria-label="Diagramme">
     <a href="#architektur">Architektur</a>
     <a href="#entscheidung">Entscheidungslogik</a>
@@ -164,73 +229,97 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
   <p>Gemini schlägt vor, die Policy Engine entscheidet. Medizinische Inhalte bleiben in der unteren Zone; nach oben geht nur Name und Fachgebiet erwähnter Ärzte.</p>
   <figure>
     <div class="canvas">
-    <svg viewBox="0 0 1100 610" role="img" aria-label="Architektur: Anna gibt das Ziel an den Gemini-Compiler, der die Vollmacht an die Policy Engine übergibt. Orchestrator und Telefon-Agent schlagen Tool-Calls vor, die Policy Engine entscheidet und loggt jede Entscheidung ins Dashboard. Akten gehen direkt von der alten an die neue Praxis; die Dokument-Pipeline meldet nur Name und Fachgebiet erwähnter Ärzte an den Orchestrator.">
+    <svg viewBox="0 0 1100 610" role="img" aria-label="Architektur: Anna gibt das Ziel an den Gemini-Compiler, der die Vollmacht an die Policy Engine übergibt. Orchestrator und Telefon-Agent schlagen Tool-Calls vor, die Policy Engine entscheidet und schreibt jede Entscheidung in den State, den das Dashboard per SSE erhält. Akten gehen direkt von der alten an die neue Praxis; die Dokument-Pipeline meldet nur Name und Fachgebiet erwähnter Ärzte an den Orchestrator.">
       <defs>
         <marker id="a-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
         <marker id="a-rec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="ah-rec" d="M0,0 L10,5 L0,10 z"/></marker>
+        <marker id="a-pol" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah-pol" d="M0,0 L10,5 L0,10 z"/></marker>
       </defs>
 
-      <!-- backend boundary and zones -->
+      <!-- backend boundary and data zones -->
       <rect class="backend" x="210" y="30" width="590" height="560" rx="12"/>
-      <text class="cap" x="226" y="50">BACKEND · FASTAPI · ALLES IN-MEMORY</text>
-      <rect class="zone" x="225" y="62" width="560" height="290" rx="8"/>
-      <text class="cap" x="237" y="80">OHNE MEDIZINISCHE INHALTE</text>
+      <use href="#i-laptop" class="ic ic-mut" x="224" y="36" width="18" height="18"/>
+      <text class="cap" x="248" y="50">BACKEND · FASTAPI · ALLES IN-MEMORY</text>
+      <rect class="zone-safe" x="225" y="62" width="560" height="290" rx="8"/>
+      <use href="#i-lock" class="ic ic-pol" x="235" y="66" width="16" height="16"/>
+      <text class="cap" x="256" y="79">OHNE MEDIZINISCHE INHALTE</text>
       <rect class="zone-med" x="225" y="378" width="560" height="196" rx="8"/>
       <text class="cap e" x="773" y="396">MEDIZINISCHE INHALTE · IM AUFTRAG DER NEUEN PRAXIS</text>
 
-      <!-- left: people + search -->
-      <rect class="n-ext" x="30" y="100" width="140" height="56" rx="8"/>
-      <text class="b m" x="100" y="124">Anna</text>
-      <text class="sub m" x="100" y="141">Patientin</text>
-      <rect class="n-ext" x="30" y="300" width="140" height="56" rx="8"/>
-      <text class="b m" x="100" y="324">Google Search</text>
-      <text class="sub m" x="100" y="341">Grounding</text>
+      <!-- Anna -->
+      <rect class="n-ann" x="30" y="100" width="140" height="56" rx="10"/>
+      <circle class="badge b-ann" cx="100" cy="100" r="14"/><use href="#i-user" class="ic ic-ann" x="91" y="91" width="18" height="18"/>
+      <text class="b m" x="100" y="133">Anna</text>
+      <text class="sub m" x="100" y="149">Patientin</text>
 
-      <!-- upper zone nodes -->
-      <rect class="n-gem" x="240" y="100" width="140" height="56" rx="8"/>
-      <text class="b m" x="310" y="124">Compiler</text>
-      <text class="mono m t-teal" x="310" y="141">gemini-3.8-flash</text>
+      <!-- Google Search -->
+      <rect class="n-gem" x="30" y="300" width="140" height="56" rx="10"/>
+      <circle class="badge b-gem" cx="100" cy="300" r="14"/><use href="#i-search" class="ic ic-gem" x="91" y="291" width="18" height="18"/>
+      <text class="b m" x="100" y="333">Google Search</text>
+      <text class="sub m" x="100" y="349">Grounding</text>
 
-      <rect class="n-gem" x="240" y="230" width="140" height="56" rx="8"/>
-      <text class="b m" x="310" y="254">Orchestrator</text>
-      <text class="mono m t-teal" x="310" y="271">gemini-3.6-flash</text>
+      <!-- Compiler -->
+      <rect class="n-gem" x="240" y="100" width="140" height="56" rx="10"/>
+      <circle class="badge b-gem" cx="310" cy="100" r="14"/><use href="#i-spark" class="ic ic-gem" x="301" y="91" width="18" height="18"/>
+      <text class="b m" x="310" y="133">Compiler</text>
+      <text class="mono m t-teal" x="310" y="149">gemini-3.8-flash</text>
 
-      <rect class="n-core" x="440" y="180" width="140" height="90" rx="8"/>
-      <text class="b m inv" x="510" y="216">Policy Engine</text>
-      <text class="m inv" x="510" y="234" style="font-size:10.5px">deterministischer</text>
-      <text class="m inv" x="510" y="248" style="font-size:10.5px">Code</text>
+      <!-- Orchestrator -->
+      <rect class="n-gem" x="240" y="230" width="140" height="56" rx="10"/>
+      <circle class="badge b-gem" cx="310" cy="230" r="14"/><use href="#i-spark" class="ic ic-gem" x="301" y="221" width="18" height="18"/>
+      <text class="b m" x="310" y="263">Orchestrator</text>
+      <text class="mono m t-teal" x="310" y="279">gemini-3.6-flash</text>
 
-      <rect class="n-code" x="640" y="100" width="130" height="56" rx="8"/>
-      <text class="b m" x="705" y="124">State + Events</text>
-      <text class="sub m" x="705" y="141">in-memory · TTL</text>
+      <!-- Policy Engine -->
+      <rect class="n-pol" x="440" y="180" width="140" height="90" rx="10"/>
+      <circle class="badge b-pol" cx="510" cy="180" r="16"/><use href="#i-shield" class="ic ic-pol" x="499" y="169" width="22" height="22"/>
+      <text class="b m inv" x="510" y="220">Policy Engine</text>
+      <text class="m inv" x="510" y="238" style="font-size:10.5px">deterministischer</text>
+      <text class="m inv" x="510" y="252" style="font-size:10.5px">Code</text>
 
-      <rect class="n-gem" x="640" y="230" width="130" height="56" rx="8"/>
-      <text class="b m" x="705" y="254">Telefon-Agent</text>
-      <text class="mono m t-teal" x="705" y="271">gradbot · gemini-3.6</text>
+      <!-- State + Events -->
+      <rect class="n-code" x="640" y="100" width="130" height="56" rx="10"/>
+      <circle class="badge b-fg" cx="705" cy="100" r="14"/><use href="#i-list" class="ic" x="696" y="91" width="18" height="18"/>
+      <text class="b m" x="705" y="133">State + Events</text>
+      <text class="sub m" x="705" y="149">in-memory · TTL</text>
 
-      <!-- lower zone nodes -->
-      <rect class="n-code" x="240" y="440" width="140" height="56" rx="8"/>
-      <text class="b m" x="310" y="464">Gap Detector</text>
-      <text class="sub m" x="310" y="481">erwähnte Ärzte</text>
+      <!-- Telefon-Agent -->
+      <rect class="n-gra" x="640" y="230" width="130" height="56" rx="10"/>
+      <circle class="badge b-gra" cx="705" cy="230" r="14"/><use href="#i-wave" class="ic ic-gra" x="696" y="221" width="18" height="18"/>
+      <text class="b m" x="705" y="263">Telefon-Agent</text>
+      <text class="sub m" x="705" y="279">gradbot + Gemini</text>
 
-      <rect class="n-code" x="440" y="440" width="140" height="56" rx="8"/>
-      <text class="b m" x="510" y="464">Verifier</text>
-      <text class="sub m" x="510" y="481">Zitat ↔ Quellseite</text>
+      <!-- lower zone -->
+      <rect class="n-code" x="240" y="440" width="140" height="56" rx="10"/>
+      <circle class="badge b-fg" cx="310" cy="440" r="14"/><use href="#i-alert" class="ic" x="301" y="431" width="18" height="18"/>
+      <text class="b m" x="310" y="473">Gap Detector</text>
+      <text class="sub m" x="310" y="489">erwähnte Ärzte</text>
 
-      <rect class="n-gem" x="640" y="440" width="130" height="56" rx="8"/>
-      <text class="b m" x="705" y="464">Leser</text>
-      <text class="mono m t-teal" x="705" y="481">gemini-3.8-flash</text>
+      <rect class="n-code" x="440" y="440" width="140" height="56" rx="10"/>
+      <circle class="badge b-fg" cx="510" cy="440" r="14"/><use href="#i-check" class="ic" x="501" y="431" width="18" height="18"/>
+      <text class="b m" x="510" y="473">Verifier</text>
+      <text class="sub m" x="510" y="489">Zitat ↔ Quellseite</text>
 
-      <!-- right: outside world -->
-      <rect class="n-ext" x="850" y="100" width="220" height="56" rx="8"/>
-      <text class="b m" x="960" y="124">Dashboard</text>
-      <text class="sub m" x="960" y="141">Annas App · Dr. Kellers Übergabe</text>
-      <rect class="n-ext" x="850" y="230" width="220" height="56" rx="8"/>
-      <text class="b m" x="960" y="254">Alte Praxen</text>
-      <text class="sub m" x="960" y="271">MPA am Telefon</text>
-      <rect class="n-ext" x="850" y="440" width="220" height="56" rx="8"/>
-      <text class="b m" x="960" y="464">Neue Praxis · Dr. Keller</text>
-      <text class="sub m" x="960" y="481">HIN-Mail</text>
+      <rect class="n-gem" x="640" y="440" width="130" height="56" rx="10"/>
+      <circle class="badge b-gem" cx="705" cy="440" r="14"/><use href="#i-doc" class="ic ic-gem" x="696" y="431" width="18" height="18"/>
+      <text class="b m" x="705" y="473">Leser</text>
+      <text class="mono m t-teal" x="705" y="489">gemini-3.8-flash</text>
+
+      <!-- outside world -->
+      <rect class="n-ann" x="850" y="100" width="220" height="56" rx="10"/>
+      <circle class="badge b-ann" cx="960" cy="100" r="14"/><use href="#i-screen" class="ic ic-ann" x="951" y="91" width="18" height="18"/>
+      <text class="b m" x="960" y="133">Dashboard</text>
+      <text class="sub m" x="960" y="149">Annas App · Dr. Kellers Übergabe</text>
+
+      <rect class="n-twi" x="850" y="230" width="220" height="56" rx="10"/>
+      <circle class="badge b-twi" cx="960" cy="230" r="14"/><use href="#i-clinic" class="ic ic-twi" x="951" y="221" width="18" height="18"/>
+      <text class="b m" x="960" y="263">Alte Praxen</text>
+      <text class="sub m" x="960" y="279">MPA am Telefon</text>
+
+      <rect class="n-doc" x="850" y="440" width="220" height="56" rx="10"/>
+      <circle class="badge b-doc" cx="960" cy="440" r="14"/><use href="#i-clinic" class="ic ic-doc" x="951" y="431" width="18" height="18"/>
+      <text class="b m" x="960" y="473">Neue Praxis · Dr. Keller</text>
+      <text class="sub m" x="960" y="489">HIN-Mail</text>
 
       <!-- edges -->
       <path class="edge" d="M170,128 H238" marker-end="url(#a-ar)"/>
@@ -247,29 +336,29 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
 
       <path class="edge" d="M380,244 H438" marker-end="url(#a-ar)"/>
       <text class="lbl m" x="410" y="238">Vorschlag</text>
-      <path class="edge" d="M440,266 H382" marker-end="url(#a-ar)"/>
-      <text class="lbl m" x="410" y="282">Entscheid</text>
+      <path class="edge-pol" d="M440,266 H382" marker-end="url(#a-pol)"/>
+      <text class="lbl m t-pol" x="410" y="282">Entscheid</text>
 
       <path class="edge" d="M640,244 H582" marker-end="url(#a-ar)"/>
       <text class="lbl m" x="610" y="238">Vorschlag</text>
-      <path class="edge" d="M580,266 H638" marker-end="url(#a-ar)"/>
-      <text class="lbl m" x="610" y="282">Entscheid</text>
+      <path class="edge-pol" d="M580,266 H638" marker-end="url(#a-pol)"/>
+      <text class="lbl m t-pol" x="610" y="282">Entscheid</text>
 
       <path class="edge" d="M240,258 H100 V158" marker-start="url(#a-ar)" marker-end="url(#a-ar)"/>
       <text class="lbl" x="108" y="200">Frage an Anna</text>
       <text class="lbl" x="108" y="214">Ja → Vollmacht v2</text>
 
-      <path class="edge" d="M260,286 V328 H172" marker-end="url(#a-ar)"/>
-      <text class="lbl m" x="215" y="320">Kontakt</text>
+      <path class="edge" d="M240,278 H205 V328 H172" marker-end="url(#a-ar)"/>
+      <text class="lbl m" x="190" y="370">Kontakt</text>
 
       <path class="edge" d="M772,258 H848" marker-start="url(#a-ar)" marker-end="url(#a-ar)"/>
       <text class="lbl m" x="810" y="250">Twilio</text>
       <text class="lbl m" x="810" y="276">Audio</text>
 
-      <path class="edge-rec" d="M960,286 V436" marker-end="url(#a-rec)"/>
-      <text class="t-coral" x="970" y="352" style="font-size:11px">Akten direkt</text>
-      <text class="t-coral" x="970" y="367" style="font-size:11px">nicht über uns</text>
-      <text class="lbl" x="970" y="382">Art. 25 Abs. 3 DSG</text>
+      <path class="edge-rec" d="M1010,286 V436" marker-end="url(#a-rec)"/>
+      <text class="t-coral e" x="1000" y="352" style="font-size:11px">Akten direkt</text>
+      <text class="t-coral e" x="1000" y="367" style="font-size:11px">nicht über uns</text>
+      <text class="lbl e" x="1000" y="382">Art. 25 Abs. 3 DSG</text>
 
       <path class="edge" d="M850,468 H772" marker-end="url(#a-ar)"/>
       <text class="lbl m" x="810" y="460">Eingang</text>
@@ -278,19 +367,22 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <path class="edge" d="M440,468 H382" marker-end="url(#a-ar)"/>
       <text class="lbl m" x="410" y="460">Namen</text>
 
-      <path class="edge" d="M310,440 V288" marker-end="url(#a-ar)"/>
-      <text class="lbl" x="318" y="322">neue Lücke: nur Name</text>
-      <text class="lbl" x="318" y="336">und Fachgebiet</text>
+      <path class="edge" d="M270,440 V288" marker-end="url(#a-ar)"/>
+      <text class="lbl" x="278" y="322">neue Lücke: nur Name</text>
+      <text class="lbl" x="278" y="336">und Fachgebiet</text>
 
       <path class="edge" d="M510,496 V540 H960 V498" marker-end="url(#a-ar)"/>
       <text class="lbl m" x="690" y="532">Inhaltsverzeichnis mit Fundstellen</text>
     </svg>
     </div>
     <div class="legend" aria-hidden="true">
-      <span><i class="sw gem"></i>Gemini-Modell</span>
+      <span><i class="sw gem"></i>Gemini</span>
+      <span><i class="sw gra"></i>Telefon (Gradium)</span>
+      <span><i class="sw pol"></i>Policy Engine (einziger Entscheider)</span>
       <span><i class="sw code"></i>deterministischer Code</span>
-      <span><i class="sw core"></i>Policy Engine (einziger Entscheider)</span>
-      <span><i class="sw ext"></i>Mensch oder extern</span>
+      <span><i class="sw ann"></i>Anna und ihr Dashboard</span>
+      <span><i class="sw twi"></i>alte Praxen</span>
+      <span><i class="sw doc"></i>neue Praxis</span>
       <span><i class="sw rec"></i>Weg der Akten</span>
     </div>
     <figcaption><b>Lesart:</b> Jeder Pfeil in die Policy Engine ist ein Vorschlag eines Modells, jeder Pfeil heraus ein Entscheid von Code. Die Akten laufen auf dem orangen Pfad von der alten direkt zur neuen Praxis; die Dokument-Pipeline arbeitet im Auftrag der neuen Praxis und gibt nur Namen erwähnter Ärzte an den Orchestrator weiter.</figcaption>
@@ -450,16 +542,23 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       </defs>
 
       <!-- swimlanes -->
-      <rect class="lanehead" x="20" y="20" width="1020" height="32"/>
+      <rect class="lh-ann" x="20" y="20" width="190" height="32"/>
+      <rect class="lh-gem" x="210" y="20" width="290" height="32"/>
+      <rect class="lh-doc" x="500" y="20" width="260" height="32"/>
+      <rect class="lh-gra" x="760" y="20" width="280" height="32"/>
       <rect class="lane" x="20" y="20" width="1020" height="860"/>
       <line class="lane" x1="20" y1="52" x2="1040" y2="52"/>
       <line class="lane" x1="210" y1="20" x2="210" y2="880"/>
       <line class="lane" x1="500" y1="20" x2="500" y2="880"/>
       <line class="lane" x1="760" y1="20" x2="760" y2="880"/>
-      <text class="b m" x="115" y="41">Anna</text>
-      <text class="b m" x="355" y="41">Agent · Orchestrator + Policy</text>
-      <text class="b m" x="630" y="41">Dokument-Pipeline</text>
-      <text class="b m" x="900" y="41">Telefon-Agent</text>
+      <use href="#i-user" class="ic ic-ann" x="80" y="27" width="18" height="18"/>
+      <text class="b" x="104" y="41">Anna</text>
+      <use href="#i-spark" class="ic ic-gem" x="248" y="27" width="18" height="18"/>
+      <text class="b" x="272" y="41">Agent · Orchestrator + Policy</text>
+      <use href="#i-doc" class="ic ic-doc" x="562" y="27" width="18" height="18"/>
+      <text class="b" x="586" y="41">Dokument-Pipeline</text>
+      <use href="#i-phone" class="ic ic-gra" x="842" y="27" width="18" height="18"/>
+      <text class="b" x="866" y="41">Telefon-Agent</text>
 
       <!-- UML note -->
       <path class="note" d="M785,72 H1001 L1015,86 V146 H785 Z"/>
@@ -659,7 +758,7 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <text class="mono m sub" x="670" y="393">pymupdf (Seitentext)</text>
 
       <!-- Voice -->
-      <rect class="n-gem" x="560" y="450" width="220" height="120" rx="4"/>
+      <rect class="n-gra" x="560" y="450" width="220" height="120" rx="4"/>
       <use href="#c-icon" x="758" y="458" />
       <text class="lbl m" x="670" y="478">«component»</text>
       <text class="b m" x="670" y="496">Telefon-Agent · voice/</text>
@@ -669,12 +768,14 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
 
       <!-- External: Mail (open) -->
       <rect class="n-ext" x="870" y="62" width="210" height="56" rx="4"/>
+      <use href="#i-mail" class="ic ic-mut" x="882" y="73" width="22" height="22"/>
       <text class="b m" x="975" y="85">Mail-Versand</text>
       <text class="lbl m" x="975" y="103">im MVP simuliert · später HIN</text>
 
       <!-- External: Gemini -->
       <rect class="n-gem" x="870" y="132" width="210" height="358" rx="4"/>
       <use href="#c-icon" x="1058" y="140" />
+      <use href="#i-spark" class="ic ic-gem" x="961" y="260" width="28" height="28"/>
       <text class="lbl m" x="975" y="156">«Google DeepMind»</text>
       <text class="b m" x="975" y="176">Gemini API</text>
       <text class="mono m t-teal" x="975" y="200">gemini-3.8-flash</text>
@@ -684,24 +785,27 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <text class="lbl m" x="975" y="470">HTTPS · GEMINI_API_KEY</text>
 
       <!-- External: Gradium -->
-      <rect class="n-gem" x="870" y="520" width="210" height="60" rx="4"/>
+      <rect class="n-gra" x="870" y="520" width="210" height="60" rx="4"/>
+      <use href="#i-wave" class="ic ic-gra" x="882" y="539" width="22" height="22"/>
       <text class="lbl m" x="975" y="540">«Partner»</text>
       <text class="b m" x="975" y="558">Gradium</text>
       <text class="lbl m" x="975" y="573">STT · TTS über gradbot</text>
 
       <!-- External: Twilio -->
-      <rect class="n-ext" x="870" y="610" width="210" height="72" rx="4"/>
+      <rect class="n-twi" x="870" y="610" width="210" height="72" rx="4"/>
+      <use href="#i-phone" class="ic ic-twi" x="882" y="635" width="22" height="22"/>
       <text class="b m" x="975" y="634">Twilio</text>
       <text class="lbl m" x="975" y="651">Programmable Voice</text>
       <text class="lbl m" x="975" y="666">Media Streams</text>
 
       <!-- External: ngrok -->
       <rect class="n-ext" x="300" y="630" width="200" height="56" rx="4"/>
+      <use href="#i-globe" class="ic ic-mut" x="312" y="647" width="22" height="22"/>
       <text class="b m" x="400" y="653">ngrok</text>
       <text class="mono m sub" x="400" y="670">ngrok http 8000</text>
 
       <!-- Dashboard -->
-      <rect class="n-code" x="30" y="440" width="200" height="120" rx="4"/>
+      <rect class="n-ann" x="30" y="440" width="200" height="120" rx="4"/>
       <use href="#c-icon" x="208" y="448" />
       <text class="lbl m" x="130" y="466">«component»</text>
       <text class="b m" x="130" y="484">Dashboard · Next.js 15</text>
@@ -762,12 +866,14 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <rect class="dev" x="20" y="720" width="1060" height="96" rx="10"/>
       <text class="cap" x="36" y="740">ENTWICKLUNG · NICHT ZUR LAUFZEIT</text>
       <rect class="n-ext" x="120" y="752" width="220" height="48" rx="4"/>
+      <use href="#i-code" class="ic ic-mut" x="130" y="765" width="20" height="20"/>
       <text class="b m" x="230" y="773">Claude Code / Antigravity</text>
       <text class="lbl m" x="230" y="790">Coding-Agent</text>
       <rect class="n-gem" x="440" y="752" width="220" height="48" rx="4"/>
       <text class="b m" x="550" y="773">Entire</text>
       <text class="lbl m" x="550" y="790">«Partner» · Checkpoints</text>
       <rect class="n-ext" x="760" y="752" width="220" height="48" rx="4"/>
+      <use href="#i-git" class="ic ic-mut" x="770" y="765" width="20" height="20"/>
       <text class="b m" x="870" y="773">GitHub</text>
       <text class="lbl m" x="870" y="790">Repo · Checkpoint-Sync</text>
       <path class="edge" d="M340,776 H439" marker-end="url(#c-ar)"/>
@@ -777,8 +883,11 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
     </svg>
     </div>
     <div class="legend" aria-hidden="true">
-      <span><i class="sw gem"></i>nutzt Gemini bzw. Partner</span>
-      <span><i class="sw core"></i>nur Code</span>
+      <span><i class="sw gem"></i>Gemini</span>
+      <span><i class="sw gra"></i>Gradium</span>
+      <span><i class="sw twi"></i>Twilio</span>
+      <span><i class="sw ann"></i>Dashboard</span>
+      <span><i class="sw pol"></i>nur Code</span>
       <span><i class="sw ext"></i>extern, kein Partner</span>
       <span>○◖ Schnittstelle: Kreis = bietet an, Bogen = benötigt</span>
       <span>- - → interne Abhängigkeit</span>
@@ -815,152 +924,196 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
   <p>Gleiche Mechanik wie in gradium-ai/digigrad (Twilio, Bridge, gradbot), mit zwei Unterschieden: Stafette ruft nur aus, und jeder Tool-Call des Gesprächs läuft durch die Policy Engine.</p>
   <figure>
     <div class="canvas">
-    <svg viewBox="0 0 1000 1170" role="img" aria-label="Ablauf eines Anrufs: Der Orchestrator schlägt place_call vor, die Policy Engine erlaubt ihn, Twilio wählt das Handy der MPA. Nach dem Abheben ruft Twilio über ngrok die Bridge auf, die die Signatur prüft, die Quelle lädt und einen Audio-Stream öffnet. Im Gespräch spricht zuerst der feste Opener, dann läuft Gradium STT, Gemini und Gradium TTS im Kreis; jeder Tool-Call geht durch check(). Am Ende meldet end_call das Ergebnis an den Orchestrator.">
+    <svg viewBox="0 0 1000 1190" role="img" aria-label="Ablauf eines Anrufs: Der Orchestrator schlägt place_call vor, die Policy Engine erlaubt ihn, Twilio wählt das Handy der MPA. Nach dem Abheben ruft Twilio über ngrok die Bridge auf, die die Signatur prüft, die Quelle lädt und einen Audio-Stream öffnet. Im Gespräch spricht zuerst der feste Opener, dann laufen Gradium STT, Gemini und Gradium TTS im Kreis; jeder Tool-Call geht durch check(). Am Ende meldet end_call das Ergebnis an den Orchestrator.">
       <defs>
         <marker id="k-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
         <marker id="k-ok" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="ah-ok" d="M0,0 L10,5 L0,10 z"/></marker>
+        <marker id="k-twi" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="ah-twi" d="M0,0 L10,5 L0,10 z"/></marker>
       </defs>
 
-      <!-- 1: decide to call -->
-      <circle class="stepno" cx="44" cy="30" r="12"/><text class="m b inv" x="44" y="35" style="font-size:12px">1</text>
-      <text class="step" x="66" y="35">Der Agent will die Praxis anrufen</text>
-      <rect class="n-gem" x="30" y="56" width="240" height="70" rx="8"/>
-      <text class="b m" x="150" y="84">Orchestrator</text>
-      <text class="mono m" x="150" y="104">place_call(praxis_seefeld)</text>
-      <path class="edge" d="M270,91 H338" marker-end="url(#k-ar)"/>
-      <text class="lbl m" x="305" y="83">Vorschlag</text>
-      <rect class="gate" x="340" y="56" width="270" height="70" rx="8"/>
-      <text class="b m" x="475" y="80">Policy Engine · check()</text>
-      <text class="lbl m" x="475" y="98">in Vollmacht · weniger als 3 Anrufe</text>
-      <text class="lbl m" x="475" y="113">innerhalb der Anrufzeit</text>
-      <path class="edge-ok" d="M610,91 H678" marker-end="url(#k-ok)"/>
-      <text class="mono m t-ok" x="645" y="83" style="font-size:10px">ALLOWED</text>
-      <rect class="n-ext" x="680" y="56" width="290" height="70" rx="8"/>
-      <text class="b m" x="825" y="84">Twilio REST · calls.create</text>
-      <text class="lbl m" x="825" y="103">Nummer aus der Vollmacht, nie vom Telefon</text>
+      <!-- 1 · decide -->
+      <rect class="p-pol" x="20" y="14" width="960" height="140" rx="14"/>
+      <circle class="num-pol" cx="48" cy="40" r="13"/><text class="m b inv" x="48" y="45" style="font-size:12.5px">1</text>
+      <text class="step" x="72" y="45">Der Agent will die Praxis anrufen</text>
 
-      <!-- 2: phone rings -->
-      <circle class="stepno" cx="44" cy="170" r="12"/><text class="m b inv" x="44" y="175" style="font-size:12px">2</text>
-      <text class="step" x="66" y="175">Das Handy der „Praxis“ klingelt</text>
-      <rect class="n-ext" x="30" y="196" width="240" height="64" rx="8"/>
-      <rect class="icon" x="46" y="208" width="22" height="40" rx="5"/><circle class="dot" cx="57" cy="241" r="2.5"/>
-      <text class="b" x="84" y="222">Handy der MPA</text>
-      <text class="lbl" x="84" y="240">Manuel spielt die Praxis,</text>
-      <text class="lbl" x="84" y="254">am Ohr, kein Lautsprecher</text>
-      <path class="edge" d="M740,126 V228 H272" marker-end="url(#k-ar)"/>
-      <text class="lbl m" x="500" y="220">Twilio wählt die Nummer</text>
-      <path class="edge" d="M900,126 V328" marker-end="url(#k-ar)"/>
-      <text class="lbl e" x="890" y="290">nach dem Abheben:</text>
-      <text class="mono e" x="890" y="306">POST /twilio/twiml (über ngrok)</text>
+      <rect class="n-gem" x="40" y="62" width="250" height="72" rx="10"/>
+      <use href="#i-spark" class="ic ic-gem" x="54" y="85" width="26" height="26"/>
+      <text class="b" x="92" y="92">Orchestrator</text>
+      <text class="mono" x="92" y="112">place_call(praxis_seefeld)</text>
 
-      <!-- 3: bridge -->
-      <rect class="panel" x="30" y="330" width="940" height="190" rx="12"/>
-      <circle class="stepno" cx="58" cy="360" r="12"/><text class="m b inv" x="58" y="365" style="font-size:12px">3</text>
-      <text class="step" x="80" y="365">bridge.py</text>
-      <text class="lbl" x="160" y="365">läuft auf dem Laptop, FastAPI Port 8000</text>
-      <text class="b" x="80" y="400">① Ist es wirklich Twilio?</text>
+      <path class="edge" d="M290,98 H346" marker-end="url(#k-ar)"/>
+      <text class="lbl m" x="318" y="90">Vorschlag</text>
+
+      <rect class="gate" x="348" y="62" width="272" height="72" rx="10"/>
+      <use href="#i-shield" class="ic ic-pol" x="362" y="85" width="26" height="26"/>
+      <text class="b" x="400" y="88">Policy Engine · check()</text>
+      <text class="lbl" x="400" y="106">in Vollmacht · weniger als 3 Anrufe</text>
+      <text class="lbl" x="400" y="121">innerhalb der Anrufzeit</text>
+
+      <path class="edge-ok" d="M620,98 H676" marker-end="url(#k-ok)"/>
+      <text class="mono m t-ok" x="648" y="90" style="font-size:10px">ALLOWED</text>
+
+      <rect class="n-twi" x="678" y="62" width="282" height="72" rx="10"/>
+      <use href="#i-phone" class="ic ic-twi" x="692" y="85" width="26" height="26"/>
+      <text class="b" x="730" y="92">Twilio · calls.create</text>
+      <text class="lbl" x="730" y="111">Nummer aus der Vollmacht,</text>
+      <text class="lbl" x="730" y="125">nie eine vom Telefon</text>
+
+      <!-- 2 · ring -->
+      <rect class="p-twi" x="20" y="172" width="960" height="122" rx="14"/>
+      <circle class="num-twi" cx="48" cy="198" r="13"/><text class="m b inv" x="48" y="203" style="font-size:12.5px">2</text>
+      <text class="step" x="72" y="203">Das Handy der „Praxis“ klingelt</text>
+
+      <rect class="n-ext" x="40" y="218" width="300" height="62" rx="10"/>
+      <use href="#i-mobile" class="ic" x="54" y="236" width="26" height="26"/>
+      <text class="b" x="92" y="243">Handy der MPA</text>
+      <text class="lbl" x="92" y="262">Manuel spielt die Praxis, Handy am Ohr</text>
+
+      <rect class="n-twi" x="678" y="218" width="282" height="62" rx="10"/>
+      <use href="#i-cloud" class="ic ic-twi" x="692" y="236" width="26" height="26"/>
+      <text class="b" x="730" y="243">Twilio</text>
+      <text class="lbl" x="730" y="262">wählt und wartet aufs Abheben</text>
+
+      <path class="edge" d="M819,134 V216" marker-end="url(#k-ar)"/>
+      <path class="edge-twi" d="M678,249 H344" marker-end="url(#k-twi)"/>
+      <text class="lbl m" x="510" y="241">ruft an</text>
+
+      <path class="edge" d="M819,280 V326" marker-end="url(#k-ar)"/>
+      <text class="lbl e" x="808" y="306">nach dem Abheben:</text>
+      <text class="mono e" x="808" y="321" style="font-size:10px">POST /twilio/twiml (über ngrok)</text>
+
+      <!-- 3 · bridge -->
+      <rect class="p-gra" x="20" y="330" width="960" height="192" rx="14"/>
+      <circle class="num-gra" cx="48" cy="358" r="13"/><text class="m b inv" x="48" y="363" style="font-size:12.5px">3</text>
+      <use href="#i-laptop" class="ic ic-gra" x="70" y="346" width="24" height="24"/>
+      <text class="step" x="102" y="363">bridge.py</text>
+      <text class="lbl" x="184" y="363">läuft auf dem Laptop · FastAPI Port 8000</text>
+
+      <circle class="b-gra badge" cx="88" cy="396" r="10"/><text class="m b" x="88" y="400" style="font-size:11px">1</text>
+      <text class="b" x="108" y="400">Ist es wirklich Twilio?</text>
       <text x="300" y="400">Signatur prüfen (HMAC mit TWILIO_AUTH_TOKEN), sonst abweisen</text>
-      <text class="b" x="80" y="432">② Welcher Anruf?</text>
+
+      <circle class="b-gra badge" cx="88" cy="428" r="10"/><text class="m b" x="88" y="432" style="font-size:11px">2</text>
+      <text class="b" x="108" y="432">Welcher Anruf?</text>
       <text x="300" y="432">Parameter <tspan class="mono">room</tspan> → Quelle, Vollmacht v1 und Ziel des Gesprächs laden</text>
       <text class="lbl" x="300" y="451">Keine Caller-ID-Weiche wie in digigrad: Stafette ruft nur aus, eingehende Anrufe werden abgewiesen.</text>
-      <text class="b" x="80" y="485">③ Audio verbinden</text>
+
+      <circle class="b-gra badge" cx="88" cy="481" r="10"/><text class="m b" x="88" y="485" style="font-size:11px">3</text>
+      <text class="b" x="108" y="485">Audio verbinden</text>
       <text class="mono" x="300" y="485">&lt;Connect&gt;&lt;Stream url="wss://…/twilio/stream"&gt;</text>
       <text class="lbl" x="300" y="503">zurückgeben → Twilio öffnet die Audio-Leitung</text>
 
-      <path class="edge" d="M500,520 V566" marker-end="url(#k-ar)"/>
-      <text x="514" y="548">Zweiweg-Audio</text>
-      <text class="mono sub" x="614" y="548">WS /twilio/stream · 8 kHz μ-law</text>
+      <path class="edge" d="M500,522 V566" marker-end="url(#k-ar)"/>
+      <use href="#i-wave" class="ic ic-gra" x="514" y="532" width="22" height="22"/>
+      <text class="b" x="544" y="548">Zweiweg-Audio</text>
+      <text class="mono sub" x="644" y="548">WS /twilio/stream · 8 kHz μ-law</text>
 
-      <!-- 4: live loop -->
-      <rect class="panel-live" x="30" y="570" width="940" height="420" rx="12"/>
-      <rect class="backend" x="30" y="570" width="940" height="420" rx="12"/>
-      <circle class="stepno" cx="58" cy="600" r="12"/><text class="m b inv" x="58" y="605" style="font-size:12px">4</text>
-      <text class="step" x="80" y="605">Das Gespräch</text>
-      <text class="mono sub" x="200" y="605">gradbot.run()</text>
+      <!-- 4 · live loop -->
+      <rect class="p-doc" x="20" y="570" width="960" height="420" rx="14"/>
+      <circle class="num-doc" cx="48" cy="598" r="13"/><text class="m b inv" x="48" y="603" style="font-size:12.5px">4</text>
+      <text class="step" x="72" y="603">Das Gespräch</text>
+      <text class="mono sub" x="188" y="603">gradbot.run()</text>
 
-      <rect class="note" x="54" y="620" width="892" height="50" rx="6"/>
-      <text class="lbl b" x="68" y="640">Zuerst, fix und vorgerendert (nicht vom LLM formuliert):</text>
-      <text class="it" x="68" y="659">«Grüezi, hier ist ein KI-Assistent der Firma Stafette. Ich rufe im Auftrag von Anna Muster an … Darf ich das Gespräch transkribieren?»</text>
+      <rect class="note" x="54" y="620" width="892" height="52" rx="8"/>
+      <use href="#i-speaker" class="ic ic-gra" x="66" y="633" width="26" height="26"/>
+      <text class="lbl b" x="104" y="640">Zuerst, fix und vorgerendert (nicht vom LLM formuliert):</text>
+      <text class="it" x="104" y="660">«Grüezi, hier ist ein KI-Assistent der Firma Stafette. Ich rufe im Auftrag von Anna Muster an … Darf ich transkribieren?»</text>
 
-      <rect class="n-ext" x="54" y="694" width="130" height="64" rx="8"/>
-      <text class="b m" x="119" y="722">MPA spricht</text>
-      <text class="lbl m" x="119" y="740">am Telefon</text>
-      <path class="edge" d="M184,726 H212" marker-end="url(#k-ar)"/>
-      <rect class="n-gem" x="214" y="694" width="160" height="64" rx="8"/>
-      <text class="b m" x="294" y="722">Gradium STT</text>
-      <text class="lbl m" x="294" y="740">Sprache → Text (de)</text>
-      <path class="edge" d="M374,726 H402" marker-end="url(#k-ar)"/>
-      <rect class="n-gem" x="404" y="694" width="180" height="64" rx="8"/>
-      <text class="b m" x="494" y="716">Gemini</text>
-      <text class="mono m t-teal" x="494" y="733">gemini-3.6-flash</text>
-      <text class="lbl m" x="494" y="749">antwortet oder wählt ein Tool</text>
-      <path class="edge" d="M584,726 H612" marker-end="url(#k-ar)"/>
-      <rect class="n-gem" x="614" y="694" width="160" height="64" rx="8"/>
-      <text class="b m" x="694" y="722">Gradium TTS</text>
-      <text class="lbl m" x="694" y="740">Schweizer Stimme</text>
-      <path class="edge" d="M774,726 H802" marker-end="url(#k-ar)"/>
-      <rect class="n-ext" x="804" y="694" width="142" height="64" rx="8"/>
-      <text class="b m" x="875" y="722">zurück ans</text>
-      <text class="b m" x="875" y="740">Telefon</text>
+      <rect class="n-ext" x="54" y="694" width="130" height="70" rx="10"/>
+      <use href="#i-user" class="ic" x="106" y="702" width="26" height="26"/>
+      <text class="b m" x="119" y="746">MPA spricht</text>
+      <path class="edge" d="M184,729 H212" marker-end="url(#k-ar)"/>
 
-      <path class="edge" d="M494,760 V808" marker-start="url(#k-ar)" marker-end="url(#k-ar)"/>
-      <text class="lbl" x="502" y="788">Tool-Call · Ergebnis</text>
+      <rect class="n-gra" x="214" y="694" width="160" height="70" rx="10"/>
+      <use href="#i-mic" class="ic ic-gra" x="281" y="702" width="26" height="26"/>
+      <text class="b m" x="294" y="744">Gradium STT</text>
+      <text class="lbl m" x="294" y="758">Sprache → Text (de)</text>
+      <path class="edge" d="M374,729 H402" marker-end="url(#k-ar)"/>
 
-      <!-- what the agent lacks -->
-      <rect class="n-ext" x="54" y="810" width="250" height="160" rx="8"/>
-      <text class="b" x="70" y="834">Was der Telefon-Agent nicht hat</text>
-      <text class="lbl" x="70" y="856">Diagnosen, Befunde, Akten.</text>
-      <text class="lbl" x="70" y="872">Kein Tool liefert sie.</text>
-      <text class="b" x="70" y="902" style="font-size:11.5px">Was er sagen darf</text>
-      <text class="lbl" x="70" y="922">Name und Geburtsdatum von Anna,</text>
-      <text class="lbl" x="70" y="938">Empfängerin Dr. Keller</text>
-      <text class="mono sub" x="70" y="956" style="font-size:9.5px">may_disclose_on_call</text>
+      <rect class="n-gem" x="404" y="694" width="180" height="70" rx="10"/>
+      <use href="#i-spark" class="ic ic-gem" x="481" y="702" width="26" height="26"/>
+      <text class="b m" x="494" y="744">Gemini</text>
+      <text class="mono m t-teal" x="494" y="758">gemini-3.6-flash</text>
+      <path class="edge" d="M584,729 H612" marker-end="url(#k-ar)"/>
 
-      <!-- tools -->
-      <rect class="toolbox" x="330" y="810" width="330" height="160" rx="8"/>
-      <text class="b" x="346" y="834">Tools (Function Calls)</text>
-      <text class="mono" x="346" y="860">request_records</text>
-      <text class="mono" x="346" y="880">confirm_channel</text>
-      <text class="mono" x="346" y="900">identify_principal</text>
-      <text class="mono" x="346" y="920">confirm_recipient</text>
-      <text class="mono" x="510" y="860">set_recipient</text>
-      <text class="mono" x="510" y="880">accept_fee</text>
-      <text class="mono" x="510" y="900">end_call(outcome)</text>
-      <text class="lbl" x="346" y="954">jedes Tool nur mit erlaubten Argumenten</text>
+      <rect class="n-gra" x="614" y="694" width="160" height="70" rx="10"/>
+      <use href="#i-speaker" class="ic ic-gra" x="681" y="702" width="26" height="26"/>
+      <text class="b m" x="694" y="744">Gradium TTS</text>
+      <text class="lbl m" x="694" y="758">Schweizer Stimme</text>
+      <path class="edge" d="M774,729 H802" marker-end="url(#k-ar)"/>
+
+      <rect class="n-ext" x="804" y="694" width="142" height="70" rx="10"/>
+      <use href="#i-phone" class="ic" x="862" y="702" width="26" height="26"/>
+      <text class="b m" x="875" y="746">zurück ans Telefon</text>
+
+      <path class="edge" d="M494,766 V808" marker-start="url(#k-ar)" marker-end="url(#k-ar)"/>
+      <text class="lbl" x="502" y="791">Tool-Call · Ergebnis</text>
+
+      <rect class="n-ext" x="54" y="810" width="250" height="160" rx="10"/>
+      <use href="#i-lock" class="ic ic-mut" x="68" y="822" width="22" height="22"/>
+      <text class="b" x="98" y="838">Was er nicht weiss</text>
+      <text class="lbl" x="70" y="864">Diagnosen, Befunde, Akten.</text>
+      <text class="lbl" x="70" y="880">Kein Tool liefert sie.</text>
+      <text class="b" x="70" y="908" style="font-size:11.5px">Was er sagen darf</text>
+      <text class="lbl" x="70" y="926">Name und Geburtsdatum von Anna,</text>
+      <text class="lbl" x="70" y="942">Empfängerin Dr. Keller</text>
+      <text class="mono sub" x="70" y="960" style="font-size:9.5px">may_disclose_on_call</text>
+
+      <rect class="n-tool" x="330" y="810" width="330" height="160" rx="10"/>
+      <use href="#i-wrench" class="ic ic-tool" x="344" y="822" width="22" height="22"/>
+      <text class="b" x="374" y="838">Tools (Function Calls)</text>
+      <text class="mono" x="346" y="866">request_records</text>
+      <text class="mono" x="346" y="886">confirm_channel</text>
+      <text class="mono" x="346" y="906">identify_principal</text>
+      <text class="mono" x="346" y="926">confirm_recipient</text>
+      <text class="mono" x="510" y="866">set_recipient</text>
+      <text class="mono" x="510" y="886">accept_fee</text>
+      <text class="mono" x="510" y="906">end_call(outcome)</text>
+      <text class="lbl" x="346" y="956">jedes Tool nur mit erlaubten Argumenten</text>
 
       <path class="edge" d="M660,890 H698" marker-end="url(#k-ar)"/>
       <text class="lbl m" x="679" y="882">jeder</text>
 
-      <!-- gate -->
-      <rect class="gate" x="700" y="810" width="246" height="160" rx="8"/>
-      <text class="b" x="716" y="834">Policy Engine · check()</text>
-      <text class="mono t-ok" x="716" y="864" style="font-size:11px">ALLOWED</text>
-      <text class="lbl" x="800" y="864">Tool läuft</text>
-      <text class="mono t-bad" x="716" y="894" style="font-size:11px">BLOCKED</text>
-      <text class="lbl" x="800" y="894">Grund an Gemini,</text>
-      <text class="lbl" x="800" y="908">es lehnt höflich ab</text>
+      <rect class="gate" x="700" y="810" width="246" height="160" rx="10"/>
+      <use href="#i-shield" class="ic ic-pol" x="714" y="822" width="22" height="22"/>
+      <text class="b" x="744" y="838">Policy Engine · check()</text>
+      <text class="mono t-ok" x="716" y="868" style="font-size:11px">ALLOWED</text>
+      <text class="lbl" x="800" y="868">Tool läuft</text>
+      <text class="mono t-bad" x="716" y="896" style="font-size:11px">BLOCKED</text>
+      <text class="lbl" x="800" y="896">Grund an Gemini,</text>
+      <text class="lbl" x="800" y="910">es lehnt höflich ab</text>
       <text class="mono t-warn" x="716" y="938" style="font-size:11px">APPROVAL</text>
       <text class="lbl" x="800" y="938">Anna wird gefragt</text>
       <text class="lbl" x="716" y="960">jeder Entscheid → Protokoll</text>
 
       <path class="edge" d="M500,990 V1028" marker-end="url(#k-ar)"/>
 
-      <!-- 5: after the call -->
-      <rect class="panel" x="30" y="1030" width="940" height="125" rx="12"/>
-      <circle class="stepno" cx="58" cy="1060" r="12"/><text class="m b inv" x="58" y="1065" style="font-size:12px">5</text>
-      <text class="step" x="80" y="1065">Wenn der Anruf endet</text>
-      <text class="mono b" x="80" y="1100">end_call(outcome)</text>
-      <text class="lbl" x="80" y="1118">requested · needs_consent · closed</text>
-      <text class="lbl" x="80" y="1134">refused · callback → Orchestrator</text>
-      <text class="b" x="310" y="1100">Transkript</text>
-      <text class="lbl" x="310" y="1118">nur wenn die MPA zustimmt,</text>
-      <text class="lbl" x="310" y="1134">in-memory mit Ablaufzeit</text>
-      <text class="b" x="540" y="1100">Keine Aufnahme</text>
-      <text class="lbl" x="540" y="1118">kein WAV, kein Memory,</text>
-      <text class="lbl" x="540" y="1134">nichts auf der Festplatte</text>
-      <text class="b" x="770" y="1100">Annas App</text>
-      <text class="lbl" x="770" y="1118">Station aktualisiert, Hinweis bei</text>
-      <text class="lbl" x="770" y="1134">BLOCKED, Event im Protokoll</text>
+      <!-- 5 · after -->
+      <rect class="p-gem" x="20" y="1030" width="960" height="146" rx="14"/>
+      <circle class="num-gem" cx="48" cy="1058" r="13"/><text class="m b inv" x="48" y="1063" style="font-size:12.5px">5</text>
+      <text class="step" x="72" y="1063">Wenn der Anruf endet</text>
+
+      <use href="#i-phone" class="ic ic-gem" x="50" y="1088" width="26" height="26"/>
+      <text class="mono b" x="86" y="1100">end_call(outcome)</text>
+      <text class="lbl" x="86" y="1118">requested · needs_consent · closed</text>
+      <text class="lbl" x="86" y="1134">refused · callback</text>
+      <text class="lbl" x="86" y="1150">→ Orchestrator plant weiter</text>
+
+      <use href="#i-doc" class="ic ic-gem" x="290" y="1088" width="26" height="26"/>
+      <text class="b" x="326" y="1100">Transkript</text>
+      <text class="lbl" x="326" y="1118">nur wenn die MPA zustimmt,</text>
+      <text class="lbl" x="326" y="1134">in-memory mit Ablaufzeit</text>
+
+      <use href="#i-lock" class="ic ic-gem" x="530" y="1088" width="26" height="26"/>
+      <text class="b" x="566" y="1100">Keine Aufnahme</text>
+      <text class="lbl" x="566" y="1118">kein WAV, kein Memory,</text>
+      <text class="lbl" x="566" y="1134">nichts auf der Festplatte</text>
+
+      <use href="#i-screen" class="ic ic-gem" x="760" y="1088" width="26" height="26"/>
+      <text class="b" x="796" y="1100">Annas App</text>
+      <text class="lbl" x="796" y="1118">Station aktualisiert, Hinweis</text>
+      <text class="lbl" x="796" y="1134">bei BLOCKED, Event im</text>
+      <text class="lbl" x="796" y="1150">Protokoll</text>
     </svg>
     </div>
     <figcaption><b>Lesart:</b> Schritte 2 bis 4 entsprechen dem Ablauf in digigrad. Neu sind Schritt 1 (der Anruf selbst ist ein Tool-Call, den die Policy Engine erlauben muss) und das Tor rechts in Schritt 4: Gemini kann am Telefon nur über die gelben Tools handeln, und jedes geht durch <code>check()</code>.</figcaption>
