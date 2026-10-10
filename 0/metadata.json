@@ -1,0 +1,86 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4JW6F8JJHFNTNBN4NMP6KMJ",
+  "session_id": "6d51b432-d195-485a-a55e-500dfe806f78",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-10T12:21:57.6020152Z",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "backend/docs/README.md",
+    "backend/docs/routes.py",
+    "backend/main.py",
+    "backend/voice/routes.py"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-5-5",
+  "turn_id": "141705574380",
+  "checkpoint_transcript_start": 1551,
+  "transcript_lines_at_start": 1551,
+  "compact_transcript_start": 204,
+  "token_usage": {
+    "input_tokens": 4,
+    "cache_creation_tokens": 2849,
+    "cache_read_tokens": 1039753,
+    "output_tokens": 4229,
+    "api_call_count": 2
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "claude-skill-toolu_019xVpwVjRhyTqa1LyM34wNE",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "artifact-diagramming"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "fba1594a3af1",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 186,
+        "end": 187,
+        "entry_ids": [
+          "aabe7fcc-de55-4c1c-bf94-5f2976920043"
+        ],
+        "tool_use_id": "toolu_019xVpwVjRhyTqa1LyM34wNE"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_019xVpwVjRhyTqa1LyM34wNE"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: artifact-diagramming",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 32
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-10T12:21:57.2981768Z",
+    "agent_lines": 35,
+    "agent_removed": 1,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 35,
+    "total_lines_changed": 36,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}
