@@ -43,3 +43,7 @@ Vorgehen: Zeig mir zuerst einen kurzen Plan, bevor du Code schreibst.
 Dann Schritt für Schritt, nach jedem Schritt Tests laufen lassen.
 Kleine Commits; vor jedem Push `git pull --rebase`.
 </pasted_content id="c532">
+
+---
+
+yes
