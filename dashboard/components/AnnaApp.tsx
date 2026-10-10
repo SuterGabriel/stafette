@@ -56,7 +56,7 @@ export function AnnaApp({ state, onDecide, onReset, onStart }: Props) {
       {screen === "start" && (
         <BlurFade key="start" className="screen">
           <div className="phone-body phone-body--start">
-            <h1 className="h1">New GP? I&apos;ll collect your records.</h1>
+            <h1 className="h1">New family doctor? I&apos;ll collect your records.</h1>
             <p className="muted">Tell me who you are switching to and where you have been treated so far.</p>
           </div>
           <footer className="phone-foot">
@@ -91,7 +91,7 @@ export function AnnaApp({ state, onDecide, onReset, onStart }: Props) {
             <div className="eyebrow">I understood</div>
             <dl className="rows">
               <div className="row">
-                <dt>New GP</dt>
+                <dt>New family doctor</dt>
                 <dd>{state.doctor.name}</dd>
               </div>
               <div className="row">
