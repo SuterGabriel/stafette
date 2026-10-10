@@ -1,0 +1,53 @@
+Gut können wir nun die Demo rein aus der mobile Ansicht machen? 
+
+Dazu änder mir den Switch auf die selbe grösse wie das Handy. Zentriere das Handy auf der Website
+
+---
+
+Wird auch angerufen ? Was habe ich nun noch offen Gabriel an Tasks?
+
+---
+
+Also was könntest du jetzt machen ?
+
+---
+
+Gut mach dies so. Danach mache ich den Testanruf.
+
+---
+
+Wo haben wir die Stimmen schon wieder die Frau und der Mann?`
+
+---
+
+Pass mir dies noch an. 
+Vercel-URL: https://stafette.vercel.app. Bitte in backend/.env ergänzen: CORS_ORIGINS=http://localhost:3000,https://stafette.vercel.app und das Backend neu starten.
+
+---
+
+Backend neu starten
+
+---
+
+Der Voice Agent fragt mich ja ob es ok ist ein Transkript zu machen. Wenn ich dann ja sage passiert nichts. Dies ist schlecht...
+Was müsste da passieren.
+
+---
+
+Das Problem nun ist wenn ich den Call abnehme höre ich gar nichts mehr.
+
+---
+
+Was ich mir hier noch überlegt habe: 
+
+Ist das dies gesprochen wird anstatt dann einfach angezeigt wird. Aber wir müssen dennoch wissen was da gesprochen werden muss. Verstehst du was ich meine?
+
+---
+
+Übersetze mir dies auch noch:
+
+Eine Meldung aus Manuels Pipeline: Verworfene Angaben erscheinen im Protokoll als „Angabe verworfen …“. Das ist seine Datei, bei unseren Testakten wird aber nichts verworfen. Sag Manuel Bescheid, falls er es übersetzen will.
+
+---
+
+Das Problem die Abkürzung GP versteht niemand.
