@@ -1,0 +1,100 @@
+Was muss ich hier genau machen ?
+
+Sprich welche Tokens oder Ids brauchen wir ?
+
+---
+
+Wie auch DEMO_TO_NUMBER ist eingetragen
+
+Gut dies brauche ich noch. 
+Danach fehlt nur noch ngrok: Authtoken einrichten und die feste Domain als PUBLIC_URL eintragen.
+
+---
+
+Was brauche ich hier:
+
+---
+
+Aktuell bin ich hier in Grok.
+
+---
+
+So??
+
+---
+
+<pasted_content id="560a">
+ngrok config add-authtoken <token aus Schritt 2>
+ngrok update
+ngrok http 8000 --url ngrok http 80 --url https://runny-lagoon-overhead.ngrok-free.dev
+</pasted_content id="560a">
+
+Wie komme ich an den Token heran ?
+
+---
+
+Schau hier bitte nochmals: 
+
+<pasted_content id="560a">
+PS C:\stafette> ngrok config add-authtoken REDACTED
+>> ngrok update
+>> ngrok http 8000 --url ngrok http 80 --url https://runny-lagoon-overhead.ngrok-free.dev
+>> 
+ngrok : The term 'ngrok' is not recognized as the name of a cmdlet, function, script file, or 
+operable program. Check the spelling of the name, or if a path was included, verify that the 
+path is correct and try again.
+At line:1 char:1
++ ngrok config add-authtoken REDACTED ...
++ ~~~~~
+    + CategoryInfo          : ObjectNotFound: (ngrok:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+ngrok : The term 'ngrok' is not recognized as the name of a cmdlet, function, script file, or 
+operable program. Check the spelling of the name, or if a path was included, verify that the 
+path is correct and try again.
+At line:2 char:1
++ ngrok update
++ ~~~~~
+    + CategoryInfo          : ObjectNotFound: (ngrok:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+ngrok : The term 'ngrok' is not recognized as the name of a cmdlet, function, script file, or 
+operable program. Check the spelling of the name, or if a path was included, verify that the 
+path is correct and try again.
+At line:3 char:1
++ ngrok http 8000 --url ngrok http 80 --url https://runny-lagoon-overhe ...
++ ~~~~~
+    + CategoryInfo          : ObjectNotFound: (ngrok:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+PS C:\stafette>
+</pasted_content id="560a">
+
+---
+
+Chef ich bekomme immer diese Fehler beim hinzufügen: 
+
+<pasted_content id="560a">
+ngrok : The term 'ngrok' is not recognized as the name of a cmdlet, function, script file, or 
+operable program. Check the spelling of the name, or if a path was included, verify that the 
+path is correct and try again.
+At line:1 char:1
++ ngrok config add-authtoken REDACTED ...
++ ~~~~~
+    + CategoryInfo          : ObjectNotFound: (ngrok:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+</pasted_content id="560a">
+
+Token wurde rotiert scheitert aber immer noch.
+
+---
+
+gut ist gesaved was nun ?
+
+---
+
+Ist von meiner Seite noch was offen. Denn Manuel hat noch commits und pushes gemacht. Das Ziel wäre noch dies zu verbinden. Was machen wir nun mit Entire mit Brain und dem anderen...
+
+---
+
+Okey gut. Lass uns Entire bauen dann haben wir dann trackt dies. Danach machen wir den Test anrufen.
