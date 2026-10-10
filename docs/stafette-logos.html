@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stafette Logos</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700&family=Instrument+Sans:wght@500;600&family=DM+Sans:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#F4F2EE; --card:#FFFFFF; --text:#1A1F24; --muted:#6B737C; --line:#E4E0D8; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family:Manrope, system-ui, sans-serif; padding:32px 16px 48px; }
+  .wrap { max-width:1080px; margin:0 auto; }
+  h1 { font-size:28px; margin:0 0 6px; letter-spacing:-0.02em; }
+  .lead { color:var(--muted); margin:0 0 28px; max-width:720px; line-height:1.5; }
+  .names { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 32px; }
+  .chip { background:var(--card); border:1px solid var(--line); border-radius:999px; padding:6px 12px; font-size:14px; }
+  .chip b { color:#0F8B8D; }
+  .chip.no { color:var(--muted); text-decoration:line-through; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:20px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:18px; overflow:hidden; display:flex; flex-direction:column; }
+  .hero { padding:36px 24px; display:flex; align-items:center; justify-content:center; gap:14px; min-height:170px; }
+  .word { font-size:38px; letter-spacing:-0.03em; font-weight:700; }
+  .body { padding:20px 22px 22px; border-top:1px solid var(--line); flex:1; }
+  .tag { font-size:12px; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted); margin-bottom:4px; }
+  h2 { font-size:20px; margin:0 0 8px; }
+  p { margin:0 0 14px; line-height:1.5; font-size:14.5px; }
+  .sw { display:flex; gap:6px; margin-bottom:12px; }
+  .sw div { flex:1; height:38px; border-radius:8px; display:flex; align-items:flex-end; padding:4px 6px; font-size:10.5px; font-family:ui-monospace, monospace; }
+  .icons { display:flex; gap:12px; align-items:center; margin-top:4px; }
+  .app { width:56px; height:56px; border-radius:14px; display:flex; align-items:center; justify-content:center; }
+  .small { font-size:12.5px; color:var(--muted); }
+  .best { display:inline-block; background:#0F8B8D; color:#fff; font-size:11px; padding:3px 8px; border-radius:999px; margin-left:6px; vertical-align:middle; }
+  footer { margin-top:28px; color:var(--muted); font-size:13px; line-height:1.5; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Stafette – Logo-Skizzen</h1>
+  <p class="lead">Stafette: der Bote, der die Depesche überbringt (FR estafette, IT staffetta). Claim: <em>Deine Krankengeschichte – gesammelt, nicht gespeichert.</em> Drei Richtungen, alle ohne Kreuz, Herz oder Stethoskop.</p>
+
+  <div class="names">
+    <span class="chip"><b>1 Stafette</b> · Empfehlung</span>
+    <span class="chip">2 Anamna</span>
+    <span class="chip">3 Handova</span>
+    <span class="chip">Estafette</span>
+    <span class="chip">Fidovia</span>
+    <span class="chip no">Relai (Bitcoin-App in Zürich)</span>
+    <span class="chip no">Übergabe (nur als Claim)</span>
+  </div>
+
+  <div class="grid">
+
+    <!-- A -->
+    <div class="card">
+      <div class="hero" style="background:#F7F5F0">
+        <svg width="72" height="72" viewBox="0 0 64 64" aria-hidden="true">
+          <defs>
+            <rect id="a1" x="4" y="26" width="38" height="14" rx="7" transform="rotate(-35 23 33)"/>
+            <rect id="a2" x="22" y="24" width="38" height="14" rx="7" transform="rotate(-35 41 31)"/>
+            <clipPath id="ac"><use href="#a1"/></clipPath>
+          </defs>
+          <use href="#a1" fill="#0F8B8D"/>
+          <use href="#a2" fill="#FF7A59"/>
+          <use href="#a2" fill="#0E2A3B" clip-path="url(#ac)"/>
+        </svg>
+        <span class="word" style="color:#0E2A3B;font-family:Manrope">stafette</span>
+      </div>
+      <div class="body">
+        <div class="tag">Konzept A</div>
+        <h2>Der Stab <span class="best">Favorit</span></h2>
+        <p>Zwei Balken im Moment der Übergabe. Wo sie sich überlappen, entsteht die dritte Farbe: die belegte, freigegebene Übergabe. Lässt sich auf der Bühne animieren (Balken gleiten ineinander).</p>
+        <div class="sw">
+          <div style="background:#0E2A3B;color:#fff">#0E2A3B</div>
+          <div style="background:#0F8B8D;color:#fff">#0F8B8D</div>
+          <div style="background:#FF7A59;color:#fff">#FF7A59</div>
+          <div style="background:#F7F5F0;color:#0E2A3B;border:1px solid #E4E0D8">#F7F5F0</div>
+        </div>
+        <div class="icons">
+          <div class="app" style="background:#0E2A3B">
+            <svg width="40" height="40" viewBox="0 0 64 64" aria-hidden="true">
+              <use href="#a1" fill="#0F8B8D"/><use href="#a2" fill="#FF7A59"/><use href="#a2" fill="#F7F5F0" clip-path="url(#ac)"/>
+            </svg>
+          </div>
+          <span class="small">Schrift: Manrope Semibold/Bold</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- B -->
+    <div class="card">
+      <div class="hero" style="background:#EDE6DA">
+        <svg width="72" height="72" viewBox="0 0 64 64" aria-hidden="true">
+          <circle cx="32" cy="32" r="22" fill="none" stroke="#1B2A4A" stroke-width="7" stroke-linecap="round"
+                  stroke-dasharray="104 34" transform="rotate(-40 32 32)"/>
+          <path d="M22 33 L29.5 40.5 L44 25" fill="none" stroke="#6FAF8F" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="49.6" cy="17.5" r="4" fill="#F2B134"/>
+        </svg>
+        <span class="word" style="color:#1B2A4A;font-family:'Instrument Sans'">stafette</span>
+      </div>
+      <div class="body">
+        <div class="tag">Konzept B</div>
+        <h2>Das Siegel</h2>
+        <p>Ein Kreis, der sich schliesst: Unterlagen werden eingesammelt, bis die Vorgeschichte vollständig ist. Der Haken steht für „belegt“, der Punkt für die offene, erkannte Quelle.</p>
+        <div class="sw">
+          <div style="background:#1B2A4A;color:#fff">#1B2A4A</div>
+          <div style="background:#6FAF8F;color:#fff">#6FAF8F</div>
+          <div style="background:#F2B134;color:#1B2A4A">#F2B134</div>
+          <div style="background:#EDE6DA;color:#1B2A4A;border:1px solid #E4E0D8">#EDE6DA</div>
+        </div>
+        <div class="icons">
+          <div class="app" style="background:#1B2A4A">
+            <svg width="40" height="40" viewBox="0 0 64 64" aria-hidden="true">
+              <circle cx="32" cy="32" r="22" fill="none" stroke="#EDE6DA" stroke-width="7" stroke-linecap="round" stroke-dasharray="104 34" transform="rotate(-40 32 32)"/>
+              <path d="M22 33 L29.5 40.5 L44 25" fill="none" stroke="#6FAF8F" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="49.6" cy="17.5" r="4" fill="#F2B134"/>
+            </svg>
+          </div>
+          <span class="small">Schrift: Instrument Sans + Inter fürs UI</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- C -->
+    <div class="card">
+      <div class="hero" style="background:#F3F7FB">
+        <svg width="72" height="72" viewBox="0 0 64 64" aria-hidden="true">
+          <rect x="8" y="6" width="34" height="42" rx="7" fill="#4FA3D9"/>
+          <rect x="20" y="15" width="36" height="44" rx="7" fill="#12355B"/>
+          <rect x="27" y="25" width="22" height="4" rx="2" fill="#FFFFFF" opacity="0.45"/>
+          <rect x="27" y="33" width="18" height="4" rx="2" fill="#FFFFFF" opacity="0.45"/>
+          <rect x="27" y="41" width="15" height="6" rx="3" fill="#F2B134"/>
+        </svg>
+        <span class="word" style="color:#12355B;font-family:'DM Sans'">stafette</span>
+      </div>
+      <div class="body">
+        <div class="tag">Konzept C</div>
+        <h2>Die belegte Akte</h2>
+        <p>Ein Dokument wird von einer Stelle an die nächste weitergereicht, eine Zeile ist markiert: das wörtliche Zitat, das jede Angabe belegt. Wirkt am meisten nach seriöser Infrastruktur für Praxen.</p>
+        <div class="sw">
+          <div style="background:#12355B;color:#fff">#12355B</div>
+          <div style="background:#4FA3D9;color:#fff">#4FA3D9</div>
+          <div style="background:#F2B134;color:#12355B">#F2B134</div>
+          <div style="background:#F3F7FB;color:#12355B;border:1px solid #E4E0D8">#F3F7FB</div>
+        </div>
+        <div class="icons">
+          <div class="app" style="background:#12355B">
+            <svg width="40" height="40" viewBox="0 0 64 64" aria-hidden="true">
+              <rect x="8" y="6" width="34" height="42" rx="7" fill="#4FA3D9"/>
+              <rect x="20" y="15" width="36" height="44" rx="7" fill="#F3F7FB"/>
+              <rect x="27" y="25" width="22" height="4" rx="2" fill="#12355B" opacity="0.35"/>
+              <rect x="27" y="33" width="18" height="4" rx="2" fill="#12355B" opacity="0.35"/>
+              <rect x="27" y="41" width="15" height="6" rx="3" fill="#F2B134"/>
+            </svg>
+          </div>
+          <span class="small">Schrift: DM Sans Medium</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>Skizzen für den Hackathon, keine finalen Marken. Vor öffentlicher Nutzung prüfen: stafette.ch auf nic.ch, „Stafette“ auf swissreg.ch und EUIPO (Klassen 9, 42, 44). Kein Schweizerkreuz verwenden (im medizinischen Bereich Verwechslungsgefahr mit dem Rotkreuzzeichen); Swissness über Text zeigen.</footer>
+</div>
+</body>
+</html>
