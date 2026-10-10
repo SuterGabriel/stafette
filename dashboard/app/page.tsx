@@ -19,7 +19,7 @@ const TO_KELLER_AFTER_CALL_MS = 2000;
 const TO_ANNA_AFTER_SHEET_MS = 4000;
 
 export default function DemoPage() {
-  const { state, decide, reset, start, ingest, setSimulate, live, connected, offline } = useStafette();
+  const { state, decide, reset, start, ingest, setSimulate, live, connected, offline, synced } = useStafette();
   const [view, setView] = useState<View>("anna");
   const [news, setNews] = useState<Record<View, boolean>>({ anna: false, keller: false });
 
@@ -28,11 +28,21 @@ export default function DemoPage() {
   const approvalId = state.approval?.id ?? null;
   const prev = useRef({ callStatus, hasSheet, approvalId });
   const sheetShownAt = useRef(0);
+  const baselined = useRef(false);
 
   // Automatic switching on the story's turning points.
   useEffect(() => {
     const before = prev.current;
     prev.current = { callStatus, hasSheet, approvalId };
+    if (live) {
+      // The page always opens on Anna. The backend's first state is where the story stands,
+      // not a step in it (e.g. a call that ended before the page was opened).
+      if (!synced) return;
+      if (!baselined.current) {
+        baselined.current = true;
+        return;
+      }
+    }
     const timers: ReturnType<typeof setTimeout>[] = [];
     const go = (target: View, delay: number) => {
       setNews((n) => ({ ...n, [target]: true }));
@@ -49,7 +59,7 @@ export default function DemoPage() {
       go("anna", Math.max(0, TO_ANNA_AFTER_SHEET_MS - watched));
     }
     return () => timers.forEach(clearTimeout);
-  }, [callStatus, hasSheet, approvalId]);
+  }, [callStatus, hasSheet, approvalId, live, synced]);
 
   useEffect(() => setNews((n) => ({ ...n, [view]: false })), [view]);
 

@@ -57,6 +57,8 @@ export function useStafette() {
   const [state, setState] = useState<StafetteState>(initialState);
   const [connected, setConnected] = useState(false);
   const [offline, setOffline] = useState(false);
+  // True once the backend delivered its first state (until then the mock data is on screen).
+  const [synced, setSynced] = useState(false);
 
   useEffect(() => {
     if (!API) return;
@@ -65,6 +67,7 @@ export function useStafette() {
     const onState = (s: StafetteState) => {
       setState(s);
       setOffline(false);
+      setSynced(true);
     };
 
     const loadState = () =>
@@ -153,5 +156,5 @@ export function useStafette() {
     [offline],
   );
 
-  return { state, decide, reset, start, ingest, setSimulate, live: Boolean(API), connected, offline };
+  return { state, decide, reset, start, ingest, setSimulate, live: Boolean(API), connected, offline, synced };
 }
