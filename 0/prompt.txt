@@ -1,0 +1,405 @@
+Okey finde ich nicht schlecht. Was wir nun klären mussen wie wir weiterfahren auch mit twilio ob wir da noch eine Telefonnummer brauchen oder nicht ?
+
+---
+
+Was müssen wir noch machen ?
+
+---
+
+wieso keine Schweizer nr?
+
+---
+
+Gut nehmen wir US Nr. 
+Was muss ich hier machen ?
+
+---
+
+Was mache ich hier?
+
+---
+
+Mache ich das hier so ? Oder was würdest du angeben?
+
+---
+
+Gut ist durch was nun ? 
+
+v
+
+---
+
+<task-notification>
+<task-type>artifact-auto-react</task-type>
+<summary>2 artifact auto-reply subscriptions paused by the interrupt (comments sent to Claude meanwhile are answered then)</summary>
+The user's interrupt paused them and the watches are kept; when the user asks you to publish these artifacts again, that publish resumes them, or resume_replies if the user asks, as does the user's next typed message — each only on hosts that pass typed input through as the user's, and comments sent to Claude in the meantime are answered then; publishing without being asked, while handling a notification or a wake-up, leaves them paused. Do not republish or resume just to re-enable auto-replies unless the user asks.
+</task-notification>
+
+---
+
+Gut ist durch was nun ?
+
+---
+
+SO ?
+
+---
+
+Was muss ich hier noch machen?
+
+---
+
+Was muss ich hier noch machen ?
+
+---
+
+??
+
+---
+
+Gut also was muss nun noch gemacht werden in Twilio damit es funktioniert ?
+
+---
+
+Wie folgt teste ich es ?
+
+---
+
+<task-notification>
+<task-type>artifact-auto-react</task-type>
+<summary>2 artifact auto-reply subscriptions paused by the interrupt (comments sent to Claude meanwhile are answered then)</summary>
+The user's interrupt paused them and the watches are kept; when the user asks you to publish these artifacts again, that publish resumes them, or resume_replies if the user asks, as does the user's next typed message — each only on hosts that pass typed input through as the user's, and comments sent to Claude in the meantime are answered then; publishing without being asked, while handling a notification or a wake-up, leaves them paused. Do not republish or resume just to re-enable auto-replies unless the user asks.
+</task-notification>
+
+---
+
+Wie folgt teste ich es ?
+
+---
+
+Reicht der Anruf oder brauchen wir im Projekt noch eine Mail ? 
+
+By the way der Anruf hat funktioniert. 
+
+Nun noch die Frage können wir im Frontend für folgendes noch eine Einstellung treffen wie angerufen werden soll ? Sprich aktuell ist es ja englisch aber könnte ja auch Schweizerdeutsch oder Deutsch sein?
+
+---
+
+Die Frage ist nun wie gehen wir es nun an ? Sprich was bauen wir nun ? Bauen wir mit den Partnern weiter ? Funktioniert dies nun mit den geclonten repos von gradium ?
+
+---
+
+Also um zu gewinnen müssen wir mehr in entire brauchen um graph und brain zu nutzen damit wir gewinnen können. Aber es muss effektiv sein dies ist wichtig. Eventuell eine Search mit Perplexity? Wenn ja gib mir einen Prompt.
+
+---
+
+Könnte Manuel etwas im Backend machen ?
+
+---
+
+Gut Manuel macht dies nun. Also was steht dann nun an für mich an? 
+
+Dies ist das Ergebniss von der Research mit Perplexity: 
+
+<pasted_content id="560a">
+Für eure 20-Sekunden-Demo würde ich Provenienz zeigen: mit entire why von der konkreten Vollmachtsprüfung zurück zum Entwicklungsauftrag springen und mit entire checkpoint explain die zugehörige Coding-Session öffnen. Das passt direkt zu „Das Modell schlägt vor, der Code entscheidet“ – aber Entire dokumentiert dabei die Entstehung eures Codes, nicht automatisch die medizinischen Laufzeitaktionen eures Agenten.
+
+Recherchestand: 10. Oktober 2026, ausschliesslich offizielle Entire-Webseiten, Dokumentation und Repositories. Eure Version 0.11.4 ist als Release vom 6. Oktober 2026 belegt; aktuelle Dokumentation und GitHub-main sind jedoch nicht durchgehend auf diese Version eingefroren, weshalb ich keine vollständige Kompatibilität jedes aktuellen Flags garantiere.
+
+1. Was ist Entire Brain?
+Belegt: ein lokales CLI-Plugin mit optionaler MCP-Anbindung
+Entire bezeichnet Brain im offiziellen Hackathon-Guide als „memory layer that lives in your repo, not in one agent“: Vorentscheidungen und Kontext sollen beispielsweise von Claude Code zu Codex mitgenommen werden können. Es wird als ausführbares Plugin entire-brain installiert und über entire brain … aufgerufen; zusätzlich ist eine MCP-Anbindung dokumentiert. Es ist damit nicht bloss eine Webfunktion oder ein eingebauter Befehl, der nach Installation der Basis-CLI automatisch verfügbar ist.
+
+Der offizielle Installationsweg verwendet Bash:
+
+bash
+curl -fsSL https://raw.githubusercontent.com/entireio/entire-brain/main/scripts/get-brain.sh | bash
+Danach im Projektverzeichnis:
+
+bash
+entire brain setup
+entire brain init-agents
+setup initialisiert den Repository-Kontext; init-agents bindet bestehende Sessions ein und erzeugt beziehungsweise aktualisiert .entire/agent-guide.md sowie verwaltete Verweise in AGENTS.md und CLAUDE.md. Danach die Agenten-Instruktionen neu laden beziehungsweise Claude Code neu starten.
+
+Optional für Claude Code:
+
+bash
+entire brain mcp --print-config
+claude mcp add entire-brain -- entire brain mcp
+Die dokumentierte Nutzung erfolgt dann über den Coding-Agenten, der Brain für frühere Entscheidungen und Graph zur Code-Navigation verwendet. Ohne Graph bleiben laut Guide Sessions, Dokumente und Fakten nutzbar; ohne Entire CLI fehlen die erfassten Sessions und Brain greift auf Code, Dokumentation und Git-Historie zurück.
+
+Login, Preis und Windows
+Unverifiziert: Ein kostenpflichtiger Plan als Voraussetzung für die lokale Brain-Nutzung ist in den abgerufenen offiziellen Informationen nicht angegeben.
+
+Unverifiziert: Eine verbindliche Aussage „Brain benötigt niemals Entire-Login“ konnte ich nicht bestätigen; der lokale Installations-/Aktivierungsablauf nennt jedenfalls keinen Login-Schritt.
+
+Unverifiziert: Native Windows-Unterstützung und ein PowerShell-Installer speziell für Brain. Der offizielle Hackathon-Guide zeigt Bash-Skripte, keine Windows-spezifische Anleitung.
+
+Meine Empfehlung: Brain heute nur installieren, wenn ihr es mit dem Entire-Team vor Ort schnell verifizieren könnt – nicht als Voraussetzung für den Pitch.
+
+2. Was macht das offizielle Graph-Plugin?
+Funktion und Installation
+Graph analysiert lokalen Quellcode mit Tree-sitter und erstellt eine navigierbare Struktur aus Symbolen, Definitionen, Aufrufen, Typbeziehungen und Änderungsauswirkungen. Der eingebaute Analyzer arbeitet laut offiziellem Repository ohne Netzwerkzugriffe, Modellaufrufe oder API-Schlüssel; Graph ist kein autonomer Sicherheitsprüfer und kein vollständiger Beweis aller möglichen Laufzeitpfade.
+
+Dokumentierte Voraussetzungen: Entire CLI ab 0.10.0 und Git ab 2.36 – eure Entire-Version 0.11.4 erfüllt somit die angegebene CLI-Mindestversion.
+
+bash
+entire plugin install graph
+entire graph version
+entire graph init-agents --repo .
+Danach Claude Code neu starten beziehungsweise die Repository-Anweisungen neu laden.
+
+Wichtige Inkonsistenz in den offiziellen Quellen
+Der Hackathon-Guide spricht noch von .entire/graph-agent.md und dem ersten Agentenaufruf entire-graph search; das aktuelle Graph-README nennt .entire/agent-guide.md und verwendet entire graph query. Deshalb sind die Hilfe des tatsächlich installierten Plugins und dessen Version massgeblich, nicht eine aus verschiedenen Dokumentationsständen zusammengesetzte Syntax.
+
+bash
+entire graph help
+entire graph query --help
+Diese Vorgehensweise ist auch in der offiziellen Graph-Befehlsreferenz vorgesehen.
+
+Exakte dokumentierte Beispiele
+bash
+entire graph query --profile full "route matching implementation for incoming request paths"
+entire graph impact --symbol Router.Match
+entire graph health --repo . --json
+entire graph stats --repo .
+query findet relevante Quellregionen, impact zeigt mögliche Auswirkungen einer Symboländerung, health Parser-/Indexierungsprobleme und stats die Nutzung des Graphs gegenüber grep/read in lokalen Agententranskripten. Die Tokenersparnis von stats ist ausdrücklich eine modellierte Schätzung, keine direkt gemessene Einsparung.
+
+Offizieller Beispielausschnitt für impact, aus dem Graph-README:
+
+text
+Index: cache-hit (49ms) | Query: 0ms | Total: 50ms
+Impact: Router.Match (mux.go:151) def=151 span=151-182 [method in Router]
+Blast radius: 1 caller (1 direct, 0 transitive), 0 callees, 3 type consumers,
+  1 data flow, 7 co-change files, 29 siblings.
+Callers (1 direct, 0 transitive; who breaks if behavior changes):
+- Router.ServeHTTP (mux.go:203, def :188)
+Das ist eine historische Beispielausgabe, keine Laufzeitgarantie: Das README weist darauf hin, dass aktuelle Working-Tree-Abfragen standardmässig cache-miss melden und dass statische Analyse Aufrufe übersehen kann.
+
+Zusammenhang mit Checkpoints
+Graph erklärt die Struktur und Auswirkungen des Codes; Checkpoints speichern Coding-Session, Auftrag und Kontext hinter Änderungen. Graph unterstützt zusätzlich Commit- und Checkpoint-Analyse, aber für eine gewöhnliche lokale Codeabfrage müsst ihr nicht zuerst auf GitHub pushen oder einen Checkpoint erstellen.
+
+3. Befehle: belegte Syntax und Ausgabe
+Ich unterscheide zwischen wörtlicher offizieller Beispielausgabe und einer bloss dokumentierten Beschreibung des Ausgabeformats. Wo ich keine offizielle Beispielausgabe verifizieren konnte, erfinde ich keine.
+
+entire why
+bash
+entire why src/main.js:279
+Wörtliche Ausgabe aus dem offiziellen Tutorial:
+
+text
+Line 279 in src/main.js
+    document.body.classList.add("leaderboard-route");
+
+[MX] by Codex - gpt-5.5 - checkpoint bfc2c1df9e4b - session 019edf9f - commit 35cdcfb6
+Prompt: "we want to be able to go the route /leaderboard and it renders the leaderboard there"
+
+Full context: entire checkpoint explain bfc2c1df9e4b
+Damit springt ihr von einer Zeile zum Git-Commit, zugehörigen Checkpoint, Session und ursprünglichen Prompt. Das Beispiel stammt aus dem offiziellen Tutorial, nicht aus eurem Projekt.
+
+entire blame
+bash
+entire blame src/main.js --line 279
+entire blame path/to/file.ts --line 12-20
+entire blame path/to/file.ts --long
+entire blame path/to/file.ts --json
+Wörtliche offizielle Beispielausgabe:
+
+text
+Line  Tag   Agent  Author          Checkpoint    Content
+279   [MX]  Codex  blackgirlbytes  bfc2c1df9e4b  document.body.classList.add("leaderboard-route");
+Die Tags bedeuten AI für einen AI-attribuierten Commit, MX für gemischte Änderungen, HU ohne AI-attribuierte Checkpointdaten und ?? für uncommittete Zeilen. Wichtig: Diese Attribution gilt auf Commit-Ebene und beweist nicht, dass genau diese Zeile von einem bestimmten Agenten geschrieben wurde.
+
+entire experts
+Belegt ist die Funktion „Rank agent provenance for code scopes“: Der Befehl ordnet Agenten-Provenienz für Codebereiche.
+
+Unverifiziert: Exakte Scope-Syntax, Flags, Rankingformel und eine offizielle Beispielausgabe; die spezifische Referenzseite liess sich nicht abrufen.
+
+Prüft deshalb eure installierte Version:
+
+bash
+entire experts --help
+Das offizielle Repository nennt die installierte CLI-Hilfe als massgebliche Befehlsreferenz.
+
+entire dispatch
+bash
+entire dispatch --local --since 1h --voice neutral
+entire dispatch --local --all-branches
+entire dispatch --repos OWNER/REPO
+Der Befehl erstellt einen Bericht über jüngste Agentenarbeit, nicht die Verteilung von Aufgaben an Agenten. Standard ist Cloud-Modus; --local verwendet lokale Repository-Daten und einen lokal installierten Agenten-CLI, und mit Flags wird Markdown direkt ausgegeben.
+
+Unverifiziert: Eine wörtliche offizielle Beispielausgabe des erzeugten Berichts. Der Cloud-Modus unterstützt dokumentiert höchstens fünf Repositories pro Anfrage; --repos lässt sich nicht mit --local kombinieren.
+
+entire recap
+bash
+entire recap --static
+entire recap --week --static --color never
+entire recap --agent claude-code --static
+Zeigt zeitbasierte Agenten-/Checkpoint-Aktivität; ohne Flags öffnet sich standardmässig eine interaktive Ansicht für heute, --static liefert einfache Terminalausgabe.
+
+Unverifiziert: Eine wörtliche offizielle Beispielausgabe und die genauen Login-Anforderungen der unterschiedlichen Ansichten; die abgerufene Referenz enthält Syntax, aber kein fertiges Ausgabeprotokoll.
+
+entire review
+Für eure vorhandene Claude-Code-Installation, als einzeilige PowerShell-kompatible Konfiguration:
+
+bash
+entire review --configure --set-agents claude-code --set-judge claude-code --set-output local
+entire review general --base origin/main --prompt "Focus on authorization bypasses, fail-open behavior, and missing tests."
+entire review --findings
+Die Syntax ist dokumentiert; der Prompt ist mein Vorschlag für euer Projekt. review startet Reviewer-Agenten und lässt einen Judge-Agenten die Berichte zu einem Ergebnis zusammenführen, ist also keine deterministische Policy-Prüfung.
+
+Unverifiziert: Eine wörtliche offizielle Beispielausgabe eines Reviews. Es kann ausserdem länger dauern: Reviewer haben laut Referenz standardmässig kein Timeout, der Judge 20 Minuten – deshalb ungeeignet für einen ungeprobten 20-Sekunden-Liveaufruf.
+
+entire search
+bash
+entire search "authorization fail closed" --limit 5
+entire search "authorization fail closed" --json
+entire search --code "authorizeAction"
+Die Query-Texte sind Vorschläge; die Syntax ist dokumentiert. Standardmässig durchsucht der Befehl serverseitig indexierte Commits, Checkpoints und Sessions mit semantischen und Keyword-Verfahren, während --code nach Quelltext sucht.
+
+Ausgabe: Code-Suche gruppiert Treffer unter repo:path mit Zeilennummern; JSON-/Compact-Ausgabe enthält unter anderem Identifikatoren, Ergebnistypen und Rankingmetadaten. Eine wörtliche vollständige Beispielantwort konnte ich nicht verifizieren.
+
+Voraussetzung: Ein für Entire erreichbares veröffentlichtes Repository, gepushte Checkpoints und abgeschlossene Indexierung; entire enable allein reicht nicht.
+
+entire checkpoint explain
+bash
+entire checkpoint explain HEAD
+entire checkpoint explain HEAD --no-pager
+entire checkpoint explain HEAD --full --no-pager
+entire checkpoint explain HEAD --json
+entire checkpoint explain HEAD --generate
+Ohne --generate zeigt der Befehl gespeicherten Kontext; mit --generate erzeugt der konfigurierte, installierte und authentifizierte Agenten-CLI eine KI-Zusammenfassung. --json enthält Metadaten, nicht das vollständige Transkript.
+
+Offizielles Beispiel für eine generierte Zusammenfassung:
+
+text
+## Intent
+
+Add a direct browser route /leaderboard that renders the existing leaderboard
+experience without requiring navigation through the title menu.
+
+## Outcome
+
+Implemented the /leaderboard route by patching main.js to detect the path and
+boot directly into leaderboard mode, adding CSS for standalone overlay behavior,
+and adding vercel.json with SPA rewrite rules.
+Das Tutorial bezeichnet dies als beispielhafte zu erwartende Erklärung, nicht als deterministische Ausgabe. Für eure Demo würde ich daher den bereits gespeicherten Kontext zeigen und nicht live --generate starten.
+
+4. Was Entire aktuell besonders hervorhebt
+Eine objektive interne Feature-Rangliste oder Jurypräferenz ist unverifiziert. Öffentlich sichtbar sind aber folgende Schwerpunkte:
+
+Datum	Offizielle Ankündigung	Relevanz für eure Demo
+10. Februar 2026	Launch mit Checkpoints	Ursprungskern: Code mit Entstehungskontext verbinden
+15./30. Juni 2026	why/blame, eigener blame-Post	Von einer verdächtigen Codezeile zur Session zurückgehen
+10. August 2026	Agentenaktivität auf Commit-Seiten	Auftrag, Session und Codeänderung zusammen zeigen
+31. August 2026	Subagent-Aktivität in Checkpoints	Auch delegierte Coding-Arbeit nachvollziehen
+3. September 2026	Agentic Search für Code und Kontext	Frühere Entscheidungen wiederfinden
+6. Oktober 2026	„Sharing Sessions is the New Social Coding“	Kontext nicht nur speichern, sondern für Teamarbeit verwenden
+Diese Daten und Themen stehen im offiziellen Blogindex.
+
+Der aktuelle offizielle Hackathon-Guide betont ausserdem „Continuous Memory“ aus Graph und Brain sowie Ideen wie „Reviewer prüft Intent“, „Debugger für Agentenfehler“ und „Regression Test Scout“.
+
+Meine Einschätzung: Für Stafette beeindruckt ein konkreter Beleg stärker als Feature-Breite – zeigt, wie eine Sicherheitsanforderung aus dem Prompt in Code und Tests landete, und wie Entire diesen Weg wieder auffindbar macht.
+
+5. Offizielle Kriterien oder Preise für Zürich am 10. Oktober
+Belegt: Der offizielle Entire-Hackathon-Guide listet „Agentic AI Hack Zürich 2026“, 10. Oktober 2026, 09:30–21:30 CEST.
+
+Der Guide nennt eine vorgeschlagene Submission-Checkliste:
+
+Projektname und Erklärung.
+
+Welche Entire-Funktionen ihr verwendet und weshalb.
+
+Funktionierende Demo oder Aufnahme.
+
+Repository mit Setup-/Run-Anleitung.
+
+Zugänglicher Checkpoint-Link und Checkpoint-ID.
+
+Unverifiziert: Zürich-spezifische Bewertungsgewichte, eine Pflicht zur Brain-/Graph-Nutzung, ein Entire-Sonderpreis oder eine konkrete Preissumme. Die allgemeine Checkliste ist kein belegtes Bewertungsreglement; fragt das Entire-Team vor Ort nach dem tatsächlichen Challenge-Text.
+
+Für den Nachweis empfiehlt Entire: pushen, mit entire status die Synchronisation prüfen und im Web über Repository → Branch → Commit → Checkpoint erst „Sessions“, dann „Changes“ zeigen. Reviewer müssen Zugriff haben; ein Link allein erteilt keine Berechtigung.
+
+6. Fallstricke: Windows, Login, Push und Limits
+Windows
+Native Windows-Unterstützung wurde am 30. März 2026 angekündigt. Das aktuelle offizielle CLI-README dokumentiert PowerShell ab 5.1 und Scoop-Installation, also ist „Entire funktioniert nur unter WSL“ nicht zutreffend.
+
+powershell
+entire version
+entire status
+entire doctor
+Diese Befehle sind für Versions-, Status- und Setupdiagnose dokumentiert. Eine versionsspezifische Liste bekannter Windows-Bugs für 0.11.4 konnte ich nicht verifizieren, weil die entsprechende Repository-Seite nicht abrufbar war.
+
+Experimentelle Befehle
+Das aktuelle README führt why, blame, experts und review als experimentell auf: in Stable-Hilfe möglicherweise verborgen, aber laut README aufrufbar. „Nicht in entire help sichtbar“ ist daher nicht automatisch „nicht vorhanden“; Ausgabe und Verhalten können sich ändern.
+
+Vor dem Pitch:
+
+bash
+entire why --help
+entire checkpoint explain --help
+entire labs
+Was lokal bleibt und was Cloud braucht
+Funktion	Dokumentierte Abhängigkeit
+Checkpoints erfassen	Lokales Git-Repo und aktivierte Agenten-Hooks
+Lokalen Checkpoint erklären	Gespeicherter Session-/Checkpoint-Kontext
+Zusammenfassung mit --generate	Installierter und authentifizierter Modellanbieter-CLI
+Graph-Codeanalyse	Lokaler Analyzer; keine Modell-API oder Entire-Cloud-Abfrage
+search	Veröffentlichtes Repository, Push und serverseitige Indexierung
+Cloud-dispatch	Entire-Serverdaten
+Webansicht für die Jury	Account-/Repository-Zugriff und synchronisierte Daten
+Trails	Feature-Freischaltung, Repository-Adminrechte und Einstellungen
+Diese Trennung ist in README, Graph-Repository, CLI-Referenzen und Hackathon-Guide dokumentiert.
+
+Der Hackathon-Guide beschreibt noch GitHub-Login und GitHub-App-Autorisierung; der Blog kündigte am 8. Oktober zusätzlich Google-Login an. Für ein GitHub-Repository bleibt dessen Autorisierung trotzdem ein eigener Schritt. Änderungen beim Repository-Onboarding können laut Guide bis zu einer Stunde zur Synchronisation benötigen, Suchindexierung nach einem Push einige Minuten.
+
+Rate Limits und Datenschutz
+Belegt: Cloud-Dispatch ist auf fünf Repositories pro Request begrenzt.
+
+Unverifiziert: Konkrete allgemeine Requests-pro-Minute-Limits für Search, Brain oder Entire-API sowie konkrete kostenlose Kontingente.
+
+Belegt: Modellbasierte Befehle benötigen einen authentifizierten Modellanbieter; dessen Kosten und Limits sind nicht automatisch durch eine Entire-Installation abgedeckt.
+
+Belegt: Sessiontranskripte werden in Git gespeichert und sind bei öffentlichen Repositories öffentlich; automatische Secret-Redaktion ist ausdrücklich „best effort“. Für Stafette deshalb ausschliesslich synthetische Patienteninformationen in Coding-Prompts und Demo-Checkpoints verwenden.
+
+7. Eure konkrete 20-Sekunden-Demo
+Empfehlung: why → checkpoint explain
+Bereitet einen kleinen, von Claude Code implementierten und getesteten Commit vor, beispielsweise mit dem Auftrag:
+
+„Implementiere die deterministische Vollmachtsprüfung: unbekannte Aktion, abgelaufene Vollmacht oder nicht autorisierter Empfänger müssen blockiert werden. Ergänze Tests für diese Fälle.“
+
+Aktiviert Entire vor dieser Coding-Session:
+
+bash
+entire enable --agent claude-code
+Startet anschliessend eine neue Claude-Code-Session, lasst die Änderung implementieren und committet die tatsächlich geänderten Dateien. Ein normaler Checkpoint benötigt sowohl erfassten Agentenkontext als auch den Git-Commit.
+
+Prüft vorher:
+
+bash
+entire checkpoint list
+entire checkpoint explain HEAD --no-pager
+Für die Bühne verwendet ihr zwei Befehle:
+
+bash
+entire why src/policy/authorize.ts:42
+entire checkpoint explain HEAD --no-pager
+Der Dateipfad und die Zeile sind bewusst Platzhalter für eure tatsächliche Prüfentscheidung; sie müssen vor der Demo ersetzt werden. HEAD muss der vorbereitete Policy-Commit sein, andernfalls verwendet dessen echte SHA oder Checkpoint-ID. Die Befehlssyntax ist offiziell dokumentiert.
+
+Ablauf und Sprechtext
+0–6 Sekunden: Euer eigener Agent schlägt eine nicht autorisierte Aktion vor; eure Anwendung zeigt die deterministische Ablehnung.
+
+6–12 Sekunden: entire why an der Ablehnungszeile zeigt den ursprünglichen Sicherheitsauftrag und den Checkpoint.
+
+12–20 Sekunden: entire checkpoint explain öffnet den gespeicherten Entwicklungsnachweis.
+
+Sagt dazu:
+
+„Der Agent schlägt diese Aktion vor, aber unsere Vollmachtsprüfung blockiert sie im Code. Mit Entire zeigen wir, aus welchem Auftrag diese Prüfung entstanden ist und welche Coding-Session die Implementierung dokumentiert. Die tatsächlichen Patientenaktionen protokollieren wir separat in unserem Laufzeit-Audit.“
+
+Das ist meine Demoempfehlung, keine offizielle Juryanforderung. Der entscheidende Unterschied bleibt: Ein Checkpoint belegt gespeicherten Entwicklungskontext, aber weder automatisch die Korrektheit eurer Berechtigungslogik noch ein manipulationssicheres medizinisches Laufzeitprotokoll.
+</pasted_content id="560a">
+
+---
+
+Okey mach dies so. Mach mir zuerst Step 1 damit er starten kann.
