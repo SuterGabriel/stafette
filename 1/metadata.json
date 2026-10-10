@@ -1,0 +1,140 @@
+{
+  "cli_version": "0.11.4",
+  "checkpoint_id": "01M4K2JC2N1VW0P47YJXAFZQYZ",
+  "session_id": "bc1c0db1-f49e-4e46-898d-99d075d5f56f",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-10T14:13:22.5103802Z",
+  "branch": "main",
+  "checkpoints_count": 6,
+  "save_step_count": 3,
+  "files_touched": [
+    "backend/agent/__init__.py",
+    "backend/agent/orchestrator.py",
+    "backend/agent/routes.py",
+    "backend/main.py",
+    "backend/state.py",
+    "backend/tests/conftest.py",
+    "backend/tests/test_api.py",
+    "backend/voice/bridge.py",
+    "backend/voice/calls.py",
+    "backend/voice/session.py",
+    "backend/voice/tools.py",
+    "dashboard/app/globals.css",
+    "dashboard/app/page.tsx",
+    "dashboard/components/AnnaApp.tsx",
+    "dashboard/components/KellerSheet.tsx",
+    "dashboard/lib/mock.ts",
+    "dashboard/lib/types.ts",
+    "dashboard/lib/useStafette.ts"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-5-5",
+  "turn_id": "f425fbf6c362",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 188,
+    "cache_creation_tokens": 186855,
+    "cache_read_tokens": 12100901,
+    "output_tokens": 66566,
+    "api_call_count": 94
+  },
+  "session_metrics": {
+    "turn_count": 6
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-10T14:13:22.2892603Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 583,
+    "human_modified": 1101,
+    "human_removed": 0,
+    "total_committed": 583,
+    "total_lines_changed": 1690,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 3015,
+      "user_lines_removed": 23,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "backend/state.py": 91,
+        "video/.gitignore": 2,
+        "video/README.md": 26,
+        "video/package-lock.json": 2668,
+        "video/package.json": 21,
+        "video/remotion.config.ts": 4,
+        "video/src/LogoIntro.tsx": 154,
+        "video/src/Root.tsx": 12,
+        "video/src/brand.ts": 9,
+        "video/src/fonts.ts": 10,
+        "video/src/index.ts": 4,
+        "video/tsconfig.json": 14
+      },
+      "user_removed_per_file": {
+        "backend/state.py": 23
+      }
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 1593,
+      "user_lines_removed": 1078,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "backend/agent/__init__.py": 1,
+        "backend/agent/orchestrator.py": 165,
+        "backend/agent/routes.py": 23,
+        "backend/main.py": 5,
+        "backend/state.py": 91,
+        "backend/tests/conftest.py": 9,
+        "backend/tests/test_api.py": 68,
+        "backend/voice/bridge.py": 6,
+        "backend/voice/calls.py": 144,
+        "backend/voice/session.py": 96,
+        "backend/voice/tools.py": 98,
+        "dashboard/app/anna/page.tsx": 2,
+        "dashboard/app/globals.css": 316,
+        "dashboard/app/keller/page.tsx": 2,
+        "dashboard/app/page.tsx": 9,
+        "dashboard/components/AnnaApp.tsx": 321,
+        "dashboard/components/KellerSheet.tsx": 130,
+        "dashboard/lib/mock.ts": 1,
+        "dashboard/lib/types.ts": 13,
+        "dashboard/lib/useStafette.ts": 93
+      },
+      "user_removed_per_file": {
+        "backend/main.py": 2,
+        "backend/state.py": 24,
+        "backend/tests/test_api.py": 15,
+        "backend/voice/calls.py": 125,
+        "backend/voice/session.py": 95,
+        "backend/voice/tools.py": 97,
+        "dashboard/app/anna/page.tsx": 2,
+        "dashboard/app/globals.css": 278,
+        "dashboard/app/keller/page.tsx": 4,
+        "dashboard/app/page.tsx": 8,
+        "dashboard/components/AnnaApp.tsx": 264,
+        "dashboard/components/KellerSheet.tsx": 85,
+        "dashboard/lib/useStafette.ts": 79
+      }
+    }
+  ]
+}
