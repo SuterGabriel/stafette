@@ -61,6 +61,12 @@ Anna sagt einen Satz: *„Ich wechsle zu Dr. Keller, sorg dafür, dass sie meine
 
 Am ehesten **die neue Praxis**, pro neuem Patienten – sie spart MPA-Zeit. Später: Kantone, die das E-GD mit Altdaten befüllen müssen.
 
+Pro Übergabe oder Monatspaket, die neue Praxis zahlt, der Patient nie. Preisanker: Doctolib Telefon-KI 99 €/Monat.
+
+### Positionierung
+
+Wir nehmen der MPA das Nachfordern beim Arztwechsel ab. Die frühere Praxis installiert nichts. Kein eigenes Praxissystem, keine Terminbuchung, kein Konto-Zwang für Patienten.
+
 ---
 
 ## 3. Wie wir die Partner nutzen
