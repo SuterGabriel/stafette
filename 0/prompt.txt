@@ -1,0 +1,19 @@
+Gut was gehen wir nun an ? Hosting übernimmt mein Teammate. Also was könnten wir angehen ? Die Twillio Struktur ?
+
+---
+
+Die Ansicht hier gefällt mir weiterhin noch nicht: 
+
+Lass es uns aufbauen wie https://github.com/gradium-ai/digigrad 
+Eben auch gerade mit dem Diagramm. 
+
+Dazu stimmt hier die Entscheidungen nicht: 
+
+<pasted_content id="560a">
+Team
+Wer	Rolle	Baut	In der Demo
+Gabriel Suter	Voice	Telefonteil: Twilio, gradbot, Gemini im Dialog, Dialog-Tools	spricht den Pitch
+Manuel Fitz	Full Stack · Hosting	Vollmacht-Schema, Policy Engine, Orchestrator, Dokument-Pipeline, Dashboard, Hosting	bedient das Dashboard, spielt die MPA
+</pasted_content id="560a">
+
+Ich habe viel mehr gemacht.
