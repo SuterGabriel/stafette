@@ -85,7 +85,7 @@ Fünf sichtbare Rollen. Mehr Google-Produkte hängen wir bewusst nicht an.
 **Gemini in gradbot:** gradbot spricht nur OpenAI-kompatible Endpoints. Ohne diese Einstellung telefoniert der Agent mit OpenAI und Gemini fällt raus:
 
 ```
-LLM_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai/
+LLM_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai
 LLM_MODEL=gemini-3.6-flash
 OPENAI_API_KEY=<Gemini-Key>   # Name ist von gradbot vorgegeben, Inhalt ist der Gemini-Key
 ```
@@ -162,7 +162,7 @@ Abhängigkeiten Backend: `fastapi`, `uvicorn[standard]`, `gradbot==0.1.9`, `grad
 # Gemini (Compiler, Orchestrator, Leser)
 GEMINI_API_KEY=
 # Gemini für gradbot (Telefon-Dialog), OpenAI-kompatibel
-LLM_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai/
+LLM_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai
 LLM_MODEL=gemini-3.6-flash
 OPENAI_API_KEY=            # = Gemini-Key
 # Gradium

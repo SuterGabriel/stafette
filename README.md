@@ -106,7 +106,7 @@ Ohne Backend läuft alles auf Demo-Daten (unten rechts steht „Demo-Daten“).
 ```bash
 GEMINI_API_KEY=...
 # Gemini für gradbot (OpenAI-kompatible Schnittstelle)
-LLM_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai/
+LLM_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai
 LLM_MODEL=gemini-3.6-flash
 OPENAI_API_KEY=...            # = Gemini-Key
 GRADIUM_API_KEY=...
