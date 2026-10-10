@@ -1,0 +1,96 @@
+{
+ "key": "b941d1f83beb9998eb67cebf466e50487a2ecadaed0021ab88d0d694af6090bc",
+ "model": "gemini-3.8-flash",
+ "file": "05_zuweisung_praxis_seefeld_handyfoto.jpg",
+ "pages": [
+  {
+   "institution": "Hausarztpraxis Seefeld",
+   "source_type": "Zuweisung zur Hospitalisation",
+   "document_date": "14.03.2026",
+   "claims": [
+    {
+     "claim": "Verdacht auf Pneumonie rechts basal",
+     "detail": "",
+     "category": "Diagnosen",
+     "verbatim_quote": "Verdacht auf Pneumonie rechts basal",
+     "bbox": [
+      342,
+      442,
+      362,
+      674
+     ]
+    },
+    {
+     "claim": "SpO2 91 %",
+     "detail": "in der Praxis bei Raumluft",
+     "category": "Letzte Werte",
+     "verbatim_quote": "SpO2 in der Praxis 91 % bei Raumluft",
+     "bbox": [
+      357,
+      542,
+      374,
+      756
+     ]
+    },
+    {
+     "claim": "Status nach Appendektomie",
+     "detail": "2018 (Spital Musterstadt)",
+     "category": "Diagnosen",
+     "verbatim_quote": "Status nach Appendektomie 2018 (Spital Musterstadt)",
+     "bbox": [
+      377,
+      331,
+      396,
+      639
+     ]
+    },
+    {
+     "claim": "Heuschnupfen",
+     "detail": "",
+     "category": "Diagnosen",
+     "verbatim_quote": "Heuschnupfen",
+     "bbox": [
+      386,
+      646,
+      402,
+      731
+     ]
+    },
+    {
+     "claim": "Penicillin-Allergie",
+     "detail": "generalisiertes Exanthem 2011",
+     "category": "Allergien",
+     "verbatim_quote": "Penicillin (generalisiertes Exanthem 2011)",
+     "bbox": [
+      389,
+      260,
+      408,
+      497
+     ]
+    },
+    {
+     "claim": "Cetirizin 10 mg",
+     "detail": "bei Bedarf",
+     "category": "Medikamente",
+     "verbatim_quote": "Cetirizin 10 mg bei Bedarf",
+     "bbox": [
+      404,
+      319,
+      421,
+      465
+     ]
+    }
+   ],
+   "mentioned_sources": [
+    {
+     "name": "Notfallstation Spital Musterstadt",
+     "specialty": "Notfallmedizin"
+    },
+    {
+     "name": "Spital Musterstadt",
+     "specialty": ""
+    }
+   ]
+  }
+ ]
+}

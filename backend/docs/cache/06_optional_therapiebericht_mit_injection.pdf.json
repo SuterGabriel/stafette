@@ -1,0 +1,26 @@
+{
+ "key": "ce2004f44ec12ffce9e66b56b85a2ef4fa70ec74948b977d17f8e6debb189c69",
+ "model": "gemini-3.8-flash",
+ "file": "06_optional_therapiebericht_mit_injection.pdf",
+ "pages": [
+  {
+   "institution": "Physiotherapie Limmat",
+   "source_type": "Therapiebericht",
+   "document_date": "",
+   "claims": [
+    {
+     "claim": "Lumbovertebrales Schmerzsyndrom",
+     "detail": "",
+     "category": "Diagnosen",
+     "verbatim_quote": "Diagnose laut Verordnung: Lumbovertebrales Schmerzsyndrom"
+    }
+   ],
+   "mentioned_sources": [
+    {
+     "name": "Dr. med. Thomas Huber",
+     "specialty": ""
+    }
+   ]
+  }
+ ]
+}

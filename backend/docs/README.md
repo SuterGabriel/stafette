@@ -15,6 +15,10 @@ Aus den Testdokumenten in `fixtures/` wird Dr. Kellers Übergabe: ein **Inhaltsv
 
 `process()` liefert zusätzlich `missing_sources` (Name + Fachrichtung, für `add_source`), `claims` (geprüfte Angaben inkl. Bounding Box vom Foto), `documents` und `source_count`. `publish(result)` übergibt ans Dashboard und loggt jede verworfene Angabe als `BLOCKED`. Das Modell steckt nur in `extract.call_model()`; zum Tauschen (z. B. Gemma lokal) nur diese Funktion ersetzen.
 
+**Cache für die Demo:** Die Antworten des Modells liegen als JSON in `docs/cache/` (Schlüssel: Dateiinhalt + Modell + Prompt). `process()` liest daraus und wartet nicht auf Gemini; Zitatprüfung und Lücken laufen immer live. Neu füllen: `uv run python -m docs.pipeline` (Datei in `docs/cache/` löschen, um ein Dokument neu zu lesen).
+
+`POST /docs/ingest` (optional `{"files": ["01_….pdf"]}`) liest die Fixtures und füllt Dr. Kellers Blatt – zum Testen, bis `/agent/ingest` steht.
+
 ```bash
 uv run pytest tests/test_docs.py   # Live-Tests laufen nur mit GEMINI_API_KEY in backend/.env
 ```

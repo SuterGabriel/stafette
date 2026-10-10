@@ -178,3 +178,19 @@ def publish(result: dict) -> None:
     for r in result["rejected"]:
         store.add_event("BLOCKED", f"Angabe verworfen ({r['source_document_id']}, S. {r['page']}): {r['reason']}",
                         model=MODEL_READER)
+
+
+if __name__ == "__main__":
+    # Fill docs/cache/ for the demo:  uv run python -m docs.pipeline
+    import json
+    import time
+
+    fixtures = Path(__file__).resolve().parents[2] / "fixtures"
+    paths = sorted(p for p in fixtures.iterdir() if p.suffix.lower() in {".pdf", ".jpg", ".jpeg", ".png"})
+    start = time.perf_counter()
+    result = process(paths, ["Hausarztpraxis Seefeld", "Spital Musterstadt"])
+    summary = {s["title"]: [i["name"] for i in s["items"]] for s in result["sections"]}
+    print(json.dumps(summary, ensure_ascii=False, indent=1))
+    print("missing:", result["missing"])
+    print("rejected:", result["rejected"])
+    print(f"{result['documents']} Dokumente in {time.perf_counter() - start:.1f} s")

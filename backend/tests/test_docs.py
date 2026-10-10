@@ -223,9 +223,36 @@ def fake_call_model(prompt: str, data: bytes, mime_type: str, schema):
 
 
 @pytest.fixture
-def offline(monkeypatch: pytest.MonkeyPatch) -> None:
+def offline(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
     from docs import extract
     monkeypatch.setattr(extract, "call_model", fake_call_model)
+    monkeypatch.setattr(extract, "CACHE_DIR", tmp_path)  # never read the real demo cache here
+
+
+def test_cache_skips_model_on_second_read(offline, monkeypatch: pytest.MonkeyPatch) -> None:
+    from docs import extract
+    calls: list[str] = []
+
+    def counting(prompt, data, mime_type, schema):
+        calls.append(mime_type)
+        return fake_call_model(prompt, data, mime_type, schema)
+
+    monkeypatch.setattr(extract, "call_model", counting)
+    first = extract.extract_document(DOC_01)
+    assert len(calls) == 2  # two pages
+    second = extract.extract_document(DOC_01)
+    assert len(calls) == 2 and second == first
+    assert (extract.CACHE_DIR / "01_austrittsbericht_spital_musterstadt.pdf.json").exists()
+
+
+def test_cache_ignored_when_key_differs(offline, monkeypatch: pytest.MonkeyPatch) -> None:
+    from docs import extract
+    extract.extract_document(DOC_05)
+    monkeypatch.setattr(extract, "PHOTO_PROMPT", extract.PHOTO_PROMPT + " ")  # prompt changed
+    calls: list[str] = []
+    monkeypatch.setattr(extract, "call_model", lambda *a: calls.append("x") or fake_call_model(*a))
+    extract.extract_document(DOC_05)
+    assert calls == ["x"]
 
 
 def _items(result: dict) -> dict[str, list[dict]]:
@@ -326,9 +353,32 @@ live = pytest.mark.skipif(not _has_key(), reason="GEMINI_API_KEY fehlt")
 
 
 @pytest.fixture(scope="module")
-def live_result() -> dict:
+def live_result(tmp_path_factory: pytest.TempPathFactory) -> dict:
+    from docs import extract
     from docs.pipeline import process
-    return process(ALL_DOCS, MANDATE)
+    real_cache, extract.CACHE_DIR = extract.CACHE_DIR, tmp_path_factory.mktemp("cache")  # really ask Gemini
+    try:
+        return process(ALL_DOCS, MANDATE)
+    finally:
+        extract.CACHE_DIR = real_cache
+
+
+def test_demo_cache_gives_expected_results(monkeypatch: pytest.MonkeyPatch) -> None:
+    """The committed cache covers every fixture, so the demo never calls the model, and its result is right."""
+    from docs import extract
+    from docs.pipeline import process
+
+    def no_model(*_):
+        raise AssertionError("Cache fehlt oder ist veraltet: uv run python -m docs.pipeline")
+
+    monkeypatch.setattr(extract, "call_model", no_model)
+    result = process(ALL_DOCS, MANDATE)
+    for category, word in [("Diagnosen", "Vorhofflimmern"), ("Allergien", "Penicillin"),
+                           ("Diagnosen", "Appendektomie"), ("Medikamente", "Metoprolol"), ("Letzte Werte", "CRP")]:
+        assert _found(result, category, word), word
+    assert any(c["is_photo"] and "Appendektomie" in c["verbatim_quote"] and c["bbox"] for c in result["claims"])
+    assert [m["name"] for m in result["missing_sources"]] == ["Dr. med. Sabine Brunner, Kardiologie am See"]
+    _assert_no_injection(result)
 
 
 def _found(result: dict, category: str, *words: str) -> list[dict]:

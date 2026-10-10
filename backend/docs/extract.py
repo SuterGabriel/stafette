@@ -3,10 +3,16 @@
 The model fills docs.schema.ModelPage / ModelPhoto. Document id, page and file
 are set here by our code. Every model access goes through call_model(), so the
 reader can be swapped (e.g. Gemma running locally) without touching the rest.
+
+The model's answers are cached as JSON in docs/cache/, keyed by file content,
+model and prompt, so the demo never waits for the model. Delete a file there
+to read that document again. Quote check and gaps always run live on top.
 """
 
 from __future__ import annotations
 
+import hashlib
+import json
 import os
 import re
 import threading
@@ -27,6 +33,7 @@ T = TypeVar("T", bound=BaseModel)
 IMAGE_TYPES = {".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".png": "image/png"}
 
 _ENV = Path(__file__).resolve().parents[1] / ".env"
+CACHE_DIR = Path(__file__).resolve().parent / "cache"
 _gemini = None
 
 PROMPT = """Du liest medizinische Unterlagen einer Patientin für ihre neue Hausärztin und erstellst ein
@@ -138,21 +145,50 @@ def _to_claims(result: ModelPage, doc_id: str, page: int, path: Path, is_photo: 
     ]
 
 
+def _read(path: Path, is_photo: bool) -> list[ModelPage]:
+    if is_photo:
+        return [call_model(PHOTO_PROMPT, path.read_bytes(), IMAGE_TYPES[path.suffix.lower()], ModelPhoto)]
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        return list(pool.map(lambda data: call_model(PROMPT, data, "application/pdf", ModelPage), _pdf_pages(path)))
+
+
+def _cache_key(path: Path, prompt: str) -> str:
+    return hashlib.sha256(MODEL_READER.encode() + prompt.encode() + path.read_bytes()).hexdigest()
+
+
+def _load_cache(path: Path, key: str, schema: type[ModelPage]) -> list[ModelPage] | None:
+    try:
+        cached = json.loads((CACHE_DIR / f"{path.name}.json").read_text(encoding="utf-8"))
+        if cached.get("key") != key:
+            return None
+        return [schema.model_validate(page) for page in cached["pages"]]
+    except (OSError, ValueError):
+        return None
+
+
+def _save_cache(path: Path, key: str, model: str, results: list[ModelPage]) -> None:
+    CACHE_DIR.mkdir(exist_ok=True)
+    data = {"key": key, "model": model, "file": path.name, "pages": [r.model_dump() for r in results]}
+    tmp = CACHE_DIR / f"{path.name}.json.tmp"
+    tmp.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
+    tmp.replace(CACHE_DIR / f"{path.name}.json")
+
+
 def extract_document(path: str | Path) -> DocumentExtraction:
-    """Read one PDF (page by page) or one photo."""
+    """Read one PDF (page by page) or one photo; from the cache if this exact file was read before."""
     path = Path(path)
     doc_id = document_id(path)
     suffix = path.suffix.lower()
-    if suffix in IMAGE_TYPES:
-        results = [call_model(PHOTO_PROMPT, path.read_bytes(), IMAGE_TYPES[suffix], ModelPhoto)]
-        is_photo = True
-    elif suffix == ".pdf":
-        pages = _pdf_pages(path)
-        with ThreadPoolExecutor(max_workers=4) as pool:
-            results = list(pool.map(lambda data: call_model(PROMPT, data, "application/pdf", ModelPage), pages))
-        is_photo = False
-    else:
+    if suffix not in IMAGE_TYPES and suffix != ".pdf":
         raise ValueError(f"Nicht unterstützter Dateityp: {path.name}")
+    is_photo = suffix in IMAGE_TYPES
+    schema, prompt = (ModelPhoto, PHOTO_PROMPT) if is_photo else (ModelPage, PROMPT)
+
+    key = _cache_key(path, prompt)
+    results = _load_cache(path, key, schema)
+    if results is None:
+        results = _read(path, is_photo)
+        _save_cache(path, key, MODEL_READER, results)
 
     first = results[0]
     return DocumentExtraction(

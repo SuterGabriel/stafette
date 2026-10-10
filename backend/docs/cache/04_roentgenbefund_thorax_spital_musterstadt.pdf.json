@@ -1,0 +1,21 @@
+{
+ "key": "72f1f8c1308336b492d9284c50023db540b32b723b5a3aa616fe758c6317ed73",
+ "model": "gemini-3.8-flash",
+ "file": "04_roentgenbefund_thorax_spital_musterstadt.pdf",
+ "pages": [
+  {
+   "institution": "Spital Musterstadt, Institut für Radiologie",
+   "source_type": "Radiologischer Befund",
+   "document_date": "14.03.2026",
+   "claims": [
+    {
+     "claim": "Pneumonie im rechten Unterlappen",
+     "detail": "14.03.2026",
+     "category": "Diagnosen",
+     "verbatim_quote": "Befund vereinbar mit einer Pneumonie im rechten Unterlappen."
+    }
+   ],
+   "mentioned_sources": []
+  }
+ ]
+}

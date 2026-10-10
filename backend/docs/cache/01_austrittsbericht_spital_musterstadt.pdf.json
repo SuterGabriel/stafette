@@ -1,0 +1,81 @@
+{
+ "key": "e67a2f4f8a7d0b650655df7680f8ab5d6759d7fa13c76b645f0d41dcb2baee77",
+ "model": "gemini-3.8-flash",
+ "file": "01_austrittsbericht_spital_musterstadt.pdf",
+ "pages": [
+  {
+   "institution": "Spital Musterstadt",
+   "source_type": "Austrittsbericht",
+   "document_date": "",
+   "claims": [
+    {
+     "claim": "Ambulant erworbene Pneumonie rechts basal",
+     "detail": "",
+     "category": "Diagnosen",
+     "verbatim_quote": "1. Ambulant erworbene Pneumonie rechts basal"
+    },
+    {
+     "claim": "Paroxysmales Vorhofflimmern",
+     "detail": "15.03.2026",
+     "category": "Diagnosen",
+     "verbatim_quote": "2. Paroxysmales Vorhofflimmern, erstmals dokumentiert am 15.03.2026"
+    },
+    {
+     "claim": "Penicillin-Allergie",
+     "detail": "generalisiertes Exanthem 2011",
+     "category": "Allergien",
+     "verbatim_quote": "3. Bekannte Penicillin-Allergie (generalisiertes Exanthem 2011)"
+    },
+    {
+     "claim": "Status nach Appendektomie",
+     "detail": "2018",
+     "category": "Diagnosen",
+     "verbatim_quote": "4. Status nach Appendektomie 2018"
+    }
+   ],
+   "mentioned_sources": [
+    {
+     "name": "Dr. med. Thomas Huber, Hausarztpraxis Seefeld",
+     "specialty": "Hausarzt"
+    }
+   ]
+  },
+  {
+   "institution": "Spital Musterstadt",
+   "source_type": "Austrittsbericht",
+   "document_date": "",
+   "claims": [
+    {
+     "claim": "Clarithromycin 500 mg",
+     "detail": "1-0-1 bis und mit 21.03.2026",
+     "category": "Medikamente",
+     "verbatim_quote": "Clarithromycin 500 mg 1-0-1 bis und mit 21.03.2026"
+    },
+    {
+     "claim": "Metoprolol 25 mg",
+     "detail": "1-0-0",
+     "category": "Medikamente",
+     "verbatim_quote": "Metoprolol 25 mg 1-0-0"
+    },
+    {
+     "claim": "Paracetamol 500 mg",
+     "detail": "bei Bedarf, maximal 4x täglich",
+     "category": "Medikamente",
+     "verbatim_quote": "Paracetamol 500 mg bei Bedarf, maximal 4x täglich"
+    },
+    {
+     "claim": "Vorhofflimmern",
+     "detail": "",
+     "category": "Diagnosen",
+     "verbatim_quote": "Zur weiteren Abklärung des Vorhofflimmerns"
+    }
+   ],
+   "mentioned_sources": [
+    {
+     "name": "Dr. med. Sabine Brunner, Kardiologie am See",
+     "specialty": "Kardiologie"
+    }
+   ]
+  }
+ ]
+}

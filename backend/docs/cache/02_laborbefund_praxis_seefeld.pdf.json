@@ -1,0 +1,69 @@
+{
+ "key": "0a1287836e97f11bd2f4345f0fac1e1b2ff1a13f9887134502a97073c1996239",
+ "model": "gemini-3.8-flash",
+ "file": "02_laborbefund_praxis_seefeld.pdf",
+ "pages": [
+  {
+   "institution": "Hausarztpraxis Seefeld",
+   "source_type": "Laborbefund",
+   "document_date": "26.03.2026",
+   "claims": [
+    {
+     "claim": "CRP 4 mg/l",
+     "detail": "< 5",
+     "category": "Letzte Werte",
+     "verbatim_quote": "CRP 4 mg/l < 5"
+    },
+    {
+     "claim": "Leukozyten 6.8 G/l",
+     "detail": "4.0 – 10.0",
+     "category": "Letzte Werte",
+     "verbatim_quote": "Leukozyten 6.8 G/l 4.0 – 10.0"
+    },
+    {
+     "claim": "Hämoglobin 132 g/l",
+     "detail": "120 – 160",
+     "category": "Letzte Werte",
+     "verbatim_quote": "Hämoglobin 132 g/l 120 – 160"
+    },
+    {
+     "claim": "Thrombozyten 268 G/l",
+     "detail": "150 – 400",
+     "category": "Letzte Werte",
+     "verbatim_quote": "Thrombozyten 268 G/l 150 – 400"
+    },
+    {
+     "claim": "Kreatinin 71 µmol/l",
+     "detail": "45 – 84",
+     "category": "Letzte Werte",
+     "verbatim_quote": "Kreatinin 71 µmol/l 45 – 84"
+    },
+    {
+     "claim": "Kalium 4.1 mmol/l",
+     "detail": "3.5 – 5.1",
+     "category": "Letzte Werte",
+     "verbatim_quote": "Kalium 4.1 mmol/l 3.5 – 5.1"
+    },
+    {
+     "claim": "TSH 1.9 mU/l",
+     "detail": "0.27 – 4.2",
+     "category": "Letzte Werte",
+     "verbatim_quote": "TSH 1.9 mU/l 0.27 – 4.2"
+    },
+    {
+     "claim": "Pneumonie",
+     "detail": "",
+     "category": "Diagnosen",
+     "verbatim_quote": "Entzündungswerte nach Pneumonie normalisiert."
+    },
+    {
+     "claim": "Vorhofflimmern",
+     "detail": "neu diagnostiziert",
+     "category": "Diagnosen",
+     "verbatim_quote": "neu diagnostizierten Vorhofflimmerns"
+    }
+   ],
+   "mentioned_sources": []
+  }
+ ]
+}

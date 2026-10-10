@@ -1,0 +1,51 @@
+{
+ "key": "8ddcb77a7f54bf2e5d474b8687a6b660aa970d0e76f1a3e86e09893c4f1d8237",
+ "model": "gemini-3.8-flash",
+ "file": "03_medikamentenliste_praxis_seefeld.pdf",
+ "pages": [
+  {
+   "institution": "Hausarztpraxis Seefeld",
+   "source_type": "Medikationsplan",
+   "document_date": "26.03.2026",
+   "claims": [
+    {
+     "claim": "Metoprolol 25 mg",
+     "detail": "1-0-0",
+     "category": "Medikamente",
+     "verbatim_quote": "Metoprolol 25 mg 1-0-0 Vorhofflimmern 03/2026"
+    },
+    {
+     "claim": "Vorhofflimmern",
+     "detail": "03/2026",
+     "category": "Diagnosen",
+     "verbatim_quote": "Metoprolol 25 mg 1-0-0 Vorhofflimmern 03/2026"
+    },
+    {
+     "claim": "Cetirizin 10 mg",
+     "detail": "0-0-1 bei Bedarf",
+     "category": "Medikamente",
+     "verbatim_quote": "Cetirizin 10 mg 0-0-1 bei Bedarf Heuschnupfen 2015"
+    },
+    {
+     "claim": "Heuschnupfen",
+     "detail": "2015",
+     "category": "Diagnosen",
+     "verbatim_quote": "Cetirizin 10 mg 0-0-1 bei Bedarf Heuschnupfen 2015"
+    },
+    {
+     "claim": "Paracetamol 500 mg",
+     "detail": "bei Bedarf, max. 4x/Tag",
+     "category": "Medikamente",
+     "verbatim_quote": "Paracetamol 500 mg bei Bedarf, max. 4x/Tag Schmerzen/Fieber —"
+    },
+    {
+     "claim": "Penicillin",
+     "detail": "generalisiertes Exanthem (2011)",
+     "category": "Allergien",
+     "verbatim_quote": "Penicillin – generalisiertes Exanthem (2011)"
+    }
+   ],
+   "mentioned_sources": []
+  }
+ ]
+}
