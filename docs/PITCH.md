@@ -52,7 +52,7 @@ Kurz Entire-Checkpoint der Policy Engine zeigen.
 
 **2:45 – Business + Close**
 > "New practices pay per onboarded patient: it saves their assistants time. And when the federal health dossier arrives, someone has to fill it with ten years of paper. That's us.
-> Stafette. Your history, collected, not stored."
+> Stafette. Switch doctors, your medical history follows."
 
 ## Fragen der Jury – Antworten vorbereiten
 

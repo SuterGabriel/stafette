@@ -108,6 +108,8 @@ Quellen: [DSG](https://www.fedlex.admin.ch/eli/cc/2022/491/de), [DSV](https://ww
 
 **Claim:** *„Deine Krankengeschichte – gesammelt, nicht gespeichert.“* / *"Your history. Collected, not stored."*
 
+**Neuer Claim (entschieden 10.10.2026):** *"Switch doctors. Your medical history follows."*, Unterzeile *"An AI agent that collects your records, only with your permission."* (DE: *„Arzt wechseln. Ihre Krankengeschichte kommt mit.“*). Grund: Der alte Claim war nur ein Datenschutz-Argument und nannte weder die Situation (Arztwechsel) noch das Versprechen.
+
 ### Logo: was der Markt macht
 
 Doctolib (Blau beibehalten), Ada (Türkis, Blau, Koralle), Alan (weich, Maskottchen, warm), OneDoc CH (Teal `#02ae96`, „swiss made software“-Badge). Muster [E]: Wortmarke statt Symbol, eine kühle Hauptfarbe mit warmem Akzent, runde Formen, Vertrauen über Zertifikats-Badges.

@@ -2,7 +2,7 @@
 
 Du sagst einen Satz, *„Ich wechsle zu Dr. Keller, sorg dafür, dass sie meine Vorgeschichte hat“*, und Stafette erledigt den Rest: Der Agent erstellt die Vollmacht, ruft die bisherigen Praxen an, liest die eingehenden Akten und findet Lücken, an die niemand gedacht hat. Dabei kann er **nie mehr tun, als du erlaubt hast**: Gemini schlägt Aktionen vor, deterministischer Code entscheidet, ob sie erlaubt sind.
 
-> {Tech: Europe} Agentic AI Hack · Zürich · 10. Oktober 2026 · *Deine Krankengeschichte – gesammelt, nicht gespeichert.*
+> {Tech: Europe} Agentic AI Hack · Zürich · 10. Oktober 2026 · *Switch doctors. Your medical history follows.*
 
 ![Architektur von Stafette](docs/img/architecture.png)
 

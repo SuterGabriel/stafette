@@ -133,7 +133,7 @@ Telefon-Agent und Orchestrator sehen **keine medizinischen Inhalte**. Alles läu
 4. **Dokumente:** Testakten reinziehen → Dr. Kellers Übergabe füllt sich mit Fundstellen. Klick → wörtliches Zitat mit Quelle.
 5. **Agentischer Moment:** Der Agent legt **selbst** eine neue Station an: *„Dr. Brunner, Kardiologie – erwähnt, keine Unterlagen.“* → fragt Anna in ihrer App → Ja → Vollmacht v2.
 6. **Wie gebaut:** 20 Sekunden Architektur + Entire-Checkpoint.
-7. **Business + Close:** *„Stafette. Your history, collected, not stored.“*
+7. **Business + Close:** *„Stafette. Switch doctors, your medical history follows.“*
 
 ---
 

@@ -1,0 +1,21 @@
+{
+  "name": "stafette-video",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "remotion studio",
+    "render:intro": "remotion render LogoIntro out/logo-intro.mp4",
+    "render:intro-dark": "remotion render LogoIntroDark out/logo-intro-dark.mp4"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.417",
+    "@remotion/fonts": "^4.0.417",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "remotion": "^4.0.417"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.13",
+    "typescript": "^5.9.2"
+  }
+}
