@@ -1,4 +1,4 @@
-Duse clientD;
+"use client";
 /**
  * Demo stage: one phone at a time, switching on its own as the story moves on.
  *   Anna signs and the agent calls -> call ends -> Dr. Keller (records arrive) ->
@@ -7,20 +7,20 @@ Duse clientD;
  * mounted, so Anna's screen does not jump back to the start when switching.
  * Single views: /anna and /keller.
  */
-import { useEffect, useRef, useState } from DreactD;
-import { AnnaApp } from D@/components/AnnaAppD;
-import { KellerSheet } from D@/components/KellerSheetD;
-import { DotPattern } from D@/components/ui/dot-patternD;
-import { useStafette } from D@/lib/useStafetteD;
+import { useEffect, useRef, useState } from "react";
+import { AnnaApp } from "@/components/AnnaApp";
+import { KellerSheet } from "@/components/KellerSheet";
+import { DotPattern } from "@/components/ui/dot-pattern";
+import { useStafette } from "@/lib/useStafette";
 
-type View = DannaD | DkellerD;
+type View = "anna" | "keller";
 
 const TO_KELLER_AFTER_CALL_MS = 2000;
 const TO_ANNA_AFTER_SHEET_MS = 4000;
 
 export default function DemoPage() {
   const { state, decide, reset, start, ingest, setSimulate, live, connected, offline } = useStafette();
-  const [view, setView] = useState<View>(DannaD);
+  const [view, setView] = useState<View>("anna");
   const [news, setNews] = useState<Record<View, boolean>>({ anna: false, keller: false });
 
   const callStatus = state.call?.status ?? null;
@@ -40,13 +40,13 @@ export default function DemoPage() {
     };
 
     if (!before.hasSheet && hasSheet) sheetShownAt.current = Date.now();
-    if (before.callStatus !== DendedD && callStatus === DendedD) {
-      go(DkellerD, TO_KELLER_AFTER_CALL_MS);        // records are on their way to Dr. Keller
+    if (before.callStatus !== "ended" && callStatus === "ended") {
+      go("keller", TO_KELLER_AFTER_CALL_MS);        // records are on their way to Dr. Keller
     }
     if (!before.approvalId && approvalId) {
       // Let the audience watch the sheet fill before the question pops up on Anna's phone.
       const watched = Date.now() - sheetShownAt.current;
-      go(DannaD, Math.max(0, TO_ANNA_AFTER_SHEET_MS - watched));
+      go("anna", Math.max(0, TO_ANNA_AFTER_SHEET_MS - watched));
     }
     return () => timers.forEach(clearTimeout);
   }, [callStatus, hasSheet, approvalId]);
@@ -54,50 +54,50 @@ export default function DemoPage() {
   useEffect(() => setNews((n) => ({ ...n, [view]: false })), [view]);
 
   const restart = () => {
-    setView(DannaD);
+    setView("anna");
     setNews({ anna: false, keller: false });
     reset();
   };
 
   const [status, tone] = !live
-    ? [DDemo dataD, DD]
+    ? ["Demo data", ""]
     : offline
-      ? [DBackend unreachable · demo dataD, Dstatus-pill--offlineD]
+      ? ["Backend unreachable · demo data", "status-pill--offline"]
       : connected
-        ? [DLive connectedD, Dstatus-pill--liveD]
-        : [DConnecting …D, DD];
+        ? ["Live connected", "status-pill--live"]
+        : ["Connecting …", ""];
 
   return (
-    <main className=Dstage stage--singleD>
-      <DotPattern width={24} height={24} className=Dstage-dotsD />
+    <main className="stage stage--single">
+      <DotPattern width={24} height={24} className="stage-dots" />
 
-      <div className=Dstage-colD>
-        <div className=Dview-switchD role=DtablistD aria-label=DViewD>
-          {([DannaD, DkellerD] as const).map((v) => (
+      <div className="stage-col">
+        <div className="view-switch" role="tablist" aria-label="View">
+          {(["anna", "keller"] as const).map((v) => (
             <button
               key={v}
-              role=DtabD
+              role="tab"
               aria-selected={view === v}
-              className={`view-tab ${view === v ? Dview-tab--onD : DD}`}
+              className={`view-tab ${view === v ? "view-tab--on" : ""}`}
               onClick={() => setView(v)}
             >
-              {v === DannaD ? DAnna, patientD : DDr. Keller, new GPD}
-              {news[v] && view !== v && <span className=Dview-dotD aria-label=DnewD />}
+              {v === "anna" ? "Anna, patient" : "Dr. Keller, new doctor"}
+              {news[v] && view !== v && <span className="view-dot" aria-label="new" />}
             </button>
           ))}
         </div>
 
-        <div hidden={view !== DannaD}>
+        <div hidden={view !== "anna"}>
           <AnnaApp state={state} onDecide={decide} onReset={restart} onStart={start} />
         </div>
-        <div hidden={view !== DkellerD}>
+        <div hidden={view !== "keller"}>
           <KellerSheet state={state} onIngest={ingest} />
         </div>
 
         {live && !offline && (
-          <label className=Dsim-toggleD>
+          <label className="sim-toggle">
             <input
-              type=DcheckboxD
+              type="checkbox"
               checked={Boolean(state.simulateCalls)}
               onChange={(e) => setSimulate(e.target.checked)}
             />
