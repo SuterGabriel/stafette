@@ -106,3 +106,7 @@ Nein mach die changes einfach*
 <status>completed</status>
 <summary>Background command "Commit splash and video changes" completed (exit code 0)</summary>
 </task-notification>
+
+---
+
+start again
