@@ -1,0 +1,26 @@
+Wie sieht das aus mit den Arbeiten von Manuel ist das einfach zum verbinden oder zusammenführen ? Entrire sollte ja nun beide Historie kennen daher sollte dies doch einfach gehen oder?
+
+---
+
+Was ist nun alles noch offen das wir die Arbeit zwischen mir und Manuel aufteilen können bis um 19:00 Uhr.
+
+---
+
+Kannst du mir die Manuel Tasks alleine geben.
+
+---
+
+Was sind meine Tasks nur meine Tasks?
+
+---
+
+Also ich habe nun den Key bei Gemini_API_Key hinzugefügt. Was füge ich bei OPENAI_API_KEy ein ?
+
+---
+
+Dies bruchen wir nicht mehr: 
+
+16:15–17:00	5. Manuels Azure-URL	in backend/.env bei CORS_ORIGINS ergänzen	–
+
+Machen es nicht mehr auf Azure. Wir hosten auf Vercel und deployments laufen darüber. 
+Wie machen wir es mit dem Backend können wir dies auch über Vercel laufen lassen?
