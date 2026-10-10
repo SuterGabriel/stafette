@@ -26,3 +26,8 @@ Vercel-URL: https://stafette.vercel.app. Bitte in backend/.env ergänzen: CORS_O
 ---
 
 Backend neu starten
+
+---
+
+Der Voice Agent fragt mich ja ob es ok ist ein Transkript zu machen. Wenn ich dann ja sage passiert nichts. Dies ist schlecht...
+Was müsste da passieren.
