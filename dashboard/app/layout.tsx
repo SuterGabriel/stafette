@@ -1,0 +1,21 @@
+import type { Metadata } from "next";
+// Font bundled locally (works offline, no Google Fonts request at the venue)
+import "@fontsource/manrope/500.css";
+import "@fontsource/manrope/600.css";
+import "@fontsource/manrope/700.css";
+import "@fontsource/manrope/800.css";
+import "./globals.css";
+
+export const metadata: Metadata = {
+  title: "Stafette",
+  description: "Ihre Krankengeschichte – gesammelt, nicht gespeichert.",
+  icons: { icon: "/stafette-mark.svg" },
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="de">
+      <body>{children}</body>
+    </html>
+  );
+}
