@@ -1,0 +1,69 @@
+Gut können wir nun die Demo rein aus der mobile Ansicht machen? 
+
+Dazu änder mir den Switch auf die selbe grösse wie das Handy. Zentriere das Handy auf der Website
+
+---
+
+Wird auch angerufen ? Was habe ich nun noch offen Gabriel an Tasks?
+
+---
+
+Also was könntest du jetzt machen ?
+
+---
+
+Gut mach dies so. Danach mache ich den Testanruf.
+
+---
+
+Wo haben wir die Stimmen schon wieder die Frau und der Mann?`
+
+---
+
+Pass mir dies noch an. 
+Vercel-URL: https://stafette.vercel.app. Bitte in backend/.env ergänzen: CORS_ORIGINS=http://localhost:3000,https://stafette.vercel.app und das Backend neu starten.
+
+---
+
+Backend neu starten
+
+---
+
+Der Voice Agent fragt mich ja ob es ok ist ein Transkript zu machen. Wenn ich dann ja sage passiert nichts. Dies ist schlecht...
+Was müsste da passieren.
+
+---
+
+Das Problem nun ist wenn ich den Call abnehme höre ich gar nichts mehr.
+
+---
+
+Was ich mir hier noch überlegt habe: 
+
+Ist das dies gesprochen wird anstatt dann einfach angezeigt wird. Aber wir müssen dennoch wissen was da gesprochen werden muss. Verstehst du was ich meine?
+
+---
+
+Übersetze mir dies auch noch:
+
+Eine Meldung aus Manuels Pipeline: Verworfene Angaben erscheinen im Protokoll als „Angabe verworfen …“. Das ist seine Datei, bei unseren Testakten wird aber nichts verworfen. Sag Manuel Bescheid, falls er es übersetzen will.
+
+---
+
+Das Problem die Abkürzung GP versteht niemand.
+
+---
+
+<task-notification>
+<task-type>artifact-auto-react</task-type>
+<summary>2 artifact auto-reply subscriptions paused by the interrupt (comments sent to Claude meanwhile are answered then)</summary>
+The user's interrupt paused them and the watches are kept; when the user asks you to publish these artifacts again, that publish resumes them, or resume_replies if the user asks, as does the user's next typed message — each only on hosts that pass typed input through as the user's, and comments sent to Claude in the meantime are answered then; publishing without being asked, while handling a notification or a wake-up, leaves them paused. Do not republish or resume just to re-enable auto-replies unless the user asks.
+</task-notification>
+
+---
+
+no use new doctor
+
+---
+
+Der Agent gibt keine Antwort nach der Frage wenn ich ja gerne sage. Dies ist noch ein Problem.
