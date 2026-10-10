@@ -1,0 +1,3 @@
+Gut können wir nun die Demo rein aus der mobile Ansicht machen? 
+
+Dazu änder mir den Switch auf die selbe grösse wie das Handy. Zentriere das Handy auf der Website
