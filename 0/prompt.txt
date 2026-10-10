@@ -1,0 +1,4 @@
+Dazu noch eine Frage was ist nun der logische next step. Manuel schaut sich nun das Hosting des Frontend auf Azure an. 
+Schau ich finde die Diagramme nicht schlecht aber jedoch finde ich das Diagramm im Remo von: https://github.com/gradium-ai/digigrad
+
+Immer noch besser weil es mit den Icons und den Farben gearbeitet hat. Bei uns müssen die Grafiken nicht umbedingt so aussehen in meiner Meinung nach. Hauptsache sie sind verständlicher und visueller als jetzt.
