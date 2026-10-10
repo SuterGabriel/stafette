@@ -181,4 +181,6 @@ Pitch-Bezug: Epic verklagte 2026 Health Gorilla, weil Akten unter falschem Zweck
 
 ## Ausgehender Text (zweite Verteidigungslinie)
 
-Bevor ein Satz an Gradium TTS geht, prüft ein Filter deterministisch: keine Mailadressen oder Telefonnummern ausser denen aus der Vollmacht. Treffer → Satz wird ersetzt durch „Das darf ich leider nicht weitergeben.“
+Ziel: Bevor ein Satz an Gradium TTS geht, prüft ein Filter deterministisch, dass keine Mailadressen oder Telefonnummern ausser denen aus der Vollmacht vorkommen.
+
+**Einschränkung mit gradbot:** gradbot erzeugt Text und Sprache intern. Das Backend sieht den Satz erst als `tts_text`, wenn die Sprachausgabe schon läuft; ersetzen lässt er sich nicht mehr. Im MVP prüft der Filter deshalb `tts_text`, loggt einen Treffer als rotes Event und leert bei Bedarf den Twilio-Puffer (`clear`), was hörbar abbricht. Die eigentliche Sicherheit liegt in der ersten Linie: Der Telefon-Agent kennt keine medizinischen Inhalte und kann über die Tools nichts Unerlaubtes auslösen.

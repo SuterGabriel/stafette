@@ -183,12 +183,12 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <text class="m inv" x="510" y="248" style="font-size:10.5px">Code</text>
 
       <rect class="n-code" x="640" y="100" width="130" height="56" rx="8"/>
-      <text class="b m" x="705" y="124">Event Log</text>
+      <text class="b m" x="705" y="124">State + Events</text>
       <text class="sub m" x="705" y="141">in-memory · TTL</text>
 
       <rect class="n-gem" x="640" y="230" width="130" height="56" rx="8"/>
       <text class="b m" x="705" y="254">Telefon-Agent</text>
-      <text class="mono m t-teal" x="705" y="271">gemini-3.6 + Gradium</text>
+      <text class="mono m t-teal" x="705" y="271">gradbot · gemini-3.6</text>
 
       <!-- lower zone nodes -->
       <rect class="n-code" x="240" y="440" width="140" height="56" rx="8"/>
@@ -206,7 +206,7 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <!-- right: outside world -->
       <rect class="n-ext" x="850" y="100" width="220" height="56" rx="8"/>
       <text class="b m" x="960" y="124">Dashboard</text>
-      <text class="sub m" x="960" y="141">Plan-Board · Events · Freigaben</text>
+      <text class="sub m" x="960" y="141">Annas App · Dr. Kellers Übergabe</text>
       <rect class="n-ext" x="850" y="230" width="220" height="56" rx="8"/>
       <text class="b m" x="960" y="254">Alte Praxen</text>
       <text class="sub m" x="960" y="271">MPA am Telefon</text>
@@ -225,7 +225,7 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <text class="lbl m" x="597" y="120">loggt</text>
 
       <path class="edge" d="M770,128 H848" marker-end="url(#a-ar)"/>
-      <text class="lbl m" x="810" y="120">SSE</text>
+      <text class="lbl m" x="810" y="120">SSE: State</text>
 
       <path class="edge" d="M380,244 H438" marker-end="url(#a-ar)"/>
       <text class="lbl m" x="410" y="238">Vorschlag</text>
@@ -575,7 +575,7 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
 <section id="komponenten">
   <p class="eyebrow">Sicht 4 · UML-Komponentendiagramm</p>
   <h2>Komponenten und externe Dienste</h2>
-  <p>Ein Backend-Prozess mit sechs Modulen, ein schlankes Dashboard und fünf externe Dienste zur Laufzeit. Die Policy Engine ist das einzige Modul ohne externen Dienst: Sie läuft nur auf Code.</p>
+  <p>Ein Backend-Prozess mit sieben Komponenten, das Dashboard und fünf externe Dienste zur Laufzeit. Die Policy Engine ist die einzige Komponente ohne externen Dienst: Sie läuft nur auf Code. Stand 10.10., 13:20: Dashboard vorhanden, Backend noch nicht angelegt.</p>
   <figure>
     <div class="canvas">
     <svg viewBox="0 0 1100 830" role="img" aria-label="Komponentendiagramm: Das Backend enthält Policy Engine, Event Log, API, Vollmacht-Modul, Orchestrator, Dokument-Pipeline und Telefon-Agent. Vollmacht, Orchestrator, Dokument-Pipeline und Telefon-Agent nutzen die Gemini API. Der Telefon-Agent nutzt zusätzlich Gradium und Twilio. Twilio erreicht die API über einen ngrok-Tunnel. Das Dashboard liest Events per SSE. Mail-Versand ist noch offen. Zur Entwicklung kommen Claude Code oder Antigravity, Entire und GitHub dazu.">
@@ -588,7 +588,7 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
 
       <!-- Backend subsystem -->
       <rect class="backend" x="280" y="50" width="520" height="545" rx="10"/>
-      <text class="lbl" x="296" y="70">«subsystem»</text>
+      <text class="lbl" x="296" y="70">«subsystem» · ⬜ noch nicht angelegt</text>
       <text class="b" x="296" y="86">Backend · FastAPI · Python 3.12 (uv)</text>
 
       <!-- left column: Policy Engine -->
@@ -603,8 +603,8 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <rect class="n-code" x="300" y="350" width="200" height="70" rx="4"/>
       <use href="#c-icon" x="478" y="358" />
       <text class="lbl m" x="400" y="370">«component»</text>
-      <text class="b m" x="400" y="388">Event Log</text>
-      <text class="mono m sub" x="400" y="406">events.py · in-memory, TTL</text>
+      <text class="b m" x="400" y="388">State + Event Log</text>
+      <text class="mono m sub" x="400" y="406">state.py · in-memory, TTL</text>
 
       <!-- API -->
       <rect class="n-code" x="300" y="450" width="200" height="110" rx="4"/>
@@ -645,9 +645,9 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <use href="#c-icon" x="758" y="458" />
       <text class="lbl m" x="670" y="478">«component»</text>
       <text class="b m" x="670" y="496">Telefon-Agent · voice/</text>
-      <text class="mono m sub" x="670" y="515">pipecat-ai[gradium,google]</text>
-      <text class="mono m sub" x="670" y="531">Silero VAD · Ausgangsfilter</text>
-      <text class="lbl m" x="670" y="552">Fallback: gradbot</text>
+      <text class="mono m sub" x="670" y="515">gradbot 0.1.9 · bridge.py</text>
+      <text class="mono m sub" x="670" y="531">session.py · opener.py</text>
+      <text class="lbl m" x="670" y="552">Fallback: sim_call (Text)</text>
 
       <!-- External: Mail (open) -->
       <rect class="n-ext" x="870" y="62" width="210" height="56" rx="4"/>
@@ -662,13 +662,14 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <text class="mono m t-teal" x="975" y="200">gemini-3.8-flash</text>
       <text class="mono m t-teal" x="975" y="216">gemini-3.6-flash</text>
       <text class="mono m t-teal" x="975" y="232">Google Search Grounding</text>
+      <text class="lbl m" x="975" y="452">für gradbot: OpenAI-kompatibel</text>
       <text class="lbl m" x="975" y="470">HTTPS · GEMINI_API_KEY</text>
 
       <!-- External: Gradium -->
       <rect class="n-gem" x="870" y="520" width="210" height="60" rx="4"/>
       <text class="lbl m" x="975" y="540">«Partner»</text>
       <text class="b m" x="975" y="558">Gradium</text>
-      <text class="lbl m" x="975" y="573">STT · TTS</text>
+      <text class="lbl m" x="975" y="573">STT · TTS über gradbot</text>
 
       <!-- External: Twilio -->
       <rect class="n-ext" x="870" y="610" width="210" height="72" rx="4"/>
@@ -686,9 +687,10 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <use href="#c-icon" x="208" y="448" />
       <text class="lbl m" x="130" y="466">«component»</text>
       <text class="b m" x="130" y="484">Dashboard · Next.js 15</text>
-      <text class="lbl m" x="130" y="504">Plan-Board · Event-Log</text>
-      <text class="lbl m" x="130" y="520">Freigaben · Inhalts-</text>
-      <text class="lbl m" x="130" y="536">verzeichnis</text>
+      <text class="lbl m" x="130" y="504">Annas App · Freigabe</text>
+      <text class="lbl m" x="130" y="520">Protokoll</text>
+      <text class="lbl m" x="130" y="536">Dr. Kellers Übergabe</text>
+      <text class="m t-ok" x="130" y="553" style="font-size:10.5px;font-weight:700">✓ vorhanden</text>
 
       <!-- assembly connectors (consumer — socket ◖● ball — provider) -->
       <!-- Vollmacht → Mail -->
@@ -771,14 +773,14 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
     <thead><tr><th>Dienst</th><th>Wofür</th><th>Schnittstelle</th><th>Env-Variablen</th><th>Stand · Fallback</th></tr></thead>
     <tbody>
       <tr><td class="group" colspan="5">Laufzeit · extern</td></tr>
-      <tr><td><b>Gemini API</b> <span class="pill p">Partner</span></td><td>Vollmacht kompilieren, Orchestrator, Telefon-Dialog, Akten lesen, Kontaktsuche</td><td>HTTPS, <code>google-genai</code>; in Pipecat <code>GoogleLLMService</code></td><td><code>GEMINI_API_KEY</code></td><td>Modelle fix: <code>gemini-3.6-flash</code>, <code>gemini-3.8-flash</code>. Bei gradbot über die OpenAI-kompatible Schnittstelle</td></tr>
-      <tr><td><b>Gradium</b> <span class="pill p">Partner</span></td><td>Spracherkennung der MPA (de), Schweizer Stimme</td><td>WSS über <code>pipecat-ai[gradium]</code></td><td><code>GRADIUM_API_KEY</code>, <code>GRADIUM_VOICE_ID</code></td><td>Fallback: gradbot (Twilio-Bridge eingebaut)</td></tr>
+      <tr><td><b>Gemini API</b> <span class="pill p">Partner</span></td><td>Vollmacht kompilieren, Orchestrator, Telefon-Dialog, Akten lesen, Kontaktsuche</td><td>HTTPS über <code>google-genai</code>; Telefon-Dialog über gradbot und die OpenAI-kompatible Schnittstelle</td><td><code>GEMINI_API_KEY</code>; für gradbot <code>LLM_BASE_URL</code>, <code>LLM_MODEL</code>, <code>OPENAI_API_KEY</code> (= Gemini-Key)</td><td>Modelle fix: <code>gemini-3.6-flash</code>, <code>gemini-3.8-flash</code>. Tool-Calls über die OpenAI-Schnittstelle zuerst testen</td></tr>
+      <tr><td><b>Gradium</b> <span class="pill p">Partner</span></td><td>Spracherkennung der MPA (de), Schweizer Stimme</td><td><code>gradbot.run()</code>, Audio μ-law von Twilio</td><td><code>GRADIUM_API_KEY</code>, <code>GRADIUM_VOICE_ID</code></td><td>Fallback: <code>sim_call</code> (Text)</td></tr>
       <tr><td><b>Twilio</b></td><td>Telefonnummer, Anruf aufs Handy der „MPA“, Audio-Stream</td><td>REST <code>calls.create</code>, TwiML <code>&lt;Connect&gt;&lt;Stream&gt;</code>, Media Streams (WSS, 8 kHz μ-law)</td><td><code>TWILIO_ACCOUNT_SID</code>, <code>TWILIO_AUTH_TOKEN</code>, <code>TWILIO_FROM_NUMBER</code>, <code>DEMO_TO_NUMBER</code></td><td>Account upgraden, CH-Geo-Permission. Fallback: <code>sim_call</code> (Text)</td></tr>
       <tr><td><b>ngrok</b></td><td>Öffentliche URL, damit Twilio den lokalen Server erreicht</td><td>HTTPS + WSS Tunnel</td><td><code>PUBLIC_URL</code></td><td><span class="pill ok">installiert</span> 3.3.1. Noch nötig: <code>ngrok config add-authtoken</code>, <code>ngrok update</code>. Alternative: cloudflared</td></tr>
       <tr><td><b>Mail-Versand</b></td><td>Unterschriebene Vollmacht an die hinterlegte Adresse der Praxis (<code>send_mandate_letter</code>)</td><td>keine im MVP</td><td>keine</td><td><span class="pill ok">entschieden</span> Im MVP simuliert: PDF und Event im Dashboard, kein Versand. HIN nach dem Hack</td></tr>
       <tr><td class="group" colspan="5">Laufzeit · eigene Komponenten</td></tr>
-      <tr><td><b>Backend</b></td><td>Policy Engine, Orchestrator, Telefon-Agent, Dokument-Pipeline, Event Log</td><td>FastAPI auf einem Port, alles in einem Prozess</td><td>siehe <code>.env.example</code></td><td>Bibliotheken: <code>pipecat-ai</code>, <code>google-genai</code>, <code>pydantic</code>, <code>pymupdf</code>, <code>reportlab</code></td></tr>
-      <tr><td><b>Dashboard</b></td><td>Plan-Board, Events (ALLOWED / BLOCKED), Freigaben, Inhaltsverzeichnis</td><td><code>GET /state</code>, SSE <code>GET /events</code> (ganzer State), <code>POST /approvals/{id}</code>, <code>POST /reset</code></td><td><code>NEXT_PUBLIC_API_URL</code> in <code>dashboard/.env.local</code></td><td><span class="pill ok">angelegt</span> <code>dashboard/</code>, läuft ohne Backend auf Demo-Daten. Vertrag: <code>lib/types.ts</code></td></tr>
+      <tr><td><b>Backend</b></td><td>Policy Engine, Orchestrator, Telefon-Agent, Dokument-Pipeline, Event Log</td><td>FastAPI auf einem Port, alles in einem Prozess</td><td>siehe <code>.env.example</code></td><td><span class="pill open">noch nicht angelegt</span> Bibliotheken: <code>gradbot==0.1.9</code>, <code>twilio</code>, <code>google-genai</code>, <code>pydantic</code>, <code>pymupdf</code>, <code>reportlab</code></td></tr>
+      <tr><td><b>Dashboard</b></td><td>Annas App (Vollmacht, Fortschritt, Freigabe, Protokoll) und Dr. Kellers Übergabe (Fundstellen mit Zitat)</td><td><code>GET /state</code>, SSE <code>GET /events</code> (ganzer State), <code>POST /approvals/{id}</code>, <code>POST /reset</code></td><td><code>NEXT_PUBLIC_API_URL</code> in <code>dashboard/.env.local</code></td><td><span class="pill ok">vorhanden</span> Next.js 15.5.27, läuft ohne Backend auf Demo-Daten. Vertrag: <code>lib/types.ts</code></td></tr>
       <tr><td class="group" colspan="5">Entwicklung</td></tr>
       <tr><td><b>Entire</b> <span class="pill p">Partner</span></td><td>Checkpoints jeder Agent-Session: Prompt, Tool-Calls, Diff</td><td>Git-Hooks, Sync auf <code>origin</code></td><td>Login über <code>entire login</code></td><td><span class="pill ok">aktiv</span> für Claude Code und Antigravity</td></tr>
       <tr><td><b>GitHub</b></td><td>Repo, Checkpoint-Sync, Nachweis „heute bei null begonnen“</td><td>git</td><td>keine</td><td><span class="pill ok">aktiv</span> <code>SuterGabriel/stafette</code></td></tr>

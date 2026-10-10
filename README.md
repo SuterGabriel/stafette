@@ -6,7 +6,19 @@
 
 *Deine Krankengeschichte – gesammelt, nicht gespeichert.* Stafette = Bote, der eine Depesche überbringt (FR estafette, IT staffetta).
 
-> Name noch nicht auf Domain/Marke geprüft (nic.ch, swissreg.ch). Siehe [RESEARCH.md](RESEARCH.md#4-name-und-logo).
+> Name noch nicht auf Domain/Marke geprüft (nic.ch, swissreg.ch). Siehe [RESEARCH.md](docs/RESEARCH.md#4-name-und-logo).
+
+## Stand (10.10.2026, 13:20)
+
+| Teil | Stand |
+|---|---|
+| Docs, Brand, Testdokumente | ✅ fertig |
+| Dashboard (`dashboard/`) | ✅ Annas App + Dr. Kellers Übergabe, läuft auf Demo-Daten (`npm run dev`) |
+| Backend (`backend/`) | ⬜ noch nicht angelegt – nächster Schritt: `contracts.py`, `state.py`, `/state` + `/events` |
+| Telefon (gradbot + Twilio) | ⬜ noch nicht angelegt |
+| Infrastruktur | ngrok installiert, Authtoken fehlt; Keys für Gemini, Gradium, Twilio noch nicht getestet |
+
+Ist- und Soll-Struktur im Detail: [docs/STACK.md](docs/STACK.md#repo-struktur-ist-und-soll).
 
 ## Problem
 
@@ -40,19 +52,23 @@ Der Agent bekommt ein **Ziel**, keinen Befehl: *„Die neue Praxis hat eine voll
 |---|---|
 | Agentic | Ziel statt Skript: plant, handelt, erkennt Lücken, legt selbst neue Schritte an |
 | Gemini | Policy-Kompilierung mit Structured Output, Tool Calling, multimodales Lesen von Scans |
-| Gradium | Echtzeit-STT/TTS am Telefon, semantisches Turn-Taking, Schweizer Stimme |
+| Gradium | Echtzeit-STT/TTS am Telefon über gradbot, Turn-Taking, Schweizer Stimme |
 | Entire | Ganzes Projekt mit Checkpoints gebaut, Spur im Demo gezeigt |
 | Vertrauen | Prompt Injection am Telefon scheitert hörbar, Agent kennt keine Diagnosen |
 | Business | Zahlender Kunde: die neue Praxis (MPA-Zeit), später Befüllung des E-GD |
 
 ## Dateien
 
-- [ARCHITECTURE.md](ARCHITECTURE.md) – Diagramme: System, Agent-Schleife, Plan-Board, Lücken-Szene, Anruf, Datenfluss
-- [STACK.md](STACK.md) – Stack, Partner-Integration, Setup-Checkliste
-- [POLICY.md](POLICY.md) – Vollmacht, Tools, Policy Engine, Testfälle
-- [DEMO.md](DEMO.md) – Vorgehen in zwei Strängen, Zeitplan, Streichliste, Fallbacks
-- [PITCH.md](PITCH.md) – Pitch-Skript, Kernbotschaften, Jury-Fragen
-- [RESEARCH.md](RESEARCH.md) – Markt, Konkurrenz, Recht, Stack-Prüfung, Name und Logo
+- [docs/PROJECT.md](docs/PROJECT.md) – Projekt in 5 Minuten
+- [docs/diagramme.html](docs/diagramme.html) – Architektur, Entscheidungslogik, UML-Ablauf, Komponenten und Dienste (im Browser öffnen)
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) – Mermaid-Diagramme: System, Agent-Schleife, Zustand pro Quelle, Lücken-Szene, Anruf, Datenfluss
+- [docs/STACK.md](docs/STACK.md) – Stack, Ist-/Soll-Struktur, Partner-Integration, Setup, Umgebungsvariablen
+- [docs/POLICY.md](docs/POLICY.md) – Vollmacht, Tools, Policy Engine, Testfälle
+- [docs/DEMO.md](docs/DEMO.md) – Vorgehen in zwei Strängen, Zeitplan, Streichliste, Fallbacks
+- [docs/PITCH.md](docs/PITCH.md) – Pitch-Skript, Kernbotschaften, Jury-Fragen
+- [docs/RESEARCH.md](docs/RESEARCH.md) – Markt, Konkurrenz, Recht, Stack-Prüfung, Name und Logo
+- [dashboard/README.md](dashboard/README.md) – Dashboard starten, Schnittstelle zum Backend
+- [fixtures/README.md](fixtures/README.md) – Testdokumente und erwartete Ergebnisse
 
 ## Team
 

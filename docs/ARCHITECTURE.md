@@ -15,11 +15,11 @@ flowchart LR
         ORC[Orchestrator<br/>Gemini · Ziel-Schleife]
         PE[Policy Engine<br/>deterministisch]
         ST[(Plan-State<br/>eine Karte pro Quelle)]
-        VA[Voice Agent<br/>Pipecat]
+        VA[Voice Agent<br/>gradbot]
         DP[Document Pipeline<br/>Gemini multimodal]
         VER[Verifier<br/>Zitat ↔ Quellseite]
         GAP[Gap Detector<br/>erwähnte Quellen ohne Unterlagen]
-        EV[(Event Log<br/>in-memory, TTL)]
+        EV[(State + Event Log<br/>in-memory, TTL)]
     end
 
     subgraph Partner
@@ -30,7 +30,7 @@ flowchart LR
 
     PRAX[Alte Praxen]
     NEU[Neue Praxis]
-    DASH[Dashboard<br/>Plan-Board · Events · Übersicht]
+    DASH[Dashboard<br/>Annas App · Dr. Kellers Übergabe]
 
     P -->|Ziel| PC -->|Vollmacht| PE
     PC <--> GEM
@@ -52,8 +52,9 @@ flowchart LR
     ORC <--> ST
     PE --> EV
     ORC --> EV
-    EV -->|SSE| DASH
-    ST --> DASH
+    EV -->|SSE: ganzer State| DASH
+    ST --> EV
+    DASH -->|Annas Ja / Nein| ORC
 ```
 
 ## 2. Die Agent-Schleife
@@ -78,7 +79,9 @@ flowchart TD
 
 Der Orchestrator antwortet **nur** mit Tool-Calls. Freier Text hat keine Wirkung.
 
-## 3. Zustand pro Quelle (Plan-Board)
+## 3. Zustand pro Quelle
+
+Das Backend führt diese Zustände in `agent/plan_state.py`. Das Dashboard zeigt sie vereinfacht als Station mit `done` (erhalten, geprüft), `active` (angerufen, angefordert, wartet auf Einwilligung), `waiting` (geplant, wartet auf Annas Ja) oder `skipped` (abgelehnt).
 
 ```mermaid
 stateDiagram-v2
@@ -97,7 +100,7 @@ stateDiagram-v2
     abgelehnt --> [*]
 ```
 
-Neue Karten entstehen zur Laufzeit, wenn der Gap Detector eine erwähnte Quelle ohne Unterlagen findet.
+Neue Quellen entstehen zur Laufzeit, wenn der Gap Detector eine erwähnte Quelle ohne Unterlagen findet.
 
 ## 4. Demo-Szene: Lücke gefunden
 

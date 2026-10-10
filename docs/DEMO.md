@@ -9,7 +9,7 @@ Der Telefonanruf ist das grösste Risiko, die Agent-Schleife ist das, was die Ju
 | bis 12:30 | Twilio → Gradium STT → Gemini → Gradium TTS, durchgehend | Vollmacht-Schema, Policy Engine, Tests grün |
 | bis 15:00 | Tools im Dialog, `end_call` mit Outcome, Injection blockt | Orchestrator-Schleife mit **simuliertem** Anruf (Text statt Telefon), Plan-State |
 | 15:00 | **Integration:** echter Anruf ersetzt Simulation | |
-| bis 17:30 | Latenz, Stimme, Begrüssung | Dokument-Pipeline + Gap Detector, Dashboard mit Plan-Board |
+| bis 17:30 | Latenz, Stimme, Begrüssung | Dokument-Pipeline + Gap Detector, Dashboard an echte Daten (Dashboard selbst steht seit 13:00) |
 | 17:30 | **Feature Freeze** | |
 
 Der simulierte Anruf in Strang B ist gleichzeitig das Fallback, falls das Telefon morgen nicht will.
@@ -34,14 +34,14 @@ Der simulierte Anruf in Strang B ist gleichzeitig das Fallback, falls das Telefo
 3. Rückruf planen → nur als Status-Karte
 4. Zweiter Anruf nach der Lücke → nur angestossen, nicht durchgeführt
 
-**Nie streichen:** echter Anruf mit Injection-Block, Lücke wird gefunden + Freigabe-Frage, Plan-Board.
+**Nie streichen:** echter Anruf mit Injection-Block, Lücke wird gefunden + Freigabe-Frage in Annas App, Dr. Kellers Übergabe mit Zitaten.
 
 ## Demo-Ablauf (≈ 3 Minuten, Details in PITCH.md)
 
-1. **Ziel** sprechen → Vollmacht erscheint, Plan-Board legt 2 Karten an, Vollmacht-PDF zur Unterschrift (ein Klick „unterschreiben“ im Demo)
+1. **Ziel** sprechen → Annas App zeigt „Ich habe verstanden“ und die Vollmacht mit 2 Quellen, ein Klick „unterschreiben“
 2. **Anruf** Praxis A live auf der Bühne: KI-Offenlegung, „wir brauchen eine unterschriebene Vollmacht“ → kommt an die hinterlegte Adresse (Versand simuliert: Event + PDF im Dashboard); Injection-Versuch → BLOCKED
 3. **Dokumente** von Spital B kommen rein → Übersicht mit Quellen; Handyfoto mit markiertem Zitat (Gemini beim Namen nennen)
-4. **Lücke:** Agent legt selbst eine neue Karte „Dr. Brunner, Kardiologie“ an → Freigabe-Frage → Ja → Vollmacht v2 → Anruf startet
+4. **Lücke:** Agent legt selbst eine neue Station „Dr. Brunner, Kardiologie“ an → Frage in Annas App → Ja → Vollmacht v2 → Anruf startet
 5. **Wie gebaut:** Diagramm + Entire-Checkpoint
 6. **Business**
 
@@ -61,14 +61,15 @@ Alles synthetisch, Namen frei erfunden.
 |---|---|
 | Telefonnetz im Saal versagt | Browser-WebRTC mit Laptop als „Praxis“ |
 | Voice ganz kaputt | Simulierter Anruf aus Strang B, Transkript live im Dashboard |
-| Gradium-Integration hakt | Gradbot, oder Gradium nur für TTS |
+| gradbot hakt oder Gemini-Tool-Calls über die OpenAI-Schnittstelle gehen nicht | Simulierter Anruf (`sim_call`), Transkript im Protokoll |
+| Backend nicht fertig | Dashboard auf Demo-Daten (`lib/mock.ts`), zeigt die ganze Geschichte |
 | Latenz zu hoch | Kürzere Sätze, kein Reasoning im Dialog-Modell |
 | Alles bricht 19:45 | Backup-Video, danach Dashboard live zeigen |
 
 ## Vor der Bühne
 
 - **Kein Handy-Lautsprecher** (Echo → falsches Barge-in). MPA-Handy am Ohr; Agent-Stimme hörbar machen über ein zweites Gerät, das den Anruf mithört (z. B. Twilio-Konferenz/Monitor-Stream auf den Laptop am Saal-Audio) – am Morgen testen, sonst Live-Transkript im Dashboard als Hauptbühne
-- Dashboard im Vollbild, Schrift gross, Plan-Board gut sichtbar
+- Demo-Bühne `localhost:3000/` im Vollbild: links Annas App, rechts Dr. Kellers Übergabe; Protokoll in Annas App eingeblendet
 - Twilio-Guthaben prüfen, Geo-Permission CH an, Demo-Flag für Anrufzeiten an
 - Handy-Hotspot bereit
 - Tabs: Dashboard, Diagramm (`docs/diagramme.html`), Entire

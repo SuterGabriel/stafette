@@ -71,6 +71,8 @@ Quellen: [DSG](https://www.fedlex.admin.ch/eli/cc/2022/491/de), [DSV](https://ww
 
 ## 3. Tech-Stack (verifiziert)
 
+> **Entscheid am Hack-Tag (10.10.):** Telefonteil auf gradbot statt Pipecat, siehe [STACK.md](STACK.md). Die Pipecat-Zeilen unten bleiben als Recherche stehen.
+
 | Punkt | Ergebnis |
 |---|---|
 | Dialog + Tools | `gemini-3.6-flash` (GA, Pipecat-Default). [B] [Changelog](https://ai.google.dev/gemini-api/docs/changelog) |
@@ -144,7 +146,7 @@ Beide Recherchen kommen zum gleichen Kern: Pipeline statt Live API, Anruf kündi
 - **Positionierung:** „E-GD Readiness Layer“ – wir sammeln historische Akten *vor* der Migration ein, kein Ersatz fürs E-GD.
 - **Heute noch testen (Gradium-STT am Telefon):** Schweizer Namen und Gemeinden, „Krankengeschichte“, „Austrittsbericht“, „Überweisungsschreiben“, Datumsangaben, Telefonnummern, buchstabierte Mailadressen.
 - **Twilio-Trial:** Anrufe auf 10 Minuten begrenzt, nur verifizierte Ziele → Upgrade bleibt die sichere Wahl.
-- **Dashboard schlank halten:** Plan-Board, Event-Log, Übersicht. Kein aufwendiges Next.js-Projekt.
+- **Dashboard schlank halten:** Plan-Board, Event-Log, Übersicht. Kein aufwendiges Next.js-Projekt. *(Umgesetzt als Annas App + Dr. Kellers Übergabe, siehe `dashboard/`.)*
 
 **Nicht übernommen:** Perplexity streicht den echten Anruf weitgehend („simulierte oder kontrollierte Praxis“). Wir behalten den kontrollierten Live-Anruf aufs Teammate-Handy, weil er der stärkste Bühnenmoment ist – mit der Simulation aus Strang B als Fallback.
 
