@@ -74,4 +74,6 @@ export type StafetteState = {
   documents: number;
   sourceCount: number;
   updatedAt: string;
+  /** Time Dr. Keller confirmed the handover summary, e.g. "10:52"; null until then. */
+  reviewedAt?: string | null;
 };

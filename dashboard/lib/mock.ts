@@ -81,6 +81,7 @@ export const initialState: StafetteState = {
   documents: 4,
   sourceCount: 2,
   updatedAt: "10:42",
+  reviewedAt: null,
 };
 
 /** Local simulation of the patient's answer, used only when no backend is configured. */

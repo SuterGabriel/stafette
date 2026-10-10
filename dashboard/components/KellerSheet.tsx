@@ -7,10 +7,12 @@
 import { useState } from "react";
 import type { StafetteState } from "@/lib/types";
 import { Logo } from "./Logo";
-import { ClockIcon } from "./Icons";
+import { CheckIcon, ClockIcon } from "./Icons";
 
 export function KellerSheet({ state, alwaysShowQuotes = false }: { state: StafetteState; alwaysShowQuotes?: boolean }) {
   const [openId, setOpenId] = useState<string | null>("vhf");
+  // Local only for now; the backend can deliver it later via state.reviewedAt.
+  const [reviewedAt, setReviewedAt] = useState<string | null>(state.reviewedAt ?? null);
 
   return (
     <div className="keller">
@@ -78,6 +80,18 @@ export function KellerSheet({ state, alwaysShowQuotes = false }: { state: Stafet
             </span>
           </p>
         )}
+
+        <div className="sheet-review">
+          {reviewedAt ? (
+            <div className="confirm" role="status">
+              <CheckIcon /> Von Dr. Keller geprüft · {reviewedAt}
+            </div>
+          ) : (
+            <button className="btn btn--ink btn--auto" onClick={() => setReviewedAt("10:52")}>
+              Übersicht geprüft
+            </button>
+          )}
+        </div>
 
         <footer className="sheet-foot">
           <span>Jede Angabe stammt wörtlich aus den Originaldokumenten. Keine Bewertung, keine Empfehlung.</span>
