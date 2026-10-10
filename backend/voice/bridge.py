@@ -19,6 +19,7 @@ from fastapi import WebSocket, WebSocketDisconnect
 from state import store
 from voice.audio import GRADBOT_INPUT_RATE, GRADBOT_OUTPUT_RATE, TWILIO_RATE, resample_ulaw
 from voice.calls import CALLS, OPENER, Call
+from voice.llm_proxy import local_base_url
 from voice.session import session_config
 from voice.tools import handle_tool_call
 
@@ -58,8 +59,10 @@ async def run_bridge(ws: WebSocket) -> None:
     async def clear_playback() -> None:
         await ws.send_text(json.dumps({"event": "clear", "streamSid": stream_sid}))
 
-    # gradbot reads GRADIUM_API_KEY, OPENAI_API_KEY, LLM_BASE_URL and LLM_MODEL from the environment.
+    # gradbot reads GRADIUM_API_KEY, OPENAI_API_KEY and LLM_MODEL from the environment. The LLM goes
+    # through our shim (voice/llm_proxy.py), which fixes Gemini's tool-call stream for gradbot.
     input_handle, output_handle = await gradbot.run(
+        llm_base_url=local_base_url(),
         session_config=session_config(call),
         input_format=gradbot.AudioFormat.Ulaw,
         output_format=gradbot.AudioFormat.Ulaw,

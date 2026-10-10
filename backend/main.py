@@ -24,6 +24,7 @@ from agent import orchestrator
 from agent import routes as agent_routes
 from docs import routes as docs_routes
 from state import store
+from voice import llm_proxy
 from voice import routes as voice_routes
 
 load_dotenv()
@@ -46,6 +47,7 @@ app = FastAPI(title="Stafette backend")
 app.include_router(docs_routes.router)
 app.include_router(voice_routes.router)
 app.include_router(agent_routes.router)
+app.include_router(llm_proxy.router)
 
 # The dashboard runs on localhost:3000 locally and on Vercel when hosted.
 # CORS_ORIGINS: exact origins (comma-separated). CORS_ORIGIN_REGEX: e.g. the
