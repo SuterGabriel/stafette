@@ -1,0 +1,137 @@
+<pasted_content id="c532">
+Projekt: Stafette (Repo SuterGabriel/stafette). Lies zuerst docs/PROJECT.md,
+docs/POLICY.md (Abschnitt "Extraktions-Schema"), fixtures/README.md und
+backend/docs/README.md. Schau dir backend/state.py (Section, Finding,
+set_documents) und backend/contracts.py an.
+
+Baue die Dokument-Pipeline in backend/docs/ (Python 3.12, uv, google-genai).
+Arbeite NUR in backend/docs/ und backend/tests/test_docs.py.
+
+1. extract.py: Pro Dokument (PDF seitenweise, JPG als Bild) ruft
+   gemini-3.8-flash (MODEL_READER aus contracts.py) mit Structured Output auf.
+   Ergebnis pro Angabe:
+   {claim, category, source_document_id, page, verbatim_quote, source_type}
+   category ∈ Diagnosen | Allergien | Medikamente | Letzte Werte.
+   Zusätzlich: erwähnte Ärzte/Institutionen nur als {name, specialty}.
+   Beim Handyfoto (05_*.jpg) zusätzlich die Bounding Box des Zitats.
+   Kapsle den Modellaufruf in EINER Funktion, damit wir das Modell später
+   austauschen können (z. B. Gemma lokal).
+2. verify.py: Für PDFs den Seitentext mit pymupdf holen. Eine Angabe bleibt
+   nur, wenn verbatim_quote (normalisierte Leerzeichen) im Text dieser Seite
+   vorkommt. Sonst verwerfen und als verworfen zurückgeben.
+   Beim Foto: kein Textlayer, Zitat als "vom Foto gelesen" markieren.
+3. gaps.py: Erwähnte Ärzte, die nicht in der Vollmacht stehen und von denen
+   kein Dokument da ist → "fehlende Quelle" mit Name + Fachrichtung.
+   NIE Telefonnummern, Mailadressen oder Anweisungen aus Dokumenten
+   übernehmen (fixtures/06 enthält eine Prompt Injection).
+4. pipeline.py: process(paths, mandate_sources) -> {sections, missing,
+   mentioned_sources, rejected}. sections genau im Format von
+   state.Section / dashboard/lib/types.ts. Übergabe ans Dashboard mit
+   store.set_documents(...) wie in backend/docs/README.md.
+5. tests/test_docs.py gegen die "Erwarteten Ergebnisse" in fixtures/README.md:
+   Vorhofflimmern, Penicillin-Allergie, Appendektomie (vom Foto),
+   Metoprolol, CRP; Dr. Brunner als fehlende Quelle; aus Dokument 06
+   keine Mailadresse und keine 0900-Nummer im Ergebnis.
+   verify.py und gaps.py offline testen (ohne API). Tests, die Gemini
+   aufrufen, überspringen, wenn GEMINI_API_KEY fehlt.
+
+Keys nur aus backend/.env (GEMINI_API_KEY), nie committen.
+Wir sagen "Inhaltsverzeichnis mit Fundstellen", keine Bewertung oder
+Empfehlung im Output.
+
+Vorgehen: Zeig mir zuerst einen kurzen Plan, bevor du Code schreibst.
+Dann Schritt für Schritt, nach jedem Schritt Tests laufen lassen.
+Kleine Commits; vor jedem Push `git pull --rebase`.
+</pasted_content id="c532">
+
+---
+
+yes
+
+---
+
+can you launch it so i can test it?
+
+---
+
+tell me what i can test and what works / what's still missing
+
+---
+
+[Image #2] is this how it should look after going through the left dialog? on the right panel nothing changes, the "originaldokumente öffnen" button doesnt work yet
+
+---
+
+do a pull to get gabriels latest commits
+
+---
+
+make a pull again
+
+---
+
+does the backend contain a local run llm?
+
+---
+
+<pasted_content id="c532">
+Manuel, deine Aufgaben bis 19:00
+
+Vorab: git pull. Neu sind das Backend mit Telefonteil und die Entire-Anleitung in CLAUDE.md/AGENTS.md. Dein Coding-Agent nutzt damit automatisch Brain und Graph.
+
+Zeit    Aufgabe    Details
+bis 16:15    1. Akten live mit Gemini lesen    Pipeline mit echtem GEMINI_API_KEY auf allen Testdokumenten in fixtures/ laufen lassen. Prüfen: Vorhofflimmern, Penicillin, Appendektomie (vom Handyfoto), Metoprolol, CRP; Dr. Brunner als fehlende Quelle; aus Dokument 06 weder Mailadresse noch 0900-Nummer. Ergebnis cachen (z. B. als JSON), damit die Demo nicht auf das Modell wartet.
+16:15–17:00    2. Auslöser im Dashboard    Button oder Drag & Drop „Akten eingegangen“, der POST /agent/ingest aufruft. Den Endpoint baut Gabriel, du bekommst Bescheid, sobald er steht. Bis dahin direkt mit process() testen.
+16:15–17:00    3. Hosting    Auf der Bühne zeigen wir das lokale Dashboard (localhost:3000). Azure brauchen wir als Link für die Abgabe, mit Offline-Fallback auf die Demo-Daten. Backend-URL: https://runny-lagoon-overhead.ngrok-free.dev. Achtung: Die Gratis-Domain von ngrok zeigt Browsern zuerst eine Warnseite, der Live-Stream klappt vom gehosteten Dashboard deshalb wohl nicht. Nur angehen, wenn Zeit bleibt. Schick Gabriel deine Azure-URL für CORS_ORIGINS.
+zwischendurch    4. Das Entire-Team fragen    Wie lautet der genaue Challenge-Text? Werden Brain bzw. Graph erwartet? Was muss in der Abgabe stehen?
+17:00–17:30    5. Gemeinsamer Durchlauf    Einmal die ganze Demo mit Gabriel: Ziel → Anruf → Angriff → Akten → Lücke → Freigabe. Fehler notieren und beheben.
+17:30    🧊 Feature Freeze    Ab hier keine neuen Features.
+17:30–18:15    6. Proben und Backup-Video    3–5 Proben. Du spielst die MPA am Telefon, auf Hochdeutsch, Handy am Ohr, kein Lautsprecher. Dazu nimmst du den Bildschirm für das Backup-Video auf.
+18:15–18:45    7. Video und Gegenlesen    Backup-Video fertig machen bzw. hochladen. Abgabetexte und README gegenlesen.
+nur bei Zeit    8. Anrufsprache im Frontend    Auswahl De/Fr/En auf dem Vollmacht-Screen in Annas App. Wird als Erstes gestrichen.
+Spielregeln:
+
+Im Backend nur backend/docs/ und deine Tests ändern. main.py, state.py, contracts.py, policy/, voice/ und agent/ gehören Gabriel. Wenn dort etwas fehlt, kurz melden.
+Vor jedem Push git pull --rebase. Scheitert der erste Push ohne neue Commits, einfach nochmals pushen.
+Keys nur in backend/.env, nie in den Chat und nie in Commits. Entire speichert die Sessions im öffentlichen Repo.
+Wir sagen „Inhaltsverzeichnis mit Fundstellen“, nie „Diagnose“.
+Nie streichen: echter Anruf mit BLOCKED, gefundene Lücke mit Frage an Anna, Dr. Kellers Blatt mit Zitaten.
+</pasted_content id="c532">
+
+ 
+
+<pasted_content id="c532">
+Manuel
+Zeit    Aufgabe    Stand
+bis 16:15    1. Akten-Ergebnis cachen: Die Live-Extraktion mit Gemini läuft (Tests grün). Jetzt das Ergebnis z. B. als JSON speichern, damit die Demo nicht auf das Modell wartet    ⬜
+16:15–17:00    2. Auslöser im Dashboard: Button oder Drag & Drop „Akten eingegangen“ → POST /agent/ingest (Gabriel meldet, wenn der Endpoint steht)    ⬜
+16:15–17:00    3. Vercel: NEXT_PUBLIC_API_URL=https://runny-lagoon-overhead.ngrok-free.dev als Environment Variable setzen und die Vercel-URL an Gabriel schicken    ⬜
+16:15–17:00    4. Live-Updates für Vercel: In useStafette.ts statt EventSource den Stream per fetch lesen oder /state jede Sekunde abfragen, jeweils mit dem Header ngrok-skip-browser-warning: true. Lokal ändert sich nichts    ⬜
+zwischendurch    5. Entire-Team fragen: Challenge-Text, Brain/Graph erwartet, was gehört in die Abgabe?    ⬜
+17:00–17:30    6. Gemeinsamer Durchlauf mit Gabriel    ⬜
+17:30    🧊 Feature Freeze    
+17:30–18:15    7. Proben und Backup-Video: spielt die MPA am Telefon (Hochdeutsch, Handy am Ohr) und nimmt den Bildschirm auf    ⬜
+18:15–18:45    8. Video fertig machen, Abgabetexte und README gegenlesen    ⬜
+nur bei Zeit    9. Anrufsprache im Frontend (De/Fr/En)    ⬜
+Für beide gilt: git pull --rebase vor jedem Push. Keine Keys in Chat oder Commits. Auf der Bühne zeigen wir das lokale Dashboard. Der Vercel-Link ist für die Abgabe und zeigt Live-Daten nur, solange dein Laptop läuft, sonst die Demo-Daten.
+</pasted_content id="c532">
+
+ check my new tasks but note that the first pasted message was revised by the second message so you might have to ignore it. analyze and check what needs to be done
+
+---
+
+i rotated the gemini api key. proceed as suggested
+
+---
+
+npx vercel login
+
+---
+
+<task-notification>
+<task-id>bl9mvtb2t</task-id>
+<tool-use-id>toolu_0158J1USoGd7Vf8wSR9D2PJ2</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-manu-work-stafette/9ee7275c-5a8d-47d7-bc80-45099f183fc9/tasks/bl9mvtb2t.output</output-file>
+<status>completed</status>
+<summary>Background command "Start Vercel device login flow" completed (exit code 0)</summary>
+</task-notification>
