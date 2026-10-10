@@ -22,9 +22,22 @@ Tests: `uv run pytest`
 | `main.py` | `/state`, `/events` (SSE), `/approvals/{id}`, `/reset`, CORS | Gabriel | ✅ |
 | `state.py` | `StafetteState` genau wie `dashboard/lib/types.ts`, Store mit SSE-Push, Demo-Seed | Gabriel | ✅ |
 | `contracts.py` | `Allowed` · `NeedsApproval` · `Blocked`, Call-Outcomes, Modellnamen | Gabriel | ✅ |
-| `policy/` | Vollmacht-Schema, `check()`, Tests | Gabriel | ⬜ |
-| `voice/` | Twilio-Bridge, gradbot-Session, Gesprächsbeginn, Dialog-Tools | Gabriel | ⬜ |
+| `policy/` | Vollmacht-Schema, `check()`, Tests für alle Fälle aus POLICY.md | Gabriel | ✅ |
+| `voice/` | Twilio-Bridge, gradbot-Session (Stimme Livia, de-ch), Gesprächsbeginn, Dialog-Tools durch `check()` | Gabriel | ✅ Code, Live-Test offen |
+| `scripts/` | `gradium_check.py` (Stimmen, Opener), `call.py` (Demo-Anruf starten) | Gabriel | ✅ |
 | `docs/` | Akten lesen, Zitate prüfen, Lücken finden ([Auftrag](docs/README.md)) | Manuel | ⬜ |
+
+## Anruf starten
+
+Braucht in `.env`: `OPENAI_API_KEY` (= Gemini-Key für gradbot), `GRADIUM_API_KEY`, `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `DEMO_TO_NUMBER`, `PUBLIC_URL` (feste ngrok-Domain) und `STAFETTE_ADMIN_TOKEN`.
+
+```powershell
+ngrok http 8000 --url <feste-domain>.ngrok.app     # Terminal 1
+cd backend; uv run uvicorn main:app --port 8000    # Terminal 2
+cd backend; uv run python scripts/call.py          # Terminal 3: ruft DEMO_TO_NUMBER an
+```
+
+Ablauf: `place_call` → Policy Engine → Twilio wählt → nach dem Abheben `/twilio/twiml` (Signatur geprüft) → Audio über `/twilio/stream` zu gradbot → fester Gesprächsbeginn → Gespräch. Jeder Tool-Call geht durch `check()` und erscheint im Protokoll des Dashboards.
 
 ## API für das Dashboard
 

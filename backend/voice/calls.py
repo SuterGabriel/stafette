@@ -1,0 +1,122 @@
+"""Outbound calls: the orchestrator's place_call, checked by the policy engine first.
+
+Demo rule (docs/PROJECT.md): we never call a real practice. Every mandated
+source is dialled at DEMO_TO_NUMBER, the phone of the team member playing
+the practice. The number never comes from a conversation or a document.
+"""
+
+from __future__ import annotations
+
+import asyncio
+import logging
+import os
+import secrets
+import time
+from dataclasses import dataclass, field
+from datetime import datetime
+
+from contracts import MODEL_ORCHESTRATOR, Allowed, Blocked, Decision
+from policy.engine import PlanState, check
+from policy.schema import example_mandate
+from state import store
+from voice.audio import render_ulaw
+
+log = logging.getLogger(__name__)
+
+# Fixed opener from docs/POLICY.md. Spoken from a pre-rendered clip, never phrased by the LLM.
+OPENER = (
+    "Grüezi, hier ist ein KI-Assistent der Firma Stafette. Ich rufe im Auftrag von Anna Muster an, "
+    "wegen der Übermittlung ihrer Unterlagen an ihre neue Hausärztin. "
+    "Darf ich das Gespräch für eine Notiz transkribieren?"
+)
+
+# Demo state: mandate v1 (signed by Anna in her app) and the plan per source.
+MANDATE = example_mandate()
+PLAN = PlanState(signed={s.id for s in MANDATE.sources})
+
+
+@dataclass
+class Call:
+    id: str
+    source_id: str
+    source_name: str
+    to: str
+    created: float = field(default_factory=time.time)
+    twilio_sid: str = ""
+    opener_ulaw: bytes | None = None
+    opener_task: asyncio.Task | None = None
+    end_requested: bool = False
+    outcome: str | None = None
+    transcript: list[tuple[str, str]] = field(default_factory=list)
+
+
+CALLS: dict[str, Call] = {}
+
+
+def env(name: str, default: str = "") -> str:
+    return os.environ.get(name, default).strip()
+
+
+def relax_call_hours() -> bool:
+    return env("DEMO_RELAX_CALL_HOURS").lower() in {"1", "true", "yes"}
+
+
+def voice_id() -> str:
+    return env("GRADIUM_VOICE_ID", "V64Rt53v9dWHV0LU")
+
+
+def public_url() -> str:
+    return env("PUBLIC_URL").rstrip("/")
+
+
+def public_ws_url() -> str:
+    return public_url().replace("https://", "wss://", 1).replace("http://", "ws://", 1)
+
+
+def decision_text(action: str, args: dict, decision: Decision) -> str:
+    """Event text in the dashboard's style, e.g. 'set_recipient("x@y.ch") · recipient_not_in_mandate'."""
+    shown = ", ".join(f'"{v}"' if isinstance(v, str) else str(v) for k, v in args.items() if k != "source_id")
+    target = args.get("source_id", "")
+    inner = ", ".join(p for p in (target, shown) if p)
+    text = f"{action}({inner})"
+    if isinstance(decision, Blocked):
+        text += f" · {decision.reason}"
+    return text
+
+
+async def _prepare_opener(call: Call) -> None:
+    call.opener_ulaw = await render_ulaw(voice_id(), OPENER)
+
+
+async def dial(source_id: str) -> Call | Decision:
+    """place_call: ask the policy engine, then let Twilio dial. Returns the Call or the refusal."""
+    args = {"source_id": source_id}
+    decision = check("place_call", args, MANDATE, PLAN, datetime.now(), relax_call_hours=relax_call_hours())
+    store.add_event(decision, decision_text("place_call", args, decision), model=MODEL_ORCHESTRATOR)
+    if not isinstance(decision, Allowed):
+        return decision
+
+    missing = [n for n in ("TWILIO_ACCOUNT_SID", "TWILIO_AUTH_TOKEN", "TWILIO_FROM_NUMBER", "DEMO_TO_NUMBER")
+               if not env(n)]
+    if missing or not public_url() or "xxxx" in public_url():
+        raise RuntimeError(f"Missing in backend/.env: {', '.join(missing) or 'PUBLIC_URL'}")
+
+    source = next(s for s in MANDATE.sources if s.id == source_id)
+    call = Call(id=secrets.token_urlsafe(8), source_id=source_id, source_name=source.name, to=env("DEMO_TO_NUMBER"))
+    CALLS[call.id] = call
+    PLAN.calls_made[source_id] = PLAN.calls(source_id) + 1
+    call.opener_task = asyncio.create_task(_prepare_opener(call))
+
+    from twilio.rest import Client
+
+    client = Client(env("TWILIO_ACCOUNT_SID"), env("TWILIO_AUTH_TOKEN"))
+    kwargs = dict(to=call.to, from_=env("TWILIO_FROM_NUMBER"), url=f"{public_url()}/twilio/twiml?call={call.id}",
+                  method="POST")
+    detection = env("TWILIO_MACHINE_DETECTION", "Disable")
+    if detection and detection != "Disable":
+        kwargs["machine_detection"] = detection
+    twilio_call = await asyncio.to_thread(client.calls.create, **kwargs)
+    call.twilio_sid = twilio_call.sid
+    store.set_station(source_id, status="active", detail=f"Wird gerade angerufen ({time.strftime('%H:%M')}) …")
+    log.info("dialling %s for source %s (call %s, sid %s)", call.to, source_id, call.id, call.twilio_sid)
+    return call
