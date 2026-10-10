@@ -1,0 +1,34 @@
+[project]
+name = "stafette-backend"
+version = "0.1.0"
+description = "Stafette backend: policy engine, orchestrator, phone agent (Twilio + gradbot) and document pipeline"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    "pydantic>=2.8",
+    "python-dotenv>=1.0",
+    # Gemini: compiler, orchestrator, document reader
+    "google-genai>=1.0",
+    # Phone: Twilio REST + Media Streams, gradbot pipeline (Gradium STT/TTS).
+    # gradbot's compiled core changes between releases; pinned like digigrad.
+    "twilio>=9.0",
+    "gradbot==0.1.9",
+    "gradium>=0.6.0",
+    # Documents: page text for quote verification, mandate letter PDF
+    "pymupdf>=1.24",
+    "reportlab>=4.2",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "httpx>=0.27",
+]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
