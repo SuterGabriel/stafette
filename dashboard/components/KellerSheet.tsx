@@ -38,6 +38,44 @@ const DOC_WORDS: [RegExp, string][] = [
   [/\bStand (\d)/g, "as of $1"],
 ];
 
+// Findings in plain English for the jury. Longer phrases first; unknown words stay as they are.
+const FINDING_WORDS: [RegExp, string][] = [
+  [/Ambulant erworbene Pneumonie/g, "Community-acquired pneumonia"],
+  [/rechts basal/g, "right lower lung"],
+  [/Paroxysmales Vorhofflimmern/g, "Paroxysmal atrial fibrillation"],
+  [/Vorhofflimmern/g, "atrial fibrillation"],
+  [/Status nach Appendektomie/g, "Appendix removed"],
+  [/Appendektomie/g, "appendix removal"],
+  [/Heuschnupfen/g, "Hay fever"],
+  [/Penicillin-Allergie/g, "Penicillin allergy"],
+  [/generalisiertes Exanthem/g, "rash all over the body"],
+  [/Pneumonie/g, "pneumonia"],
+  [/Infiltrat/g, "infiltrate"],
+  [/Cetirizin/g, "Cetirizine"],
+  [/Leukozyten/g, "White blood cells"],
+  [/Hämoglobin/g, "Haemoglobin"],
+  [/Thrombozyten/g, "Platelets"],
+  [/Kreatinin/g, "Creatinine"],
+  [/Kalium/g, "Potassium"],
+  [/Referenz:/g, "normal range:"],
+  [/bei Raumluft/g, "on room air"],
+  [/maximal (\d+)x täglich/g, "up to $1 times a day"],
+  [/bei Bedarf/g, "as needed"],
+  [/bis und mit/g, "until"],
+  [/täglich/g, "daily"],
+];
+
+function plain(text: string) {
+  return FINDING_WORDS.reduce((t, [pattern, english]) => t.replace(pattern, english), text);
+}
+
+/** The pipeline sometimes repeats part of the name as detail ("… rechts basal · rechts basal"). */
+function plainDetail(name: string, detail?: string) {
+  if (!detail) return "";
+  const d = plain(detail);
+  return plain(name).toLowerCase().includes(d.toLowerCase()) ? "" : d;
+}
+
 function sectionTitle(title: string) {
   return SECTION_TITLES[title] ?? title;
 }
@@ -132,8 +170,10 @@ export function KellerSheet({ state, alwaysShowQuotes = false, onIngest }: Props
                           onClick={() => setOpenId(openId === it.id ? null : it.id)}
                         >
                           <span>
-                            <b>{it.name}</b>
-                            {it.detail && <span className="muted"> · {it.detail}</span>}
+                            <b>{plain(it.name)}</b>
+                            {plainDetail(it.name, it.detail) && (
+                              <span className="muted"> · {plainDetail(it.name, it.detail)}</span>
+                            )}
                           </span>
                           <span className="ref">{docLabel(it.ref)}</span>
                         </button>

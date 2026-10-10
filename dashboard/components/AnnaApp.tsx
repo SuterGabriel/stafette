@@ -174,7 +174,7 @@ export function AnnaApp({ state, onDecide, onReset, onStart }: Props) {
         <BlurFade key="progress" className="phone-body phone-body--scroll">
           <h1 className="h1 h1--xs">Your records for Dr. Keller</h1>
           <p className="muted small">
-            <NumberTicker value={progress.done} /> von {progress.total}{" "}
+            <NumberTicker value={progress.done} /> of {progress.total}{" "}
             places done · updated {state.updatedAt}
           </p>
 
