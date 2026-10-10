@@ -21,14 +21,14 @@ log = logging.getLogger(__name__)
 # Tools that act on the practice being called; the source is set by us, not by the model.
 SOURCE_TOOLS = {"request_records", "confirm_channel"}
 
-GUARD_RECIPIENT = "Am Telefon wollte jemand die Unterlagen an eine andere E-Mail-Adresse. Das haben Sie nicht erlaubt."
+GUARD_RECIPIENT = "Someone on the phone wanted the records sent to a different email address. You did not allow that."
 
 STATION_BY_OUTCOME = {
-    "requested": ("active", "Heute {t} angerufen. Die Praxis schickt die Unterlagen direkt an Dr. Keller."),
-    "needs_consent": ("active", "Heute {t} angerufen. Die Praxis wartet auf die unterschriebene Vollmacht."),
-    "closed": ("active", "Heute {t} niemand erreicht. Rückruf geplant."),
-    "callback": ("active", "Heute {t} angerufen. Rückruf vereinbart."),
-    "refused": ("skipped", "Die Praxis gibt die Unterlagen nicht heraus."),
+    "requested": ("active", "Called today at {t}. The practice is sending the records directly to Dr. Keller."),
+    "needs_consent": ("active", "Called today at {t}. The practice is waiting for the signed mandate."),
+    "closed": ("active", "Nobody reached today at {t}. Call back planned."),
+    "callback": ("active", "Called today at {t}. Call back agreed."),
+    "refused": ("skipped", "The practice will not release the records."),
 }
 
 
@@ -85,7 +85,7 @@ def _act(name: str, args: dict, decision, call: Call) -> dict:
             letter = _decide("send_mandate_letter", {"source_id": call.source_id})
             if not isinstance(letter, Allowed):
                 return {"ok": False, "say": "Die Vollmacht ist noch nicht unterschrieben. Ich melde mich, sobald sie da ist."}
-            store.add_event("ALLOWED", f"Vollmacht an hinterlegte Adresse von {call.source_name} gesendet (simuliert)")
+            store.add_event("ALLOWED", f"Mandate sent to the registered address of {call.source_name} (simulated)")
             return {"ok": True, "say": "Die unterschriebene Vollmacht kommt an die bei Ihnen hinterlegte Adresse."}
         case "end_call":
             call.outcome = args["outcome"]

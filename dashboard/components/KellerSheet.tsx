@@ -13,6 +13,39 @@ import { CheckIcon, ClockIcon } from "./Icons";
 import { BlurFade } from "./ui/blur-fade";
 import { NumberTicker } from "./ui/number-ticker";
 
+// The pipeline writes German labels (the documents are German). The UI is English;
+// the verbatim quotes stay in the original language on purpose.
+const SECTION_TITLES: Record<string, string> = {
+  Diagnosen: "Diagnoses",
+  Allergien: "Allergies",
+  Medikamente: "Medications",
+  "Letzte Werte": "Latest values",
+};
+
+const DOC_WORDS: [RegExp, string][] = [
+  [/\bAustrittsbericht\b/g, "Discharge report"],
+  [/\bMedikamentenliste\b/g, "Medication list"],
+  [/\bAktuelle Medikation\b/g, "Current medication"],
+  [/\bLaborbefund\b/g, "Lab report"],
+  [/\bRöntgenbefund\b/g, "X-ray report"],
+  [/\bZuweisung\b/g, "Referral"],
+  [/\bHandyfoto\b/g, "phone photo"],
+  [/\(Foto\)/g, "(photo)"],
+  [/\bSeite (\d+)/g, "page $1"],
+  [/\bS\. (\d+)/g, "p. $1"],
+  [/(\d+) Quellen\b/g, "$1 sources"],
+  [/\bvom (\d)/g, "of $1"],
+  [/\bStand (\d)/g, "as of $1"],
+];
+
+function sectionTitle(title: string) {
+  return SECTION_TITLES[title] ?? title;
+}
+
+function docLabel(text: string) {
+  return DOC_WORDS.reduce((t, [pattern, english]) => t.replace(pattern, english), text);
+}
+
 type Props = {
   state: StafetteState;
   alwaysShowQuotes?: boolean;
@@ -41,28 +74,28 @@ export function KellerSheet({ state, alwaysShowQuotes = false, onIngest }: Props
       <header className="phone-head">
         <span className="keller-via">
           <Logo size={20} withText={false} />
-          <b>Praxis Dr. Keller</b>
+          <b>Dr. Keller&apos;s practice</b>
         </span>
-        <span className="small muted">HIN-Eingang</span>
+        <span className="small muted">HIN inbox</span>
       </header>
 
       <div className="phone-body phone-body--scroll keller">
-        <div className="keller-meta">Übergabe via stafette · im Auftrag der Patientin</div>
+        <div className="keller-meta">Handover via stafette · on behalf of the patient</div>
 
         {empty ? (
           <BlurFade className="keller-empty">
             <h1 className="h1 h1--xs">{state.patient.name}</h1>
-            <p className="muted small">geb. {state.patient.birth}</p>
+            <p className="muted small">born {state.patient.birth}</p>
             <div className="empty-box">
               <ClockIcon />
               <div>
-                <strong>Noch keine Unterlagen eingegangen</strong>
-                <span>Sobald die Praxen senden, erscheint hier das Inhaltsverzeichnis mit Fundstellen.</span>
+                <strong>No records received yet</strong>
+                <span>As soon as the practices send them, the index with sources appears here.</span>
               </div>
             </div>
             {onIngest && (
               <button className="btn btn--ink" onClick={ingest} disabled={reading}>
-                {reading ? "Unterlagen werden gelesen …" : "Akten eingegangen"}
+                {reading ? "Reading records …" : "Records received"}
               </button>
             )}
           </BlurFade>
@@ -72,22 +105,22 @@ export function KellerSheet({ state, alwaysShowQuotes = false, onIngest }: Props
               <div>
                 <h1>{state.patient.name}</h1>
                 <div className="muted small">
-                  geb. {state.patient.birth} · {state.patient.address}
+                  born {state.patient.birth} · {state.patient.address}
                 </div>
               </div>
               <div className="sheet-src">
                 <div>
                   <b>
-                    <NumberTicker value={state.documents} /> Dokumente
+                    <NumberTicker value={state.documents} /> documents
                   </b>{" "}
-                  aus {state.sourceCount} Quellen
+                  from {state.sourceCount} sources
                 </div>
               </div>
             </header>
 
             {state.sections.map((sec) => (
               <section key={sec.title} className="sheet-sec">
-                <h2>{sec.title}</h2>
+                <h2>{sectionTitle(sec.title)}</h2>
                 <div className="sheet-items">
                   {sec.items.map((it, i) => {
                     const open = alwaysShowQuotes || openId === it.id;
@@ -102,13 +135,13 @@ export function KellerSheet({ state, alwaysShowQuotes = false, onIngest }: Props
                             <b>{it.name}</b>
                             {it.detail && <span className="muted"> · {it.detail}</span>}
                           </span>
-                          <span className="ref">{it.ref}</span>
+                          <span className="ref">{docLabel(it.ref)}</span>
                         </button>
                         {open && (
                           <BlurFade offset={4} blur="4px" duration={0.3}>
                             <blockquote className="quote">
                               <p>„{it.quote}“</p>
-                              <cite>{it.quoteSrc}</cite>
+                              <cite>{docLabel(it.quoteSrc)}</cite>
                             </blockquote>
                           </BlurFade>
                         )}
@@ -123,7 +156,7 @@ export function KellerSheet({ state, alwaysShowQuotes = false, onIngest }: Props
               <p className="missing">
                 <ClockIcon />
                 <span>
-                  <b>Noch ausstehend:</b> {state.missing}
+                  <b>Still missing:</b> {state.missing}
                 </span>
               </p>
             )}
@@ -132,23 +165,23 @@ export function KellerSheet({ state, alwaysShowQuotes = false, onIngest }: Props
               {reviewedAt ? (
                 <BlurFade>
                   <div className="confirm" role="status">
-                    <CheckIcon /> Von Dr. Keller geprüft · {reviewedAt}
+                    <CheckIcon /> Reviewed by Dr. Keller · {reviewedAt}
                   </div>
                 </BlurFade>
               ) : (
                 <button
                   className="btn btn--ink"
                   onClick={() =>
-                    setReviewedAt(new Date().toLocaleTimeString("de-CH", { hour: "2-digit", minute: "2-digit" }))
+                    setReviewedAt(new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }))
                   }
                 >
-                  Übersicht geprüft
+                  Summary reviewed
                 </button>
               )}
             </div>
 
             <footer className="sheet-foot">
-              <span>Jede Angabe stammt wörtlich aus den Originaldokumenten. Keine Bewertung, keine Empfehlung.</span>
+              <span>Every entry is quoted verbatim from the original documents. No assessment, no recommendation.</span>
             </footer>
           </article>
         )}

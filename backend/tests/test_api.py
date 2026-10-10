@@ -26,7 +26,7 @@ def test_state_matches_dashboard_contract() -> None:
     for key in ("patient", "doctor", "mandate", "stations", "approval", "approvalResult", "events",
                 "sections", "missing", "documents", "sourceCount", "updatedAt", "reviewedAt", "call"):
         assert key in s
-    assert s["mandate"]["validUntil"] == "31. Oktober"
+    assert s["mandate"]["validUntil"] == "October 31"
 
 
 def test_live_demo_starts_empty() -> None:
@@ -44,9 +44,9 @@ def test_story_seed_still_available_for_offline_look() -> None:
 def test_start_signs_mandate_and_places_the_call() -> None:
     assert client.post("/agent/start").status_code == 200
     t = texts()
-    assert t[0].startswith("Vollmacht v1 unterschrieben")
+    assert t[0].startswith("Mandate v1 signed")
     assert "place_call(praxis_a)" in t                      # allowed by the policy engine
-    assert any(x.startswith("Anruf nicht möglich") for x in t)   # tests have no Twilio credentials
+    assert any(x.startswith("Call not possible") for x in t)   # tests have no Twilio credentials
 
 
 def test_gap_asks_anna_and_yes_creates_mandate_v2() -> None:

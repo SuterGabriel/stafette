@@ -41,11 +41,11 @@ def test_simulated_first_call_blocks_the_private_address() -> None:
     assert any(d == "BLOCKED" and "recipient_not_in_mandate" in t for d, t in texts)
     assert any("Dr. med. Lea Keller" in line.text for line in s.call.lines if line.who == "agent")
     station = next(st for st in s.stations if st.id == "praxis_a")
-    assert station.guard and "direkt an Dr. Keller" in station.detail
+    assert station.guard and "directly to Dr. Keller" in station.detail
 
 
 def test_no_twilio_needed_in_test_mode() -> None:
     calls.set_simulate(True)
     call = asyncio.run(calls.dial("praxis_a"))
     call.opener_task.cancel()
-    assert call.to == "Testmodus" and not any("Anruf nicht möglich" in e.text for e in store.state.events)
+    assert call.to == "Testmodus" and not any("Call not possible" in e.text for e in store.state.events)

@@ -60,19 +60,19 @@ export default function DemoPage() {
   };
 
   const [status, tone] = !live
-    ? ["Demo-Daten", ""]
+    ? ["Demo data", ""]
     : offline
-      ? ["Backend nicht erreichbar · Demo-Daten", "status-pill--offline"]
+      ? ["Backend unreachable · demo data", "status-pill--offline"]
       : connected
-        ? ["Live verbunden", "status-pill--live"]
-        : ["Verbinde …", ""];
+        ? ["Live connected", "status-pill--live"]
+        : ["Connecting …", ""];
 
   return (
     <main className="stage stage--single">
       <DotPattern width={24} height={24} className="stage-dots" />
 
       <div className="stage-col">
-        <div className="view-switch" role="tablist" aria-label="Ansicht">
+        <div className="view-switch" role="tablist" aria-label="View">
           {(["anna", "keller"] as const).map((v) => (
             <button
               key={v}
@@ -81,8 +81,8 @@ export default function DemoPage() {
               className={`view-tab ${view === v ? "view-tab--on" : ""}`}
               onClick={() => setView(v)}
             >
-              {v === "anna" ? "Anna, Patientin" : "Dr. Keller, neue Praxis"}
-              {news[v] && view !== v && <span className="view-dot" aria-label="neu" />}
+              {v === "anna" ? "Anna, patient" : "Dr. Keller, new GP"}
+              {news[v] && view !== v && <span className="view-dot" aria-label="new" />}
             </button>
           ))}
         </div>
@@ -101,7 +101,7 @@ export default function DemoPage() {
               checked={Boolean(state.simulateCalls)}
               onChange={(e) => setSimulate(e.target.checked)}
             />
-            Testmodus: Anrufe simulieren, kein Handy klingelt
+            Test mode: simulate calls, no phone rings
           </label>
         )}
       </div>

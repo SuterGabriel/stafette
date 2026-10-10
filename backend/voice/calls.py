@@ -147,7 +147,7 @@ async def dial(source_id: str) -> Call | Decision:
         CALLS[call.id] = call
         PLAN.calls_made[source_id] = PLAN.calls(source_id) + 1
         store.set_call(source_name=source.name, status="ringing", clear_lines=True, simulated=True)
-        store.set_station(source_id, status="active", detail=f"Wird gerade angerufen ({time.strftime('%H:%M')}, Testmodus) …")
+        store.set_station(source_id, status="active", detail=f"Calling now ({time.strftime('%H:%M')}, test mode) …")
         call.opener_task = asyncio.create_task(sim_call.run(call))
         return call
 
@@ -178,6 +178,6 @@ async def dial(source_id: str) -> Call | Decision:
         store.set_call(status="failed")
         raise
     call.twilio_sid = twilio_call.sid
-    store.set_station(source_id, status="active", detail=f"Wird gerade angerufen ({time.strftime('%H:%M')}) …")
+    store.set_station(source_id, status="active", detail=f"Calling now ({time.strftime('%H:%M')}) …")
     log.info("dialling %s for source %s (call %s, sid %s)", call.to, source_id, call.id, call.twilio_sid)
     return call

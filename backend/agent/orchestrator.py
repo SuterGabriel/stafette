@@ -61,11 +61,11 @@ async def _dial(source_id: str) -> Call | None:
     try:
         result = await calls.dial(source_id)
     except RuntimeError as exc:                     # backend/.env incomplete
-        store.add_event("BLOCKED", f"Anruf nicht möglich: {exc}")
+        store.add_event("BLOCKED", f"Call not possible: {exc}")
         return None
     except Exception as exc:  # noqa: BLE001 - e.g. Twilio rejects the number
         log.exception("dial failed")
-        store.add_event("BLOCKED", f"Twilio-Fehler: {type(exc).__name__}")
+        store.add_event("BLOCKED", f"Twilio error: {type(exc).__name__}")
         return None
     return result if isinstance(result, Call) else None
 
@@ -73,9 +73,9 @@ async def _dial(source_id: str) -> Call | None:
 async def start() -> None:
     """Anna signed in her app: log mandate v1 and call the first practice."""
     _sync_mandate()
-    store.add_event("ALLOWED", f"Vollmacht v{calls.MANDATE.version} unterschrieben (sha256 {short_hash()})",
+    store.add_event("ALLOWED", f"Mandate v{calls.MANDATE.version} signed (sha256 {short_hash()})",
                     model=MODEL_COMPILER)
-    store.set_station("praxis_a", detail="Wird gleich angerufen …")
+    store.set_station("praxis_a", detail="Calling shortly …")
     await _dial("praxis_a")
 
 
@@ -93,9 +93,9 @@ def _ask_next() -> None:
         spec = f" ({source['specialty']})" if source.get("specialty") else ""
         store.set_approval(PendingApproval(
             id=approval_id,
-            question=f"Soll ich auch bei {source['name'].split(',')[0]} anfragen?",
-            body=f"In Ihren Unterlagen wird {source['name']}{spec} erwähnt. Von dort fehlen noch Unterlagen.",
-            why="Ich frage Sie, weil Sie mir diese Praxis noch nicht erlaubt haben.",
+            question=f"Shall I also request records from {source['name'].split(',')[0]}?",
+            body=f"Your records mention {source['name']}{spec}. No records from there have arrived yet.",
+            why="I am asking because you have not allowed me to contact this practice yet.",
         ))
 
 
@@ -104,7 +104,7 @@ def propose_source(source: dict) -> None:
     args = {"name": source["name"], "specialty": source.get("specialty", ""),
             "reason": "in den Unterlagen erwähnt, keine Unterlagen vorhanden"}
     decision = check("add_source", args, calls.MANDATE, calls.PLAN, datetime.now(), relax_call_hours=relax_call_hours())
-    store.add_event(decision, f"add_source({source['name']})" + (" · nicht in Vollmacht" if isinstance(decision, NeedsApproval)
+    store.add_event(decision, f"add_source({source['name']})" + (" · not in mandate" if isinstance(decision, NeedsApproval)
                                                                else f" · {getattr(decision, 'reason', '')}"),
                     model=MODEL_ORCHESTRATOR)
     if not isinstance(decision, NeedsApproval):
@@ -116,7 +116,7 @@ def propose_source(source: dict) -> None:
     _queue.append(approval_id)
     store.add_station(Station(id=_slug(source["name"]), name=source["name"].split(",")[0] +
                               (f", {source['specialty']}" if source.get("specialty") else ""),
-                              detail="Wartet auf Ihr Okay", status="waiting"))
+                              detail="Waiting for your OK", status="waiting"))
     _ask_next()
 
 
@@ -131,14 +131,23 @@ def _run_pipeline() -> dict:
     return result
 
 
+def _missing_in_english(result: dict) -> None:
+    """The pipeline writes the missing-records note in German; the app is English."""
+    names = [m["name"] for m in result.get("missing_sources", [])]
+    if names:
+        store.state.missing = f"Records from {', '.join(names)}. Waiting for the patient's approval."
+        store.set_station("praxis_a")          # publish the change
+
+
 async def ingest() -> dict:
     """Records arrived at Dr. Keller: read them, fill the sheet, propose missing sources."""
     from docs.pipeline import publish
 
     result = await asyncio.to_thread(_run_pipeline)
     publish(result)
+    _missing_in_english(result)
     for station_id in ("praxis_a", "spital_b"):
-        store.set_station(station_id, status="done", detail="Unterlagen bei Dr. Keller angekommen")
+        store.set_station(station_id, status="done", detail="Records arrived at Dr. Keller")
     for source in result.get("missing_sources", []):
         propose_source(source)
     return {"documents": result.get("documents"), "missing_sources": len(result.get("missing_sources", []))}
@@ -156,11 +165,11 @@ async def on_approval(approval_id: str, approve: bool) -> bool:
         calls.MANDATE = calls.MANDATE.with_source(new)
         calls.PLAN.signed.add(station_id)
         _sync_mandate()
-        store.add_event("ALLOWED", f"Freigabe erteilt · Vollmacht v{calls.MANDATE.version} (sha256 {short_hash()})")
-        store.set_station(station_id, status="active", detail="Wird angefragt. Vollmacht ergänzt.")
+        store.add_event("ALLOWED", f"Approved · mandate v{calls.MANDATE.version} (sha256 {short_hash()})")
+        store.set_station(station_id, status="active", detail="Requesting records. Mandate extended.")
         await _dial(station_id)
     else:
-        store.add_event("BLOCKED", "Freigabe abgelehnt · Quelle verworfen")
-        store.set_station(station_id, status="skipped", detail="Nicht angefragt")
+        store.add_event("BLOCKED", "Declined · source dropped")
+        store.set_station(station_id, status="skipped", detail="Not requested")
     _ask_next()
     return True

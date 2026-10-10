@@ -9,7 +9,7 @@ import { MotionProvider } from "@/components/MotionProvider";
 
 export const metadata: Metadata = {
   title: "Stafette",
-  description: "Arzt wechseln. Ihre Krankengeschichte kommt mit.",
+  description: "Switch doctors. Your medical history comes along.",
   icons: { icon: "/stafette-mark.svg" },
 };
 

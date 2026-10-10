@@ -46,7 +46,7 @@ export function AnnaApp({ state, onDecide, onReset, onStart }: Props) {
       <header className="phone-head">
         <Logo />
         {screen !== "progress" && (
-          <div className="steps" aria-label={screen === "mandate" ? "Schritt 2 von 2" : "Schritt 1 von 2"}>
+          <div className="steps" aria-label={screen === "mandate" ? "Step 2 of 2" : "Step 1 of 2"}>
             <span className="on" />
             <span className={screen === "mandate" ? "on" : ""} />
           </div>
@@ -56,8 +56,8 @@ export function AnnaApp({ state, onDecide, onReset, onStart }: Props) {
       {screen === "start" && (
         <BlurFade key="start" className="screen">
           <div className="phone-body phone-body--start">
-            <h1 className="h1">Neue Hausärztin? Ich hole Ihre Unterlagen.</h1>
-            <p className="muted">Sagen Sie mir, zu wem Sie wechseln und wo Sie bisher in Behandlung waren.</p>
+            <h1 className="h1">New GP? I&apos;ll collect your records.</h1>
+            <p className="muted">Tell me who you are switching to and where you have been treated so far.</p>
           </div>
           <footer className="phone-foot">
             <PulsatingButton
@@ -68,11 +68,11 @@ export function AnnaApp({ state, onDecide, onReset, onStart }: Props) {
               onClick={() => setScreen("heard")}
             >
               <span className="btn-label">
-                <MicIcon /> Sprechen
+                <MicIcon /> Speak
               </span>
             </PulsatingButton>
             <button className="btn btn--soft" onClick={() => setScreen("heard")}>
-              Schreiben
+              Type
             </button>
           </footer>
         </BlurFade>
@@ -81,21 +81,21 @@ export function AnnaApp({ state, onDecide, onReset, onStart }: Props) {
       {screen === "heard" && (
         <BlurFade key="heard" className="screen">
           <div className="phone-body">
-            <div className="eyebrow">Sie haben gesagt</div>
+            <div className="eyebrow">You said</div>
             <p className="said">
               <TypingAnimation duration={22} cursorStyle="line" className="leading-[inherit] tracking-normal">
-                „Ich wechsle zu Dr. Keller in Winterthur. Ich war bei der Hausarztpraxis Seefeld und letztes Jahr im
-                Spital Musterstadt.“
+                “I&apos;m switching to Dr. Keller in Winterthur. I was with Hausarztpraxis Seefeld and last year at
+                Spital Musterstadt.”
               </TypingAnimation>
             </p>
-            <div className="eyebrow">Ich habe verstanden</div>
+            <div className="eyebrow">I understood</div>
             <dl className="rows">
               <div className="row">
-                <dt>Neue Hausärztin</dt>
+                <dt>New GP</dt>
                 <dd>{state.doctor.name}</dd>
               </div>
               <div className="row">
-                <dt>Bisher bei</dt>
+                <dt>Treated at</dt>
                 <dd>
                   {state.mandate.sources.map((s) => (
                     <div key={s}>{s}</div>
@@ -106,10 +106,10 @@ export function AnnaApp({ state, onDecide, onReset, onStart }: Props) {
           </div>
           <footer className="phone-foot">
             <button className="btn btn--ink" onClick={() => setScreen("mandate")}>
-              Stimmt, weiter
+              Correct, continue
             </button>
             <button className="btn btn--ghost" onClick={() => setScreen("start")}>
-              Nochmals sagen
+              Say it again
             </button>
           </footer>
         </BlurFade>
@@ -118,11 +118,11 @@ export function AnnaApp({ state, onDecide, onReset, onStart }: Props) {
       {screen === "mandate" && (
         <BlurFade key="mandate" className="screen">
           <div className="phone-body">
-            <h1 className="h1 h1--sm">Das darf ich für Sie tun</h1>
-            <p className="muted">Nicht mehr und nicht weniger. Alles andere frage ich Sie zuerst.</p>
+            <h1 className="h1 h1--sm">What I may do for you</h1>
+            <p className="muted">No more, no less. For anything else I ask you first.</p>
             <dl className="list">
               <div>
-                <dt>Anfragen bei</dt>
+                <dt>Request from</dt>
                 <dd>
                   {state.mandate.sources.map((s) => (
                     <div key={s}>{s}</div>
@@ -130,27 +130,27 @@ export function AnnaApp({ state, onDecide, onReset, onStart }: Props) {
                 </dd>
               </div>
               <div>
-                <dt>Senden nur an</dt>
+                <dt>Send only to</dt>
                 <dd>{state.mandate.recipient}</dd>
               </div>
               <div>
-                <dt>Welche Unterlagen</dt>
+                <dt>Which records</dt>
                 <dd>{state.mandate.scope}</dd>
               </div>
               <div className="split">
                 <div>
-                  <dt>Gültig bis</dt>
+                  <dt>Valid until</dt>
                   <dd>{state.mandate.validUntil}</dd>
                 </div>
                 <div className="right">
-                  <dt>Danach</dt>
-                  <dd>alles gelöscht</dd>
+                  <dt>Afterwards</dt>
+                  <dd>everything deleted</dd>
                 </div>
               </div>
             </dl>
             <p className="note">
-              Die Praxen bekommen diese Vollmacht als PDF mit Ihrer Unterschrift. Die Unterlagen gehen direkt an Dr.
-              Keller, nicht an uns.
+              The practices receive this mandate as a PDF with your signature. The records go directly to Dr. Keller,
+              not to us.
             </p>
           </div>
           <footer className="phone-foot">
@@ -161,10 +161,10 @@ export function AnnaApp({ state, onDecide, onReset, onStart }: Props) {
                 setScreen("progress");
               }}
             >
-              Unterschreiben und starten
+              Sign and start
             </button>
             <button className="btn btn--ghost" onClick={() => setScreen("heard")}>
-              Zurück
+              Back
             </button>
           </footer>
         </BlurFade>
@@ -172,10 +172,10 @@ export function AnnaApp({ state, onDecide, onReset, onStart }: Props) {
 
       {screen === "progress" && (
         <BlurFade key="progress" className="phone-body phone-body--scroll">
-          <h1 className="h1 h1--xs">Ihre Unterlagen für Dr. Keller</h1>
+          <h1 className="h1 h1--xs">Your records for Dr. Keller</h1>
           <p className="muted small">
             <NumberTicker value={progress.done} /> von {progress.total}{" "}
-            Stellen erledigt · aktualisiert {state.updatedAt}
+            places done · updated {state.updatedAt}
           </p>
 
           {state.approval && (
@@ -189,10 +189,10 @@ export function AnnaApp({ state, onDecide, onReset, onStart }: Props) {
                 <p className="why">{state.approval.why}</p>
                 <div className="ask-btns">
                   <button className="btn btn--accent btn--sm" onClick={() => onDecide(true)}>
-                    Ja, anfragen
+                    Yes, request
                   </button>
                   <button className="btn btn--outline-light btn--sm" onClick={() => onDecide(false)}>
-                    Nein
+                    No
                   </button>
                 </div>
               </section>
@@ -201,7 +201,7 @@ export function AnnaApp({ state, onDecide, onReset, onStart }: Props) {
 
           {state.approvalResult === "yes" && (
             <BlurFade className="confirm">
-              <CheckIcon /> Vollmacht ergänzt. Ich frage dort an.
+              <CheckIcon /> Mandate extended. I&apos;m requesting the records.
             </BlurFade>
           )}
 
@@ -222,7 +222,7 @@ export function AnnaApp({ state, onDecide, onReset, onStart }: Props) {
                       <BlurFade className="guard">
                         <ShieldIcon />
                         <div>
-                          <strong>Bitte abgelehnt</strong>
+                          <strong>Request refused</strong>
                           <span>{s.guard}</span>
                         </div>
                       </BlurFade>
@@ -234,16 +234,16 @@ export function AnnaApp({ state, onDecide, onReset, onStart }: Props) {
           </ol>
 
           <p className="rules">
-            Ich darf nur diese Stellen kontaktieren und nur an Dr. Keller senden, bis {state.mandate.validUntil}. Danach
-            lösche ich alles.
+            I may only contact these places and only send to Dr. Keller, until {state.mandate.validUntil}. Then I delete
+            everything.
           </p>
 
           <div className="phone-links">
             <button className="link" onClick={() => setShowLog((v) => !v)}>
-              {showLog ? "Protokoll ausblenden" : "Protokoll anzeigen"}
+              {showLog ? "Hide protocol" : "Show protocol"}
             </button>
             <button className="link link--muted" onClick={restart}>
-              Demo neu starten
+              Restart demo
             </button>
           </div>
 
@@ -259,7 +259,7 @@ export function AnnaApp({ state, onDecide, onReset, onStart }: Props) {
                   </span>
                 </div>
               ))}
-              <div className="log-foot">Vollmacht v{state.mandate.version} · sha256 {state.mandate.hash}</div>
+              <div className="log-foot">Mandate v{state.mandate.version} · sha256 {state.mandate.hash}</div>
             </div>
           )}
         </BlurFade>
@@ -269,18 +269,18 @@ export function AnnaApp({ state, onDecide, onReset, onStart }: Props) {
 }
 
 const CALL_STATUS: Record<CallView["status"], string> = {
-  ringing: "Es klingelt …",
-  connected: "Im Gespräch",
-  ended: "Gespräch beendet",
-  failed: "Anruf fehlgeschlagen",
+  ringing: "Ringing …",
+  connected: "In call",
+  ended: "Call ended",
+  failed: "Call failed",
 };
 
 const CALL_OUTCOME: Record<string, string> = {
-  requested: "die Praxis schickt die Unterlagen",
-  needs_consent: "die Praxis wartet auf die Vollmacht",
-  closed: "niemand erreicht",
-  refused: "die Praxis lehnt ab",
-  callback: "Rückruf vereinbart",
+  requested: "the practice is sending the records",
+  needs_consent: "the practice is waiting for the mandate",
+  closed: "nobody reached",
+  refused: "the practice refuses",
+  callback: "call back agreed",
 };
 
 /** The agent's phone call, live: status plus the last lines of the conversation. */
@@ -293,12 +293,12 @@ function CallCard({ call }: { call: CallView }) {
         <span className={`call-dot ${live ? "call-dot--live" : ""}`} />
         <div>
           <div className="call-title">
-            {live ? "Ich telefoniere mit" : "Telefonat mit"} {call.sourceName}
+            {live ? "On the phone with" : "Call with"} {call.sourceName}
           </div>
           <div className="call-status">
             {CALL_STATUS[call.status]}
             {outcome}
-            {call.simulated && " · Testmodus"}
+            {call.simulated && " · test mode"}
           </div>
         </div>
       </div>
@@ -306,7 +306,7 @@ function CallCard({ call }: { call: CallView }) {
         <div className="call-lines">
           {call.lines.slice(-6).map((line, i) => (
             <p key={`${i}-${line.text.slice(0, 12)}`} className={`call-line call-line--${line.who}`}>
-              <span>{line.who === "agent" ? "KI" : "Praxis"}</span>
+              <span>{line.who === "agent" ? "AI" : "Practice"}</span>
               {line.text}
             </p>
           ))}

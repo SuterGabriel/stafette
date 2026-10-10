@@ -13,33 +13,33 @@ export const initialState: StafetteState = {
     hash: "7f3a…c91e",
     sources: ["Hausarztpraxis Seefeld", "Spital Musterstadt"],
     recipient: "Dr. med. Lea Keller, Winterthur",
-    scope: "Berichte, Laborwerte, Medikamente, Röntgen",
-    validUntil: "31. Oktober",
+    scope: "Reports, lab results, medication, X-rays",
+    validUntil: "October 31",
   },
   stations: [
-    { id: "spital_b", name: "Spital Musterstadt", detail: "4 Dokumente bei Dr. Keller angekommen", status: "done" },
+    { id: "spital_b", name: "Spital Musterstadt", detail: "4 documents arrived at Dr. Keller", status: "done" },
     {
       id: "praxis_a",
       name: "Hausarztpraxis Seefeld",
-      detail: "Heute 10:14 angerufen. Die Praxis schickt die Unterlagen direkt an Dr. Keller.",
+      detail: "Called today at 10:14. The practice is sending the records directly to Dr. Keller.",
       status: "active",
-      guard: "Am Telefon wollte jemand die Unterlagen an eine andere E-Mail-Adresse. Das haben Sie nicht erlaubt.",
+      guard: "Someone on the phone wanted the records sent to a different email address. You did not allow that.",
     },
-    { id: "dr_brunner", name: "Dr. Sabine Brunner, Kardiologie", detail: "Wartet auf Ihr Okay", status: "waiting" },
+    { id: "dr_brunner", name: "Dr. Sabine Brunner, Kardiologie", detail: "Waiting for your OK", status: "waiting" },
   ],
   approval: {
     id: "add_source_dr_brunner",
-    question: "Soll ich auch bei Dr. Sabine Brunner anfragen?",
-    body: "Im Spitalbericht steht, dass Sie zu ihr in die Kardiologie überwiesen wurden. Von dort fehlen noch Unterlagen.",
-    why: "Ich frage Sie, weil Sie mir diese Praxis noch nicht erlaubt haben.",
+    question: "Shall I also request records from Dr. Sabine Brunner?",
+    body: "The hospital report says you were referred to her cardiology practice. No records from there have arrived yet.",
+    why: "I am asking because you have not allowed me to contact this practice yet.",
   },
   approvalResult: null,
   events: [
-    { id: "e1", ts: "10:12", decision: "ALLOWED", text: "Vollmacht v1 unterschrieben (sha256 7f3a…c91e)", model: "gemini-3.8-flash" },
+    { id: "e1", ts: "10:12", decision: "ALLOWED", text: "Mandate v1 signed (sha256 7f3a…c91e)", model: "gemini-3.8-flash" },
     { id: "e2", ts: "10:14", decision: "ALLOWED", text: "place_call(praxis_seefeld)", model: "gemini-3.6-flash" },
     { id: "e3", ts: "10:15", decision: "ALLOWED", text: "confirm_channel(praxis_seefeld)", model: "gemini-3.6-flash" },
     { id: "e4", ts: "10:16", decision: "BLOCKED", text: 'set_recipient("anna.priv@gmail.com") · recipient_not_in_mandate', model: "gemini-3.6-flash" },
-    { id: "e5", ts: "10:41", decision: "APPROVAL", text: "add_source(dr_brunner) · nicht in Vollmacht", model: "gemini-3.6-flash" },
+    { id: "e5", ts: "10:41", decision: "APPROVAL", text: "add_source(dr_brunner) · not in mandate", model: "gemini-3.6-flash" },
   ],
   sections: [
     {
@@ -77,7 +77,7 @@ export const initialState: StafetteState = {
       ],
     },
   ],
-  missing: "Kardiologischer Bericht von Dr. med. Sabine Brunner. Anfrage bei der Patientin hängig.",
+  missing: "Cardiology report from Dr. med. Sabine Brunner. Waiting for the patient's approval.",
   documents: 4,
   sourceCount: 2,
   updatedAt: "10:42",
@@ -90,16 +90,16 @@ export function applyDecision(state: StafetteState, approve: boolean): StafetteS
   const stations = state.stations.map((s) =>
     s.id === "dr_brunner"
       ? approve
-        ? { ...s, status: "active" as const, detail: "Wird angefragt. Vollmacht ergänzt." }
-        : { ...s, status: "skipped" as const, detail: "Nicht angefragt" }
+        ? { ...s, status: "active" as const, detail: "Requesting records. Mandate extended." }
+        : { ...s, status: "skipped" as const, detail: "Not requested" }
       : s,
   );
   const events = [...state.events];
   if (approve) {
-    events.push({ id: "e6", ts: "10:43", decision: "ALLOWED", text: "Freigabe erteilt · Vollmacht v2" });
+    events.push({ id: "e6", ts: "10:43", decision: "ALLOWED", text: "Approved · mandate v2" });
     events.push({ id: "e7", ts: "10:43", decision: "ALLOWED", text: "place_call(dr_brunner)", model: "gemini-3.6-flash" });
   } else {
-    events.push({ id: "e6", ts: "10:43", decision: "BLOCKED", text: "Freigabe abgelehnt · Quelle verworfen" });
+    events.push({ id: "e6", ts: "10:43", decision: "BLOCKED", text: "Declined · source dropped" });
   }
   return {
     ...state,
@@ -110,6 +110,6 @@ export function applyDecision(state: StafetteState, approve: boolean): StafetteS
     mandate: approve
       ? { ...state.mandate, version: 2, sources: [...state.mandate.sources, "Dr. Sabine Brunner, Kardiologie"] }
       : state.mandate,
-    missing: approve ? "Kardiologischer Bericht von Dr. med. Sabine Brunner. Die Patientin hat die Anfrage freigegeben." : null,
+    missing: approve ? "Cardiology report from Dr. med. Sabine Brunner. The patient approved the request." : null,
   };
 }

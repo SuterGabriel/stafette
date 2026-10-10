@@ -64,7 +64,7 @@ def test_end_call_hangs_up_and_updates_the_station() -> None:
     reply, call = run_tool("end_call", {"outcome": "requested"})
     assert reply == {"ok": True} and call.end_requested and call.outcome == "requested"
     station = next(s for s in store.state.stations if s.id == "praxis_a")
-    assert "direkt an Dr. Keller" in station.detail
+    assert "directly to Dr. Keller" in station.detail
 
 
 def test_unknown_tool_is_refused() -> None:
