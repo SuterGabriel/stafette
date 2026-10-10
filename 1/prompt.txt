@@ -68,3 +68,8 @@ Video sollte ca 20-30 Sec gehen nicht länger.
 ---
 
 Kannst du mir die Logo Animation noch isolieren von dem logo-intro. So das wir beim "starten" sprich beim erstmaligen öffnen oder reloaden der Seite sollte diese Animation kommen also dann nur von dem Logo intro dies sollte wie ein Load Animation sein.
+
+---
+
+Das Video ist generell  gut. Aber in den 27 geht sehr viel ab. Frage nun Video kürzen oder um das doppelte Verlängern. Idee beim verlängern dann während des Videos immer mal wieder was dazu sagen. 
+Die Demo dauert aus der aktuellen Sicht auch nicht so lange.
