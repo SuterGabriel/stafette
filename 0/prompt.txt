@@ -1,0 +1,23 @@
+<pasted_content id="560a">
+Kontext: Wir haben Doctolib recherchiert. Am Kern von Stafette ändert sich nichts, aber Positionierung und ein Detail im Frontend werden geschärft. Bitte setze diese Änderungen um, jeweils als eigener kleiner Commit.
+
+1. docs/PITCH.md
+   Ersetze die Datei durch die neue Version aus $HOME\Downloads\PITCH.md (falls vorhanden). Sonst ergänze in der Tabelle "Fragen der Jury" diese Zeilen:
+   - "How do you reach practices?": Wir starten bei aufnehmenden Hausarztpraxen und gewinnen Piloten über die Entlastung der MPA. Die frühere Praxis installiert nichts: Stafette kontaktiert sie transparent im Patientenauftrag, nur innerhalb der geprüften Vollmacht. Danach Skalierung über Schweizer Praxissoftware (amétiq, Axenita, vitomed haben bereits OneDoc-Anbindungen), ohne heute eine Partnerschaft zu behaupten.
+   - "Why would a practice pay?": Doctolib verlangt in Frankreich 99 €/Monat für eine Telefon-KI, die nur Anrufe annimmt. Wir sparen die Zeit fürs Nachfordern von Akten.
+   - "What about Doctolib?": Doctolib automatisiert den Praxiseingang (Termine, Anrufe, Konsultationsnotizen). Wir schliessen einen praxisübergreifenden Beschaffungsprozess ab. In der Schweiz nicht belegt präsent, langfristig eher Integrationspartner.
+   Commit: "Pitch: answers on go-to-market, pricing and Doctolib"
+
+2. docs/PROJECT.md
+   - Abschnitt "Wer zahlt": ergänzen um "Pro Übergabe oder Monatspaket, die neue Praxis zahlt, der Patient nie. Preisanker: Doctolib Telefon-KI 99 €/Monat."
+   - Neuer kurzer Abschnitt "Positionierung": "Wir nehmen der MPA das Nachfordern beim Arztwechsel ab. Die frühere Praxis installiert nichts. Kein eigenes Praxissystem, keine Terminbuchung, kein Konto-Zwang für Patienten."
+   Commit: "Docs: sharpen positioning and pricing"
+
+3. dashboard/components/KellerSheet.tsx
+   - Unten im Übergabeblatt einen Button "Übersicht geprüft" ergänzen (Stil: .btn .btn--ink, Breite auto, Höhe 48px). Nach dem Klick ersetzt ihn eine Bestätigung mit Häkchen: "Von Dr. Keller geprüft · 10:52" (Stil wie .confirm).
+   - Lokaler State reicht, kein Backend nötig. Füge in lib/types.ts optional `reviewedAt: string | null` zu StafetteState hinzu und setze es in lib/mock.ts auf null, damit das Backend es später liefern kann.
+   - Danach `npm run build` im Ordner dashboard ausführen und prüfen, dass es ohne Fehler baut.
+   Commit: "Dashboard: doctor confirms the handover summary"
+
+Danach git push. Keine API-Keys committen.
+</pasted_content id="560a">
