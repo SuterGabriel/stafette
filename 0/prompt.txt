@@ -71,3 +71,27 @@ Der Agent gibt keine Antwort nach der Frage wenn ich ja gerne sage. Dies ist noc
 ---
 
 Auf Vercel ist noch nichts englisch?
+
+---
+
+Hier gibt es auch noch Probleme: 
+
+<pasted_content id="560a">
+KI
+Grüezi, hier ist ein KI-Assistent der Firma Stafette. Ich rufe im Auftrag von Anna Muster an, wegen der Übermittlung ihrer Unterlagen an ihre neue Hausärztin. Darf ich das Gespräch für eine Notiz transkribieren?
+
+Praxis
+Ja,
+
+Praxis
+gerne.
+
+KI
+Vielen Dank. Ich rufe an, um Sie zu Vielen Dank. Bitte senden Sie die Unterlagen wie Berichte, Laborwerte, Medikamentenliste und Röntgenbefunde direkt per HIN-Mail an Dr. med. Lea Keller. Die unterschriebene Vollmacht geht an Ihre hinterlegte Adresse. Passt das so für Sie?
+
+Praxis
+Ja,
+
+Praxis
+sicher.
+</pasted_content id="560a">
