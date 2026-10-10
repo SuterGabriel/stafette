@@ -49,6 +49,7 @@ components/
   KellerSheet.tsx   Übergabe mit Fundstellen und Zitaten
   Logo.tsx, Icons.tsx
   MotionProvider.tsx  respektiert „Bewegung reduzieren“ des Systems
+  Splash.tsx        Ladeanimation beim Öffnen/Reload (reines CSS, Styles in globals.css)
   ui/               Magic-UI-Komponenten (BlurFade, NumberTicker, BorderBeam, …)
 lib/
   types.ts          gemeinsame Typen mit dem Backend

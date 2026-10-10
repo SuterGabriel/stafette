@@ -328,3 +328,70 @@ a:hover { color: var(--ink); }
 @media (prefers-reduced-motion: reduce) {
   .animate-pulse, .animate-blink-cursor { animation: none; }
 }
+
+/* ---------- Load animation (components/Splash.tsx) ---------- */
+/* Timeline (s): bars 0.05–0.75 · handover bump + rings 0.65–1.5 · wordmark 0.9–1.7 · fade out 1.9–2.35 */
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at 50% 45%, #ffffff 0%, #f7f5f0 70%);
+  animation: splash-out 0.45s ease-out 1.9s forwards;
+}
+.splash-lockup { display: flex; align-items: center; }
+.splash-mark {
+  width: 84px;
+  height: 84px;
+  overflow: visible;
+  animation: splash-bump 0.32s ease-in-out 0.62s;
+}
+/* Bars slide along their -35° axis; 70 viewBox units = translate(±57.3, ∓40.2) */
+.splash-teal { animation: splash-teal 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both; }
+.splash-coral { animation: splash-coral 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.18s both; }
+.splash-clip-teal {
+  transform-origin: 23px 33px;
+  transform: rotate(-35deg);
+  animation: splash-clip-teal 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
+}
+.splash-ring { fill: none; opacity: 0; }
+.splash-ring--a { stroke: #0f8b8d; animation: splash-ring 0.7s ease-out 0.66s; }
+.splash-ring--b { stroke: #ff7a59; animation: splash-ring 0.7s ease-out 0.8s; }
+/* Wordmark column grows from 0fr to 1fr, so the lockup recenters without measuring */
+.splash-word {
+  display: grid;
+  grid-template-columns: 0fr;
+  margin-left: 0;
+  animation: splash-word 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.9s forwards;
+}
+.splash-word > span {
+  min-width: 0;
+  white-space: nowrap;
+  font-size: 50px;
+  font-weight: 700;
+  letter-spacing: -0.032em;
+  line-height: 1;
+  color: var(--ink);
+  transform: translateY(-2px);
+}
+.splash-word > span > span {
+  display: inline-block;
+  animation: splash-letter 0.35s cubic-bezier(0.16, 1, 0.3, 1) calc(1s + var(--i) * 0.06s) both;
+}
+
+@keyframes splash-teal { from { transform: translate(-57.3px, 40.2px); opacity: 0; } 50% { opacity: 1; } to { transform: none; } }
+@keyframes splash-coral { from { transform: translate(57.3px, -40.2px); opacity: 0; } 50% { opacity: 1; } to { transform: none; } }
+@keyframes splash-clip-teal { from { transform: translate(-57.3px, 40.2px) rotate(-35deg); } to { transform: rotate(-35deg); } }
+@keyframes splash-bump { 50% { transform: scale(1.06); } }
+@keyframes splash-ring { from { r: 10px; stroke-width: 1.6px; opacity: 0.45; } to { r: 56px; stroke-width: 0; opacity: 0; } }
+@keyframes splash-word { to { grid-template-columns: 1fr; margin-left: 16px; } }
+@keyframes splash-letter { from { opacity: 0; transform: translateY(10px); filter: blur(4px); } }
+@keyframes splash-out { to { opacity: 0; filter: blur(6px); visibility: hidden; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .splash { animation-duration: 0.3s; animation-delay: 0.3s; }
+  .splash *, .splash-word { animation: none !important; }
+  .splash-word { grid-template-columns: 1fr; margin-left: 16px; }
+}

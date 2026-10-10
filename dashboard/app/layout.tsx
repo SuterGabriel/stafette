@@ -6,6 +6,7 @@ import "@fontsource/manrope/700.css";
 import "@fontsource/manrope/800.css";
 import "./globals.css";
 import { MotionProvider } from "@/components/MotionProvider";
+import { Splash } from "@/components/Splash";
 
 export const metadata: Metadata = {
   title: "Stafette",
@@ -17,7 +18,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="de">
       <body>
-        <MotionProvider>{children}</MotionProvider>
+        <MotionProvider>
+          {children}
+          <Splash />
+        </MotionProvider>
       </body>
     </html>
   );
