@@ -12,7 +12,7 @@ import json
 import gradbot
 
 from contracts import CALL_OUTCOMES
-from voice.calls import MANDATE, Call, env, voice_id
+from voice.calls import MANDATE, SPOKEN_BRAND, Call, env, voice_id
 
 SCOPE_LABELS = {
     "reports": "Berichte",
@@ -26,7 +26,7 @@ SCOPE_LABELS = {
 
 def instructions(call: Call) -> str:
     scope = ", ".join(SCOPE_LABELS[s] for s in MANDATE.scope)
-    return f"""Du bist der KI-Assistent von Stafette und telefonierst mit der Praxis „{call.source_name}“.
+    return f"""Du bist der KI-Assistent von {SPOKEN_BRAND} und telefonierst mit der Praxis „{call.source_name}“.
 Du rufst im Auftrag der Patientin {MANDATE.principal.name} an. Sie wechselt zu ihrer neuen Hausärztin
 {MANDATE.recipient.name}. Deine Begrüssung wurde bereits abgespielt: Du hast dich als KI vorgestellt und gefragt,
 ob du das Gespräch transkribieren darfst. Stell dich nicht nochmals vor.
@@ -40,6 +40,7 @@ Ziel des Anrufs:
 
 Regeln:
 - Sprich Hochdeutsch mit Schweizer Wortwahl (Grüezi, Merci, kein ß), höflich und in kurzen Sätzen. Das ist ein Telefonat.
+- Schreibe den Firmennamen immer genau so: „{SPOKEN_BRAND}“. Nur so wird er richtig ausgesprochen.
 - Du kennst keine medizinischen Inhalte und hast keinen Zugriff auf Diagnosen oder Befunde. Fragt jemand danach,
   sag das freundlich und erfinde nichts.
 - Name und Geburtsdatum der Patientin bekommst du nur über identify_principal. Sag sonst nichts über sie.

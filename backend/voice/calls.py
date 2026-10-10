@@ -23,9 +23,12 @@ from voice.audio import render_ulaw
 
 log = logging.getLogger(__name__)
 
+# How TTS has to see the brand name to pronounce it right ("Stafette" came out as "Stafettie").
+SPOKEN_BRAND = "Staffette"
+
 # Fixed opener from docs/POLICY.md. Spoken from a pre-rendered clip, never phrased by the LLM.
 OPENER = (
-    "Grüezi, hier ist ein KI-Assistent der Firma Stafette. Ich rufe im Auftrag von Anna Muster an, "
+    f"Grüezi, hier ist ein KI-Assistent der Firma {SPOKEN_BRAND}. Ich rufe im Auftrag von Anna Muster an, "
     "wegen der Übermittlung ihrer Unterlagen an ihre neue Hausärztin. "
     "Darf ich das Gespräch für eine Notiz transkribieren?"
 )

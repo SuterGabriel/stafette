@@ -22,7 +22,7 @@ OUT = BACKEND / "out"
 
 # Fixed opener from docs/POLICY.md (never phrased by the LLM).
 OPENER = (
-    "Grüezi, hier ist ein KI-Assistent der Firma Stafette. Ich rufe im Auftrag von Anna Muster an, "
+    "Grüezi, hier ist ein KI-Assistent der Firma Staffette. Ich rufe im Auftrag von Anna Muster an, "
     "wegen der Übermittlung ihrer Unterlagen an ihre neue Hausärztin. "
     "Darf ich das Gespräch für eine Notiz transkribieren?"
 )
@@ -55,6 +55,8 @@ async def main() -> None:
     load_dotenv(BACKEND / ".env")
     parser = argparse.ArgumentParser()
     parser.add_argument("--voice", help="voice uid to render the opener with")
+    parser.add_argument("--text", help="render this sentence instead of the opener")
+    parser.add_argument("--tag", default="", help="suffix for the output file name")
     args = parser.parse_args()
 
     key = os.environ.get("GRADIUM_API_KEY", "").strip()
@@ -78,13 +80,13 @@ async def main() -> None:
 
     OUT.mkdir(exist_ok=True)
     setup = gradium.TTSSetup(model_name="default", voice_id=voice, output_format="wav")
-    result = await _call(client.tts, setup, OPENER)
+    result = await _call(client.tts, setup, args.text or OPENER)
     wav = getattr(result, "raw_data", None)
     if not wav:
         raise SystemExit(f"Keine Audiodaten erhalten: {result!r}")
-    target = OUT / f"opener_{voice}.wav"
+    target = OUT / (f"say_{args.tag}.wav" if args.text else f"opener_{voice}.wav")
     target.write_bytes(wav)
-    print(f"Gesprächsbeginn gerendert: {target} ({len(wav) // 1024} KB)")
+    print(f"Gerendert: {target} ({len(wav) // 1024} KB)")
 
 
 if __name__ == "__main__":
