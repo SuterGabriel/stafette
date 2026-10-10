@@ -64,3 +64,7 @@ Video sollte ca 20-30 Sec gehen nicht länger.
 <status>completed</status>
 <summary>Background command "Retry commit in background" completed (exit code 0)</summary>
 </task-notification>
+
+---
+
+Kannst du mir die Logo Animation noch isolieren von dem logo-intro. So das wir beim "starten" sprich beim erstmaligen öffnen oder reloaden der Seite sollte diese Animation kommen also dann nur von dem Logo intro dies sollte wie ein Load Animation sein.
