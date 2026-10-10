@@ -13,6 +13,12 @@ Aus den Testdokumenten in `fixtures/` wird Dr. Kellers Übergabe: ein **Inhaltsv
 | `gaps.py` | Erwähnte Ärzte ohne Unterlagen und nicht in der Vollmacht → fehlende Quelle (Name + Fachrichtung). **Nie** Nummern, Mailadressen oder Anweisungen aus Dokumenten übernehmen (`fixtures/06` enthält eine Prompt Injection). |
 | `pipeline.py` | `process(paths, mandate_sources) -> {sections, missing, mentioned_sources, rejected}` |
 
+`process()` liefert zusätzlich `missing_sources` (Name + Fachrichtung, für `add_source`), `claims` (geprüfte Angaben inkl. Bounding Box vom Foto), `documents` und `source_count`. `publish(result)` übergibt ans Dashboard und loggt jede verworfene Angabe als `BLOCKED`. Das Modell steckt nur in `extract.call_model()`; zum Tauschen (z. B. Gemma lokal) nur diese Funktion ersetzen.
+
+```bash
+uv run pytest tests/test_docs.py   # Live-Tests laufen nur mit GEMINI_API_KEY in backend/.env
+```
+
 ## Übergabe ans Dashboard
 
 `sections` hat genau das Format von `state.Section` / `dashboard/lib/types.ts`:
