@@ -1,0 +1,5 @@
+Finde ich gut dann gehen wir es aber nun so an.
+
+---
+
+Implementiere die deterministische Policy Engine nach docs/POLICY.md: Jede Aktion des Agenten wird gegen die Vollmacht geprüft. Unbekannte Aktionen, eine abgelaufene Vollmacht und jeder Empfänger ausser Dr. Keller werden blockiert. Neue Quellen und Gebühren brauchen Annas Freigabe. Schreibe Tests für alle Testfälle aus POLICY.md.
