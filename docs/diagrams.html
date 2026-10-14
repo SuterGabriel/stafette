@@ -1,4 +1,4 @@
-<title>Stafette Diagramme</title>
+<title>Stafette Diagrams</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
 /* Layout: one reading column, three figures that break out wider and scroll inside themselves on narrow screens */
@@ -209,27 +209,27 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
     <svg viewBox="0 0 64 64" aria-hidden="true"><defs><rect id="bm1" x="4" y="26" width="38" height="14" rx="7" transform="rotate(-35 23 33)"/><rect id="bm2" x="22" y="24" width="38" height="14" rx="7" transform="rotate(-35 41 31)"/><clipPath id="bmc"><use href="#bm1"/></clipPath></defs><use href="#bm1" fill="#0F8B8D"/><use href="#bm2" fill="#FF7A59"/><use href="#bm2" fill="#0E2A3B" clip-path="url(#bmc)"/></svg>
     Stafette
   </div>
-  <h1>Wie der Agent handelt und wer entscheidet, was er darf</h1>
+  <h1>How the agent acts and who decides what it may do</h1>
   <p class="claim">The model proposes actions. Code decides whether they're allowed.</p>
-  <p>Fünf Sichten auf dasselbe System: welche Teile miteinander sprechen, nach welchen Regeln die Policy Engine jeden Vorschlag prüft, wie ein Arztwechsel abläuft, welche Dienste wir brauchen und was bei einem Anruf passiert. Farben stehen überall für dieselbe Rolle: <span style="color:var(--gem);font-weight:700">Gemini</span>, <span style="color:var(--gra);font-weight:700">Gradium</span>, <span style="color:var(--twi);font-weight:700">Twilio und alte Praxen</span>, <span style="color:var(--pol);font-weight:700">Policy Engine</span>, <span style="color:var(--ann);font-weight:700">Anna</span>, <span style="color:var(--doc);font-weight:700">neue Praxis</span>.</p>
-  <nav aria-label="Diagramme">
-    <a href="#architektur">Architektur</a>
-    <a href="#entscheidung">Entscheidungslogik</a>
-    <a href="#ablauf">Ablauf (UML)</a>
-    <a href="#komponenten">Komponenten und Dienste</a>
-    <a href="#anruf">Ein Anruf</a>
+  <p>Five views of the same system: which parts talk to each other, which rules the Policy Engine uses to check every proposal, how a change of doctor plays out, which services we need and what happens during a call. Each color stands for the same role everywhere: <span style="color:var(--gem);font-weight:700">Gemini</span>, <span style="color:var(--gra);font-weight:700">Gradium</span>, <span style="color:var(--twi);font-weight:700">Twilio and previous practices</span>, <span style="color:var(--pol);font-weight:700">Policy Engine</span>, <span style="color:var(--ann);font-weight:700">Anna</span>, <span style="color:var(--doc);font-weight:700">new practice</span>.</p>
+  <nav aria-label="Diagrams">
+    <a href="#architecture">Architecture</a>
+    <a href="#decision">Decision logic</a>
+    <a href="#flow">Flow (UML)</a>
+    <a href="#components">Components and services</a>
+    <a href="#call">One call</a>
     <a href="#team">Team</a>
   </nav>
 </header>
 
-<!-- ============================ 1. ARCHITEKTUR ============================ -->
-<section id="architektur">
-  <p class="eyebrow">Sicht 1 · Komponenten</p>
-  <h2>Architektur und Datenzonen</h2>
-  <p>Gemini schlägt vor, die Policy Engine entscheidet. Medizinische Inhalte bleiben in der unteren Zone; nach oben geht nur Name und Fachgebiet erwähnter Ärzte.</p>
+<!-- ============================ 1. ARCHITECTURE ============================ -->
+<section id="architecture">
+  <p class="eyebrow">View 1 · Components</p>
+  <h2>Architecture and data zones</h2>
+  <p>Gemini proposes, the Policy Engine decides. Medical content stays in the lower zone; only the name and specialty of mentioned doctors go up.</p>
   <figure>
     <div class="canvas">
-    <svg viewBox="0 0 1100 610" role="img" aria-label="Architektur: Anna gibt das Ziel an den Gemini-Compiler, der die Vollmacht an die Policy Engine übergibt. Orchestrator und Telefon-Agent schlagen Tool-Calls vor, die Policy Engine entscheidet und schreibt jede Entscheidung in den State, den das Dashboard per SSE erhält. Akten gehen direkt von der alten an die neue Praxis; die Dokument-Pipeline meldet nur Name und Fachgebiet erwähnter Ärzte an den Orchestrator.">
+    <svg viewBox="0 0 1100 610" role="img" aria-label="Architecture: Anna gives the goal to the Gemini compiler, which hands the mandate to the Policy Engine. Orchestrator and phone agent propose tool calls, the Policy Engine decides and writes every decision to the state, which the dashboard receives via SSE. Records go directly from the previous practice to the new one; the document pipeline reports only the name and specialty of mentioned doctors to the orchestrator.">
       <defs>
         <marker id="a-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
         <marker id="a-rec" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path class="ah-rec" d="M0,0 L10,5 L0,10 z"/></marker>
@@ -239,18 +239,18 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <!-- backend boundary and data zones -->
       <rect class="backend" x="210" y="30" width="590" height="560" rx="12"/>
       <use href="#i-laptop" class="ic ic-mut" x="224" y="36" width="18" height="18"/>
-      <text class="cap" x="248" y="50">BACKEND · FASTAPI · ALLES IN-MEMORY</text>
+      <text class="cap" x="248" y="50">BACKEND · FASTAPI · ALL IN-MEMORY</text>
       <rect class="zone-safe" x="225" y="62" width="560" height="290" rx="8"/>
       <use href="#i-lock" class="ic ic-pol" x="235" y="66" width="16" height="16"/>
-      <text class="cap" x="256" y="79">OHNE MEDIZINISCHE INHALTE</text>
+      <text class="cap" x="256" y="79">NO MEDICAL CONTENT</text>
       <rect class="zone-med" x="225" y="378" width="560" height="196" rx="8"/>
-      <text class="cap e" x="773" y="396">MEDIZINISCHE INHALTE · IM AUFTRAG DER NEUEN PRAXIS</text>
+      <text class="cap e" x="773" y="396">MEDICAL CONTENT · ON BEHALF OF THE NEW PRACTICE</text>
 
       <!-- Anna -->
       <rect class="n-ann" x="30" y="100" width="140" height="56" rx="10"/>
       <circle class="badge b-ann" cx="100" cy="100" r="14"/><use href="#i-user" class="ic ic-ann" x="91" y="91" width="18" height="18"/>
       <text class="b m" x="100" y="133">Anna</text>
-      <text class="sub m" x="100" y="149">Patientin</text>
+      <text class="sub m" x="100" y="149">patient</text>
 
       <!-- Google Search -->
       <rect class="n-gem" x="30" y="300" width="140" height="56" rx="10"/>
@@ -274,8 +274,8 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <rect class="n-pol" x="440" y="180" width="140" height="90" rx="10"/>
       <circle class="badge b-pol" cx="510" cy="180" r="16"/><use href="#i-shield" class="ic ic-pol" x="499" y="169" width="22" height="22"/>
       <text class="b m inv" x="510" y="220">Policy Engine</text>
-      <text class="m inv" x="510" y="238" style="font-size:10.5px">deterministischer</text>
-      <text class="m inv" x="510" y="252" style="font-size:10.5px">Code</text>
+      <text class="m inv" x="510" y="238" style="font-size:10.5px">deterministic</text>
+      <text class="m inv" x="510" y="252" style="font-size:10.5px">code</text>
 
       <!-- State + Events -->
       <rect class="n-code" x="640" y="100" width="130" height="56" rx="10"/>
@@ -283,156 +283,156 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <text class="b m" x="705" y="133">State + Events</text>
       <text class="sub m" x="705" y="149">in-memory · TTL</text>
 
-      <!-- Telefon-Agent -->
+      <!-- Phone agent -->
       <rect class="n-gra" x="640" y="230" width="130" height="56" rx="10"/>
       <circle class="badge b-gra" cx="705" cy="230" r="14"/><use href="#i-wave" class="ic ic-gra" x="696" y="221" width="18" height="18"/>
-      <text class="b m" x="705" y="263">Telefon-Agent</text>
+      <text class="b m" x="705" y="263">Phone agent</text>
       <text class="sub m" x="705" y="279">gradbot + Gemini</text>
 
       <!-- lower zone -->
       <rect class="n-code" x="240" y="440" width="140" height="56" rx="10"/>
       <circle class="badge b-fg" cx="310" cy="440" r="14"/><use href="#i-alert" class="ic" x="301" y="431" width="18" height="18"/>
       <text class="b m" x="310" y="473">Gap Detector</text>
-      <text class="sub m" x="310" y="489">erwähnte Ärzte</text>
+      <text class="sub m" x="310" y="489">mentioned doctors</text>
 
       <rect class="n-code" x="440" y="440" width="140" height="56" rx="10"/>
       <circle class="badge b-fg" cx="510" cy="440" r="14"/><use href="#i-check" class="ic" x="501" y="431" width="18" height="18"/>
       <text class="b m" x="510" y="473">Verifier</text>
-      <text class="sub m" x="510" y="489">Zitat ↔ Quellseite</text>
+      <text class="sub m" x="510" y="489">quote ↔ source page</text>
 
       <rect class="n-gem" x="640" y="440" width="130" height="56" rx="10"/>
       <circle class="badge b-gem" cx="705" cy="440" r="14"/><use href="#i-doc" class="ic ic-gem" x="696" y="431" width="18" height="18"/>
-      <text class="b m" x="705" y="473">Leser</text>
+      <text class="b m" x="705" y="473">Reader</text>
       <text class="mono m t-teal" x="705" y="489">gemini-3.8-flash</text>
 
       <!-- outside world -->
       <rect class="n-ann" x="850" y="100" width="220" height="56" rx="10"/>
       <circle class="badge b-ann" cx="960" cy="100" r="14"/><use href="#i-screen" class="ic ic-ann" x="951" y="91" width="18" height="18"/>
       <text class="b m" x="960" y="133">Dashboard</text>
-      <text class="sub m" x="960" y="149">Annas App · Dr. Kellers Übergabe</text>
+      <text class="sub m" x="960" y="149">Anna's app · Dr. Keller's handover</text>
 
       <rect class="n-twi" x="850" y="230" width="220" height="56" rx="10"/>
       <circle class="badge b-twi" cx="960" cy="230" r="14"/><use href="#i-clinic" class="ic ic-twi" x="951" y="221" width="18" height="18"/>
-      <text class="b m" x="960" y="263">Alte Praxen</text>
-      <text class="sub m" x="960" y="279">MPA am Telefon</text>
+      <text class="b m" x="960" y="263">Previous practices</text>
+      <text class="sub m" x="960" y="279">MPA on the phone</text>
 
       <rect class="n-doc" x="850" y="440" width="220" height="56" rx="10"/>
       <circle class="badge b-doc" cx="960" cy="440" r="14"/><use href="#i-clinic" class="ic ic-doc" x="951" y="431" width="18" height="18"/>
-      <text class="b m" x="960" y="473">Neue Praxis · Dr. Keller</text>
+      <text class="b m" x="960" y="473">New practice · Dr. Keller</text>
       <text class="sub m" x="960" y="489">HIN-Mail</text>
 
       <!-- edges -->
       <path class="edge" d="M170,128 H238" marker-end="url(#a-ar)"/>
-      <text class="lbl m" x="205" y="120">Ziel</text>
+      <text class="lbl m" x="205" y="120">goal</text>
 
       <path class="edge" d="M380,128 H480 V178" marker-end="url(#a-ar)"/>
-      <text class="lbl m" x="430" y="120">Vollmacht v1</text>
+      <text class="lbl m" x="430" y="120">mandate v1</text>
 
       <path class="edge" d="M550,180 V128 H638" marker-end="url(#a-ar)"/>
-      <text class="lbl m" x="597" y="120">loggt</text>
+      <text class="lbl m" x="597" y="120">logs</text>
 
       <path class="edge" d="M770,128 H848" marker-end="url(#a-ar)"/>
       <text class="lbl m" x="810" y="120">SSE: State</text>
 
       <path class="edge" d="M380,244 H438" marker-end="url(#a-ar)"/>
-      <text class="lbl m" x="410" y="238">Vorschlag</text>
+      <text class="lbl m" x="410" y="238">proposal</text>
       <path class="edge-pol" d="M440,266 H382" marker-end="url(#a-pol)"/>
-      <text class="lbl m t-pol" x="410" y="282">Entscheid</text>
+      <text class="lbl m t-pol" x="410" y="282">decision</text>
 
       <path class="edge" d="M640,244 H582" marker-end="url(#a-ar)"/>
-      <text class="lbl m" x="610" y="238">Vorschlag</text>
+      <text class="lbl m" x="610" y="238">proposal</text>
       <path class="edge-pol" d="M580,266 H638" marker-end="url(#a-pol)"/>
-      <text class="lbl m t-pol" x="610" y="282">Entscheid</text>
+      <text class="lbl m t-pol" x="610" y="282">decision</text>
 
       <path class="edge" d="M240,258 H100 V158" marker-start="url(#a-ar)" marker-end="url(#a-ar)"/>
-      <text class="lbl" x="108" y="200">Frage an Anna</text>
-      <text class="lbl" x="108" y="214">Ja → Vollmacht v2</text>
+      <text class="lbl" x="108" y="200">question to Anna</text>
+      <text class="lbl" x="108" y="214">yes → mandate v2</text>
 
       <path class="edge" d="M240,278 H205 V328 H172" marker-end="url(#a-ar)"/>
-      <text class="lbl m" x="190" y="370">Kontakt</text>
+      <text class="lbl m" x="190" y="370">contact</text>
 
       <path class="edge" d="M772,258 H848" marker-start="url(#a-ar)" marker-end="url(#a-ar)"/>
       <text class="lbl m" x="810" y="250">Twilio</text>
       <text class="lbl m" x="810" y="276">Audio</text>
 
       <path class="edge-rec" d="M1010,286 V436" marker-end="url(#a-rec)"/>
-      <text class="t-coral e" x="1000" y="352" style="font-size:11px">Akten direkt</text>
-      <text class="t-coral e" x="1000" y="367" style="font-size:11px">nicht über uns</text>
-      <text class="lbl e" x="1000" y="382">Art. 25 Abs. 3 DSG</text>
+      <text class="t-coral e" x="1000" y="352" style="font-size:11px">records go direct,</text>
+      <text class="t-coral e" x="1000" y="367" style="font-size:11px">not through us</text>
+      <text class="lbl e" x="1000" y="382">Art. 25(3) FADP</text>
 
       <path class="edge" d="M850,468 H772" marker-end="url(#a-ar)"/>
-      <text class="lbl m" x="810" y="460">Eingang</text>
+      <text class="lbl m" x="810" y="460">inbox</text>
       <path class="edge" d="M640,468 H582" marker-end="url(#a-ar)"/>
-      <text class="lbl m" x="610" y="460">Aussagen</text>
+      <text class="lbl m" x="610" y="460">claims</text>
       <path class="edge" d="M440,468 H382" marker-end="url(#a-ar)"/>
-      <text class="lbl m" x="410" y="460">Namen</text>
+      <text class="lbl m" x="410" y="460">names</text>
 
       <path class="edge" d="M270,440 V288" marker-end="url(#a-ar)"/>
-      <text class="lbl" x="278" y="322">neue Lücke: nur Name</text>
-      <text class="lbl" x="278" y="336">und Fachgebiet</text>
+      <text class="lbl" x="278" y="322">new gap: only name</text>
+      <text class="lbl" x="278" y="336">and specialty</text>
 
       <path class="edge" d="M510,496 V540 H960 V498" marker-end="url(#a-ar)"/>
-      <text class="lbl m" x="690" y="532">Inhaltsverzeichnis mit Fundstellen</text>
+      <text class="lbl m" x="690" y="532">index with sources</text>
     </svg>
     </div>
     <div class="legend" aria-hidden="true">
       <span><i class="sw gem"></i>Gemini</span>
-      <span><i class="sw gra"></i>Telefon (Gradium)</span>
-      <span><i class="sw pol"></i>Policy Engine (einziger Entscheider)</span>
-      <span><i class="sw code"></i>deterministischer Code</span>
-      <span><i class="sw ann"></i>Anna und ihr Dashboard</span>
-      <span><i class="sw twi"></i>alte Praxen</span>
-      <span><i class="sw doc"></i>neue Praxis</span>
-      <span><i class="sw rec"></i>Weg der Akten</span>
+      <span><i class="sw gra"></i>Phone (Gradium)</span>
+      <span><i class="sw pol"></i>Policy Engine (only decider)</span>
+      <span><i class="sw code"></i>deterministic code</span>
+      <span><i class="sw ann"></i>Anna and her dashboard</span>
+      <span><i class="sw twi"></i>previous practices</span>
+      <span><i class="sw doc"></i>new practice</span>
+      <span><i class="sw rec"></i>path of the records</span>
     </div>
-    <figcaption><b>Lesart:</b> Jeder Pfeil in die Policy Engine ist ein Vorschlag eines Modells, jeder Pfeil heraus ein Entscheid von Code. Die Akten laufen auf dem orangen Pfad von der alten direkt zur neuen Praxis; die Dokument-Pipeline arbeitet im Auftrag der neuen Praxis und gibt nur Namen erwähnter Ärzte an den Orchestrator weiter.</figcaption>
+    <figcaption><b>How to read it:</b> Every arrow into the Policy Engine is a proposal from a model, every arrow out of it is a decision made by code. The records travel on the orange path from the previous practice directly to the new one; the document pipeline works on behalf of the new practice and passes only the names of mentioned doctors to the orchestrator.</figcaption>
   </figure>
 </section>
 
-<!-- ============================ 2. ENTSCHEIDUNGSLOGIK ============================ -->
-<section id="entscheidung">
-  <p class="eyebrow">Sicht 2 · Policy Engine</p>
-  <h2>Entscheidungslogik von <code>check(action, args)</code></h2>
-  <p>Die Prüfungen laufen von links nach rechts. Die erste, die scheitert, bestimmt das Ergebnis. Was nicht aufgeführt ist, wird blockiert.</p>
+<!-- ============================ 2. DECISION LOGIC ============================ -->
+<section id="decision">
+  <p class="eyebrow">View 2 · Policy Engine</p>
+  <h2>Decision logic of <code>check(action, args)</code></h2>
+  <p>The checks run from left to right. The first one that fails determines the result. Anything not listed is blocked.</p>
   <figure>
     <div class="canvas">
-    <svg viewBox="0 0 1000 680" role="img" aria-label="Entscheidungsbaum der Policy Engine: Zuerst wird geprüft, ob die Vollmacht gültig ist. Dann je nach Aktion eine Kette von Prüfungen; scheitert eine, ist das Ergebnis BLOCKED mit Grund oder NEEDS APPROVAL. add_source und accept_fee brauchen immer Annas Ja. Unbekannte Aktionen sind blockiert.">
+    <svg viewBox="0 0 1000 680" role="img" aria-label="Decision tree of the Policy Engine: first it checks whether the mandate is valid. Then, depending on the action, a chain of checks; if one fails, the result is BLOCKED with a reason or NEEDS APPROVAL. add_source and accept_fee always need Anna's yes. Unknown actions are blocked.">
       <defs>
         <marker id="p-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
       </defs>
 
       <!-- entry -->
       <rect class="n-gem" x="40" y="20" width="220" height="44" rx="8"/>
-      <text class="b m" x="150" y="39">Tool-Call von Gemini</text>
+      <text class="b m" x="150" y="39">Tool call from Gemini</text>
       <text class="mono m t-teal" x="150" y="55">action + args</text>
       <path class="edge" d="M260,42 H328" marker-end="url(#p-ar)"/>
       <polygon class="check" points="330,42 400,14 470,42 400,70"/>
-      <text class="m b" x="400" y="46" style="font-size:11.5px">Vollmacht gültig?</text>
+      <text class="m b" x="400" y="46" style="font-size:11.5px">Mandate valid?</text>
       <path class="edge" d="M470,42 H528" marker-end="url(#p-ar)"/>
-      <text class="lbl m" x="499" y="36">nein</text>
+      <text class="lbl m" x="499" y="36">no</text>
       <rect class="chip-bad" x="530" y="26" width="220" height="32" rx="6"/>
       <text class="mono m t-bad" x="640" y="46">BLOCKED · mandate_expired</text>
 
       <path class="edge" d="M400,70 V96 H20 V625"/>
-      <text class="lbl" x="408" y="88">ja → nach Aktion verzweigen</text>
+      <text class="lbl" x="408" y="88">yes → branch by action</text>
 
-      <text class="cap" x="40" y="116">AKTION</text>
-      <text class="cap" x="300" y="116">PRÜFUNGEN · JA → WEITER, NEIN → ERGEBNIS IN ROT</text>
-      <text class="cap" x="850" y="116">ERGEBNIS</text>
+      <text class="cap" x="40" y="116">ACTION</text>
+      <text class="cap" x="300" y="116">CHECKS · YES → NEXT, NO → RESULT IN RED</text>
+      <text class="cap" x="850" y="116">RESULT</text>
 
       <!-- row 0: place_call (y0=128, cy=145) -->
       <path class="edge" d="M20,145 H38" marker-end="url(#p-ar)"/>
       <rect class="act" x="40" y="128" width="230" height="34" rx="6"/>
       <text class="mono m" x="155" y="142">place_call</text><text class="mono m" x="155" y="156">schedule_callback</text>
       <path class="edge" d="M270,145 H298" marker-end="url(#p-ar)"/>
-      <rect class="check" x="300" y="128" width="160" height="34" rx="6"/><text class="m" x="380" y="149">Quelle in Vollmacht?</text>
-      <text class="mono m t-bad" x="380" y="178">nein → unknown_source</text>
+      <rect class="check" x="300" y="128" width="160" height="34" rx="6"/><text class="m" x="380" y="149">Source in mandate?</text>
+      <text class="mono m t-bad" x="380" y="178">no → unknown_source</text>
       <path class="edge" d="M460,145 H478" marker-end="url(#p-ar)"/>
-      <rect class="check" x="480" y="128" width="160" height="34" rx="6"/><text class="m" x="560" y="149">Weniger als 3 Anrufe?</text>
-      <text class="mono m t-bad" x="560" y="178">nein → call_limit_reached</text>
+      <rect class="check" x="480" y="128" width="160" height="34" rx="6"/><text class="m" x="560" y="149">Fewer than 3 calls?</text>
+      <text class="mono m t-bad" x="560" y="178">no → call_limit_reached</text>
       <path class="edge" d="M640,145 H658" marker-end="url(#p-ar)"/>
-      <rect class="check" x="660" y="128" width="160" height="34" rx="6"/><text class="m" x="740" y="149">In der Anrufzeit?</text>
-      <text class="mono m t-bad" x="740" y="178">nein → outside_call_hours</text>
+      <rect class="check" x="660" y="128" width="160" height="34" rx="6"/><text class="m" x="740" y="149">Within call hours?</text>
+      <text class="mono m t-bad" x="740" y="178">no → outside_call_hours</text>
       <path class="edge" d="M820,145 H848" marker-end="url(#p-ar)"/>
       <rect class="chip-ok" x="850" y="128" width="130" height="34" rx="6"/><text class="mono m t-ok" x="915" y="149">ALLOWED</text>
 
@@ -441,8 +441,8 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <rect class="act" x="40" y="188" width="230" height="34" rx="6"/>
       <text class="mono m" x="155" y="202">search_contact</text><text class="mono m" x="155" y="216">prepare_mandate_letter</text>
       <path class="edge" d="M270,205 H298" marker-end="url(#p-ar)"/>
-      <rect class="check" x="300" y="188" width="160" height="34" rx="6"/><text class="m" x="380" y="209">Quelle in Vollmacht?</text>
-      <text class="mono m t-bad" x="380" y="238">nein → unknown_source</text>
+      <rect class="check" x="300" y="188" width="160" height="34" rx="6"/><text class="m" x="380" y="209">Source in mandate?</text>
+      <text class="mono m t-bad" x="380" y="238">no → unknown_source</text>
       <path class="edge" d="M460,205 H848" marker-end="url(#p-ar)"/>
       <rect class="chip-ok" x="850" y="188" width="130" height="34" rx="6"/><text class="mono m t-ok" x="915" y="209">ALLOWED</text>
 
@@ -451,11 +451,11 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <rect class="act" x="40" y="248" width="230" height="34" rx="6"/>
       <text class="mono m" x="155" y="269">send_mandate_letter</text>
       <path class="edge" d="M270,265 H298" marker-end="url(#p-ar)"/>
-      <rect class="check" x="300" y="248" width="160" height="34" rx="6"/><text class="m" x="380" y="269">Quelle in Vollmacht?</text>
-      <text class="mono m t-bad" x="380" y="298">nein → unknown_source</text>
+      <rect class="check" x="300" y="248" width="160" height="34" rx="6"/><text class="m" x="380" y="269">Source in mandate?</text>
+      <text class="mono m t-bad" x="380" y="298">no → unknown_source</text>
       <path class="edge" d="M460,265 H478" marker-end="url(#p-ar)"/>
-      <rect class="check" x="480" y="248" width="160" height="34" rx="6"/><text class="m" x="560" y="269">Von Anna unterschrieben?</text>
-      <text class="mono m t-bad" x="560" y="298">nein → mandate_not_signed</text>
+      <rect class="check" x="480" y="248" width="160" height="34" rx="6"/><text class="m" x="560" y="269">Signed by Anna?</text>
+      <text class="mono m t-bad" x="560" y="298">no → mandate_not_signed</text>
       <path class="edge" d="M640,265 H848" marker-end="url(#p-ar)"/>
       <rect class="chip-ok" x="850" y="248" width="130" height="34" rx="6"/><text class="mono m t-ok" x="915" y="269">ALLOWED</text>
 
@@ -464,11 +464,11 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <rect class="act" x="40" y="308" width="230" height="34" rx="6"/>
       <text class="mono m" x="155" y="329">request_records</text>
       <path class="edge" d="M270,325 H298" marker-end="url(#p-ar)"/>
-      <rect class="check" x="300" y="308" width="160" height="34" rx="6"/><text class="m" x="380" y="329">Quelle in Vollmacht?</text>
-      <text class="mono m t-bad" x="380" y="358">nein → unknown_source</text>
+      <rect class="check" x="300" y="308" width="160" height="34" rx="6"/><text class="m" x="380" y="329">Source in mandate?</text>
+      <text class="mono m t-bad" x="380" y="358">no → unknown_source</text>
       <path class="edge" d="M460,325 H478" marker-end="url(#p-ar)"/>
-      <rect class="check" x="480" y="308" width="160" height="34" rx="6"/><text class="m" x="560" y="329">Umfang ⊆ Vollmacht?</text>
-      <text class="mono m t-warn" x="560" y="358">nein → NEEDS APPROVAL</text>
+      <rect class="check" x="480" y="308" width="160" height="34" rx="6"/><text class="m" x="560" y="329">Scope ⊆ mandate?</text>
+      <text class="mono m t-warn" x="560" y="358">no → NEEDS APPROVAL</text>
       <path class="edge" d="M640,325 H848" marker-end="url(#p-ar)"/>
       <rect class="chip-ok" x="850" y="308" width="130" height="34" rx="6"/><text class="mono m t-ok" x="915" y="329">ALLOWED</text>
 
@@ -478,10 +478,10 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <rect class="act" x="40" y="368" width="230" height="34" rx="6"/>
       <text class="mono m" x="155" y="389">set_recipient</text>
       <path class="edge" d="M270,385 H298" marker-end="url(#p-ar)"/>
-      <rect class="check" x="300" y="368" width="160" height="34" rx="6"/><text class="m" x="380" y="389">Adresse = Dr. Keller?</text>
-      <text class="mono m t-bad" x="380" y="414">nein → recipient_not_in_mandate</text>
+      <rect class="check" x="300" y="368" width="160" height="34" rx="6"/><text class="m" x="380" y="389">Address = Dr. Keller?</text>
+      <text class="mono m t-bad" x="380" y="414">no → recipient_not_in_mandate</text>
       <path class="edge" d="M460,385 H848" marker-end="url(#p-ar)"/>
-      <text class="t-coral it" x="490" y="378" style="font-size:11px">Demo: «Schicken Sie es an meine private Mail»</text>
+      <text class="t-coral it" x="490" y="378" style="font-size:11px">Demo: "Send it to my private email"</text>
       <rect class="chip-ok" x="850" y="368" width="130" height="34" rx="6"/><text class="mono m t-ok" x="915" y="389">ALLOWED</text>
 
       <!-- row 5: mark_done (y0=428, cy=445) -->
@@ -489,8 +489,8 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <rect class="act" x="40" y="428" width="230" height="34" rx="6"/>
       <text class="mono m" x="155" y="449">mark_done</text>
       <path class="edge" d="M270,445 H298" marker-end="url(#p-ar)"/>
-      <rect class="check" x="300" y="428" width="160" height="34" rx="6"/><text class="m" x="380" y="449">Alle Quellen fertig?</text>
-      <text class="mono m t-bad" x="380" y="478">nein → open_sources</text>
+      <rect class="check" x="300" y="428" width="160" height="34" rx="6"/><text class="m" x="380" y="449">All sources done?</text>
+      <text class="mono m t-bad" x="380" y="478">no → open_sources</text>
       <path class="edge" d="M460,445 H848" marker-end="url(#p-ar)"/>
       <rect class="chip-ok" x="850" y="428" width="130" height="34" rx="6"/><text class="mono m t-ok" x="915" y="449">ALLOWED</text>
 
@@ -499,13 +499,13 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <rect class="act" x="40" y="488" width="230" height="34" rx="6"/>
       <text class="mono m" x="155" y="502">add_source</text><text class="mono m" x="155" y="516">accept_fee</text>
       <path class="edge" d="M270,505 H848" marker-end="url(#p-ar)"/>
-      <text class="lbl" x="300" y="498">ohne Prüfung: erweitert die Vollmacht, braucht immer Annas Ja</text>
+      <text class="lbl" x="300" y="498">no check: extends the mandate, always needs Anna's yes</text>
       <rect class="chip-warn" x="850" y="488" width="130" height="34" rx="6"/><text class="mono m t-warn" x="915" y="509">NEEDS APPROVAL</text>
 
       <!-- row 7: info + end (y0=548, cy=565) -->
       <path class="edge" d="M20,565 H38" marker-end="url(#p-ar)"/>
       <rect class="act" x="40" y="548" width="230" height="34" rx="6"/>
-      <text class="m b" x="155" y="569">Auskunft und Abschluss</text>
+      <text class="m b" x="155" y="569">Information and wrap-up</text>
       <path class="edge" d="M270,565 H848" marker-end="url(#p-ar)"/>
       <text class="mono lbl" x="300" y="558">ask_principal · identify_principal · confirm_recipient · end_call</text>
       <rect class="chip-ok" x="850" y="548" width="130" height="34" rx="6"/><text class="mono m t-ok" x="915" y="569">ALLOWED</text>
@@ -513,30 +513,30 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <!-- row 8: default (y0=608, cy=625) -->
       <path class="edge" d="M20,625 H38" marker-end="url(#p-ar)"/>
       <rect class="act" x="40" y="608" width="230" height="34" rx="6"/>
-      <text class="m b" x="155" y="629">jede andere Aktion</text>
+      <text class="m b" x="155" y="629">any other action</text>
       <path class="edge" d="M270,625 H848" marker-end="url(#p-ar)"/>
-      <text class="lbl" x="300" y="618">Default: was hier nicht steht, darf der Agent nicht</text>
+      <text class="lbl" x="300" y="618">Default: whatever is not listed here, the agent may not do</text>
       <rect class="chip-bad" x="850" y="608" width="130" height="34" rx="6"/><text class="mono m t-bad" x="915" y="629">BLOCKED</text>
       <text class="mono m t-bad" x="915" y="660">unknown_action</text>
     </svg>
     </div>
     <div class="outcomes">
-      <div class="outcome"><span class="tag ok">ALLOWED</span><p>Das Tool läuft. Das Event zeigt im Feld <code>model</code>, welches Modell vorgeschlagen hat; entschieden hat die Policy Engine.</p></div>
-      <div class="outcome"><span class="tag warn">NEEDS APPROVAL · im Dashboard „APPROVAL“</span><p>Nichts passiert, bis Anna im Dashboard Ja sagt. Ein Ja erzeugt Vollmacht v2, die alte Version bleibt im Log.</p></div>
-      <div class="outcome"><span class="tag bad">BLOCKED</span><p>Gemini bekommt den Grund als Tool-Fehler zurück und sagt z. B. «Das darf ich nicht ändern». Rotes Event im Dashboard.</p></div>
+      <div class="outcome"><span class="tag ok">ALLOWED</span><p>The tool runs. The event's <code>model</code> field shows which model proposed it; the Policy Engine made the decision.</p></div>
+      <div class="outcome"><span class="tag warn">NEEDS APPROVAL · "APPROVAL" in the dashboard</span><p>Nothing happens until Anna says yes in the dashboard. A yes creates mandate v2; the old version stays in the log.</p></div>
+      <div class="outcome"><span class="tag bad">BLOCKED</span><p>Gemini gets the reason back as a tool error and says, for example, "I'm not allowed to change that". Red event in the dashboard.</p></div>
     </div>
-    <figcaption><b>Quelle:</b> Engine-Skizze in POLICY.md. <code>accept_fee</code> steht dort unter <code>requires_human_approval</code> und ist hier ergänzt, damit Testfall 5 («Das kostet 50 Franken») abgedeckt ist. Für die Demo am Samstagabend die Anrufzeiten per Demo-Flag lockern.</figcaption>
+    <figcaption><b>Source:</b> engine sketch in POLICY.md. <code>accept_fee</code> is listed there under <code>requires_human_approval</code> and is added here so that test case 5 ("That costs 50 francs") is covered. For the demo on Saturday evening, relax the call hours with a demo flag.</figcaption>
   </figure>
 </section>
 
-<!-- ============================ 3. UML AKTIVITÄT ============================ -->
-<section id="ablauf">
-  <p class="eyebrow">Sicht 3 · UML-Aktivitätsdiagramm</p>
-  <h2>Ablauf vom Satz bis zur Übergabe</h2>
-  <p>Anrufe und Dokumente laufen parallel. Findet die Pipeline eine Ärztin ohne Unterlagen, schlägt der Agent selbst eine neue Quelle vor; erst Annas Ja startet die Schleife erneut.</p>
+<!-- ============================ 3. UML ACTIVITY ============================ -->
+<section id="flow">
+  <p class="eyebrow">View 3 · UML activity diagram</p>
+  <h2>From one sentence to the handover</h2>
+  <p>Calls and documents run in parallel. If the pipeline finds a doctor without records, the agent proposes a new source itself; only Anna's yes restarts the loop.</p>
   <figure>
     <div class="canvas">
-    <svg viewBox="0 0 1060 900" role="img" aria-label="UML-Aktivitätsdiagramm mit vier Swimlanes: Anna, Agent, Dokument-Pipeline, Telefon-Agent. Anna spricht das Ziel, der Agent kompiliert die Vollmacht, Anna gibt frei, der Agent plant die Quellen. Danach parallel: Anruf mit Anforderung, wobei eine fremde Adresse blockiert wird, und Lesen der Akten. Eine erwähnte Ärztin ohne Akten führt zu einer Freigabe-Frage an Anna; bei Ja wird mit Vollmacht v2 neu geplant. Beide Zweige enden in der Übergabe an Dr. Keller.">
+    <svg viewBox="0 0 1060 900" role="img" aria-label="UML activity diagram with four swimlanes: Anna, agent, document pipeline, phone agent. Anna speaks the goal, the agent compiles the mandate, Anna approves it, the agent plans the sources. Then in parallel: a call with a request, where a different address is blocked, and reading the records. A mentioned doctor without records leads to an approval question to Anna; on yes, the agent replans with mandate v2. Both branches end in the handover to Dr. Keller.">
       <defs>
         <marker id="u-ar" viewBox="0 0 10 10" refX="9.5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path class="ah-open" d="M0,0.5 L9.5,5 L0,9.5"/></marker>
       </defs>
@@ -556,44 +556,44 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <use href="#i-spark" class="ic ic-gem" x="248" y="27" width="18" height="18"/>
       <text class="b" x="272" y="41">Agent · Orchestrator + Policy</text>
       <use href="#i-doc" class="ic ic-doc" x="562" y="27" width="18" height="18"/>
-      <text class="b" x="586" y="41">Dokument-Pipeline</text>
+      <text class="b" x="586" y="41">Document pipeline</text>
       <use href="#i-phone" class="ic ic-gra" x="842" y="27" width="18" height="18"/>
-      <text class="b" x="866" y="41">Telefon-Agent</text>
+      <text class="b" x="866" y="41">Phone agent</text>
 
       <!-- UML note -->
       <path class="note" d="M785,72 H1001 L1015,86 V146 H785 Z"/>
       <path class="edge" d="M1001,72 V86 H1015"/>
-      <text x="797" y="96" style="font-size:11.5px">Jeder Schritt ist ein Tool-Call</text>
-      <text x="797" y="113" style="font-size:11.5px">und läuft zuerst durch die</text>
-      <text x="797" y="130" style="font-size:11.5px">Policy Engine (Sicht 2).</text>
+      <text x="797" y="96" style="font-size:11.5px">Every step is a tool call</text>
+      <text x="797" y="113" style="font-size:11.5px">and first goes through the</text>
+      <text x="797" y="130" style="font-size:11.5px">Policy Engine (view 2).</text>
 
       <!-- start -->
       <circle class="dot" cx="115" cy="80" r="9"/>
       <path class="edge" d="M115,89 V119" marker-end="url(#u-ar)"/>
 
-      <!-- A1 Ziel sprechen -->
+      <!-- A1 speak the goal -->
       <rect class="n-code" x="30" y="120" width="170" height="40" rx="14"/>
-      <text class="m" x="115" y="144">Ziel sprechen</text>
+      <text class="m" x="115" y="144">Speak the goal</text>
       <path class="edge" d="M200,140 H269" marker-end="url(#u-ar)"/>
 
-      <!-- A2 Vollmacht kompilieren -->
+      <!-- A2 compile mandate -->
       <rect class="n-code" x="270" y="120" width="170" height="40" rx="14"/>
-      <text class="m" x="355" y="138">Vollmacht kompilieren</text>
+      <text class="m" x="355" y="138">Compile mandate</text>
       <text class="mono m t-teal" x="355" y="152" style="font-size:9.5px">«gemini-3.8-flash»</text>
       <path class="edge" d="M355,160 V215 H201" marker-end="url(#u-ar)"/>
 
-      <!-- A3 Vollmacht freigeben -->
+      <!-- A3 approve mandate -->
       <rect class="n-code" x="30" y="195" width="170" height="40" rx="14"/>
-      <text class="m" x="115" y="219">Vollmacht freigeben</text>
+      <text class="m" x="115" y="219">Approve mandate</text>
       <path class="edge" d="M115,235 V275" marker-end="url(#u-ar)"/>
 
       <!-- M1 merge -->
       <polygon class="hollow" points="115,276 129,290 115,304 101,290"/>
       <path class="edge" d="M129,290 H269" marker-end="url(#u-ar)"/>
 
-      <!-- A4 Quellen planen -->
+      <!-- A4 plan sources -->
       <rect class="n-code" x="270" y="270" width="170" height="40" rx="14"/>
-      <text class="m" x="355" y="288">Quellen planen</text>
+      <text class="m" x="355" y="288">Plan sources</text>
       <text class="mono m t-teal" x="355" y="302" style="font-size:9.5px">«Orchestrator»</text>
       <path class="edge" d="M355,310 V346" marker-end="url(#u-ar)"/>
 
@@ -604,12 +604,12 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
 
       <!-- documents branch -->
       <rect class="n-code" x="545" y="390" width="170" height="40" rx="14"/>
-      <text class="m" x="630" y="408">Akten lesen</text>
+      <text class="m" x="630" y="408">Read records</text>
       <text class="mono m t-teal" x="630" y="422" style="font-size:9.5px">«gemini-3.8-flash»</text>
       <path class="edge" d="M630,430 V459" marker-end="url(#u-ar)"/>
       <rect class="n-code" x="545" y="460" width="170" height="40" rx="14"/>
-      <text class="m" x="630" y="478">Zitate prüfen</text>
-      <text class="mono m sub" x="630" y="492" style="font-size:9.5px">Zitat ↔ Quellseite</text>
+      <text class="m" x="630" y="478">Check quotes</text>
+      <text class="mono m sub" x="630" y="492" style="font-size:9.5px">quote ↔ source page</text>
       <path class="edge" d="M630,500 V524" marker-end="url(#u-ar)"/>
 
       <!-- fork 2 -->
@@ -618,22 +618,22 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <path class="edge" d="M355,531 V561" marker-end="url(#u-ar)"/>
 
       <rect class="n-code" x="545" y="610" width="170" height="40" rx="14"/>
-      <text class="m" x="630" y="628">Inhaltsverzeichnis</text>
-      <text class="mono m sub" x="630" y="642" style="font-size:9.5px">mit Fundstellen</text>
+      <text class="m" x="630" y="628">Index</text>
+      <text class="mono m sub" x="630" y="642" style="font-size:9.5px">with sources</text>
       <path class="edge" d="M630,650 V716" marker-end="url(#u-ar)"/>
 
       <!-- D3 gap decision -->
       <polygon class="hollow" points="355,562 373,580 355,598 337,580"/>
       <path class="edge" d="M373,580 H450" marker-end="url(#u-ar)"/>
-      <text class="lbl m" x="412" y="572">[keine Lücke]</text>
+      <text class="lbl m" x="412" y="572">[no gap]</text>
       <circle class="hollow" cx="460" cy="580" r="9"/>
       <path class="edge" d="M453.6,573.6 L466.4,586.4 M466.4,573.6 L453.6,586.4"/>
       <path class="edge" d="M355,598 V629" marker-end="url(#u-ar)"/>
-      <text class="lbl" x="363" y="617">[Ärztin ohne Akten]</text>
+      <text class="lbl" x="363" y="617">[doctor, no records]</text>
 
-      <!-- G1 Quelle vorschlagen -->
+      <!-- G1 propose source -->
       <rect class="n-code" x="270" y="630" width="170" height="40" rx="14"/>
-      <text class="m" x="355" y="648">Quelle vorschlagen</text>
+      <text class="m" x="355" y="648">Propose source</text>
       <text class="mono m sub" x="355" y="662" style="font-size:9.5px">add_source</text>
       <path class="edge" d="M270,650 H134" marker-end="url(#u-ar)"/>
       <text class="t-warn m" x="203" y="642" style="font-size:10px">NEEDS APPROVAL</text>
@@ -641,32 +641,32 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <!-- DA Anna decides -->
       <polygon class="hollow" points="115,632 133,650 115,668 97,650"/>
       <path class="edge" d="M115,632 V305" marker-end="url(#u-ar)"/>
-      <text class="lbl" x="123" y="470">[ja]</text>
-      <text class="lbl" x="123" y="484">Vollmacht v2</text>
+      <text class="lbl" x="123" y="470">[yes]</text>
+      <text class="lbl" x="123" y="484">mandate v2</text>
       <path class="edge" d="M115,668 V720" marker-end="url(#u-ar)"/>
-      <text class="lbl" x="123" y="700">[nein]</text>
+      <text class="lbl" x="123" y="700">[no]</text>
       <circle class="hollow" cx="115" cy="730" r="9"/>
       <path class="edge" d="M108.6,723.6 L121.4,736.4 M121.4,723.6 L108.6,736.4"/>
 
       <!-- phone branch -->
       <rect class="n-code" x="815" y="390" width="170" height="40" rx="14"/>
-      <text class="m" x="900" y="408">Anrufen, KI-Offenlegung</text>
+      <text class="m" x="900" y="408">Call, AI disclosure</text>
       <text class="mono m t-teal" x="900" y="422" style="font-size:9.5px">«gemini-3.6 + Gradium»</text>
       <path class="edge" d="M900,430 V459" marker-end="url(#u-ar)"/>
       <rect class="n-code" x="815" y="460" width="170" height="40" rx="14"/>
-      <text class="m" x="900" y="478">Unterlagen anfordern</text>
+      <text class="m" x="900" y="478">Request records</text>
       <text class="mono m sub" x="900" y="492" style="font-size:9.5px">request_records</text>
       <path class="edge" d="M900,500 V531" marker-end="url(#u-ar)"/>
 
       <polygon class="hollow" points="900,532 918,550 900,568 882,550"/>
       <path class="edge-bad" d="M918,550 H1010 V480 H986" marker-end="url(#u-ar)"/>
-      <text class="lbl" x="926" y="566">[fremde Adresse]</text>
+      <text class="lbl" x="926" y="566">[other address]</text>
       <text class="mono t-bad e" x="1004" y="521" style="font-size:10px">BLOCKED</text>
       <path class="edge" d="M900,568 V609" marker-end="url(#u-ar)"/>
-      <text class="lbl" x="908" y="592">[an Dr. Keller]</text>
+      <text class="lbl" x="908" y="592">[to Dr. Keller]</text>
 
       <rect class="n-code" x="815" y="610" width="170" height="40" rx="14"/>
-      <text class="m" x="900" y="628">Vollmacht senden</text>
+      <text class="m" x="900" y="628">Send mandate</text>
       <text class="mono m sub" x="900" y="642" style="font-size:9.5px">end_call(requested)</text>
       <path class="edge" d="M900,650 V716" marker-end="url(#u-ar)"/>
 
@@ -675,7 +675,7 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <path class="edge" d="M355,723 V759" marker-end="url(#u-ar)"/>
 
       <rect class="n-code" x="270" y="760" width="170" height="40" rx="14"/>
-      <text class="m" x="355" y="778">An Dr. Keller übergeben</text>
+      <text class="m" x="355" y="778">Hand over to Dr. Keller</text>
       <text class="mono m sub" x="355" y="792" style="font-size:9.5px">mark_done</text>
       <path class="edge" d="M355,800 V838" marker-end="url(#u-ar)"/>
 
@@ -684,28 +684,28 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <circle class="dot" cx="355" cy="850" r="6"/>
     </svg>
     </div>
-    <figcaption><b>Notation:</b> schwarzer Punkt = Start, Balken = Fork/Join (parallel), Raute = Entscheidung mit Bedingung in [eckigen Klammern], Kreis mit X = dieser Zweig endet, Kreis mit Punkt = Ende. Nicht gezeichnet: Rückruf bei geschlossener Praxis (<code>schedule_callback</code>) und verworfene Zitate, die nicht auf der Quellseite stehen.</figcaption>
+    <figcaption><b>Notation:</b> black dot = start, bar = fork/join (parallel), diamond = decision with the condition in [square brackets], circle with X = this branch ends, circle with dot = end. Not drawn: callback when the practice is closed (<code>schedule_callback</code>) and discarded quotes that do not appear on the source page.</figcaption>
   </figure>
 </section>
 
-<!-- ============================ 4. KOMPONENTEN ============================ -->
-<section id="komponenten">
-  <p class="eyebrow">Sicht 4 · UML-Komponentendiagramm</p>
-  <h2>Komponenten und externe Dienste</h2>
-  <p>Ein Backend-Prozess mit sieben Komponenten, das Dashboard und fünf externe Dienste zur Laufzeit. Die Policy Engine ist die einzige Komponente ohne externen Dienst: Sie läuft nur auf Code. Stand 10.10., 13:20: Dashboard vorhanden, Backend noch nicht angelegt.</p>
+<!-- ============================ 4. COMPONENTS ============================ -->
+<section id="components">
+  <p class="eyebrow">View 4 · UML component diagram</p>
+  <h2>Components and external services</h2>
+  <p>One backend process with seven components, the dashboard and five external services at runtime. The Policy Engine is the only component without an external service: it runs on code alone. As of 10 Oct, 13:20: dashboard exists, backend not created yet.</p>
   <figure>
     <div class="canvas">
-    <svg viewBox="0 0 1100 830" role="img" aria-label="Komponentendiagramm: Das Backend enthält Policy Engine, Event Log, API, Vollmacht-Modul, Orchestrator, Dokument-Pipeline und Telefon-Agent. Vollmacht, Orchestrator, Dokument-Pipeline und Telefon-Agent nutzen die Gemini API. Der Telefon-Agent nutzt zusätzlich Gradium und Twilio. Twilio erreicht die API über einen ngrok-Tunnel. Das Dashboard liest Events per SSE. Mail-Versand ist noch offen. Zur Entwicklung kommen Claude Code oder Antigravity, Entire und GitHub dazu.">
+    <svg viewBox="0 0 1100 830" role="img" aria-label="Component diagram: the backend contains Policy Engine, event log, API, mandate module, orchestrator, document pipeline and phone agent. Mandate, orchestrator, document pipeline and phone agent use the Gemini API. The phone agent also uses Gradium and Twilio. Twilio reaches the API through an ngrok tunnel. The dashboard reads events via SSE. Mail sending is still open. For development, Claude Code or Antigravity, Entire and GitHub are added.">
       <defs>
         <marker id="c-ar" viewBox="0 0 10 10" refX="9.5" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path class="ah-open" d="M0,0.5 L9.5,5 L0,9.5"/></marker>
         <g id="c-icon"><rect class="icon" x="0" y="0" width="13" height="16"/><rect class="icon" x="-3" y="3" width="7" height="3"/><rect class="icon" x="-3" y="10" width="7" height="3"/></g>
       </defs>
 
-      <text class="cap" x="870" y="42">EXTERNE DIENSTE · LAUFZEIT</text>
+      <text class="cap" x="870" y="42">EXTERNAL SERVICES · RUNTIME</text>
 
       <!-- Backend subsystem -->
       <rect class="backend" x="280" y="50" width="520" height="545" rx="10"/>
-      <text class="lbl" x="296" y="70">«subsystem» · ⬜ noch nicht angelegt</text>
+      <text class="lbl" x="296" y="70">«subsystem» · ⬜ not created yet</text>
       <text class="b" x="296" y="86">Backend · FastAPI · Python 3.12 (uv)</text>
 
       <!-- left column: Policy Engine -->
@@ -714,7 +714,7 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <text class="m inv" x="400" y="226" style="font-size:10px">«component»</text>
       <text class="b m inv" x="400" y="244">Policy Engine</text>
       <text class="mono m inv" x="400" y="263">engine.py · schema.py</text>
-      <text class="m inv" x="400" y="284" style="font-size:10.5px">Pydantic · kein externer Dienst</text>
+      <text class="m inv" x="400" y="284" style="font-size:10.5px">Pydantic · no external service</text>
 
       <!-- Event Log -->
       <rect class="n-code" x="300" y="350" width="200" height="70" rx="4"/>
@@ -733,11 +733,11 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <text class="mono m sub" x="400" y="539">/twilio/twiml · /ws</text>
       <text class="mono m sub" x="400" y="555" style="font-size:9.5px">/docs/ingest</text>
 
-      <!-- right column: Vollmacht -->
+      <!-- right column: mandate -->
       <rect class="n-gem" x="560" y="80" width="220" height="90" rx="4"/>
       <use href="#c-icon" x="758" y="88" />
       <text class="lbl m" x="670" y="100">«component»</text>
-      <text class="b m" x="670" y="118">Vollmacht</text>
+      <text class="b m" x="670" y="118">Mandate</text>
       <text class="mono m sub" x="670" y="137">compiler.py · letter.py</text>
       <text class="mono m sub" x="670" y="153">google-genai · reportlab</text>
 
@@ -753,24 +753,24 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <rect class="n-gem" x="560" y="320" width="220" height="100" rx="4"/>
       <use href="#c-icon" x="758" y="328" />
       <text class="lbl m" x="670" y="340">«component»</text>
-      <text class="b m" x="670" y="358">Dokument-Pipeline · docs/</text>
+      <text class="b m" x="670" y="358">Document pipeline · docs/</text>
       <text class="mono m sub" x="670" y="377">extract · verify · gaps</text>
-      <text class="mono m sub" x="670" y="393">pymupdf (Seitentext)</text>
+      <text class="mono m sub" x="670" y="393">pymupdf (page text)</text>
 
       <!-- Voice -->
       <rect class="n-gra" x="560" y="450" width="220" height="120" rx="4"/>
       <use href="#c-icon" x="758" y="458" />
       <text class="lbl m" x="670" y="478">«component»</text>
-      <text class="b m" x="670" y="496">Telefon-Agent · voice/</text>
+      <text class="b m" x="670" y="496">Phone agent · voice/</text>
       <text class="mono m sub" x="670" y="515">gradbot 0.1.9 · bridge.py</text>
       <text class="mono m sub" x="670" y="531">session.py · opener.py</text>
-      <text class="lbl m" x="670" y="552">Fallback: sim_call (Text)</text>
+      <text class="lbl m" x="670" y="552">Fallback: sim_call (text)</text>
 
       <!-- External: Mail (open) -->
       <rect class="n-ext" x="870" y="62" width="210" height="56" rx="4"/>
       <use href="#i-mail" class="ic ic-mut" x="882" y="73" width="22" height="22"/>
-      <text class="b m" x="975" y="85">Mail-Versand</text>
-      <text class="lbl m" x="975" y="103">im MVP simuliert · später HIN</text>
+      <text class="b m" x="975" y="85">Mail sending</text>
+      <text class="lbl m" x="975" y="103">simulated in MVP · HIN later</text>
 
       <!-- External: Gemini -->
       <rect class="n-gem" x="870" y="132" width="210" height="358" rx="4"/>
@@ -781,7 +781,7 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <text class="mono m t-teal" x="975" y="200">gemini-3.8-flash</text>
       <text class="mono m t-teal" x="975" y="216">gemini-3.6-flash</text>
       <text class="mono m t-teal" x="975" y="232">Google Search Grounding</text>
-      <text class="lbl m" x="975" y="452">für gradbot: OpenAI-kompatibel</text>
+      <text class="lbl m" x="975" y="452">for gradbot: OpenAI-compatible</text>
       <text class="lbl m" x="975" y="470">HTTPS · GEMINI_API_KEY</text>
 
       <!-- External: Gradium -->
@@ -789,7 +789,7 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <use href="#i-wave" class="ic ic-gra" x="882" y="539" width="22" height="22"/>
       <text class="lbl m" x="975" y="540">«Partner»</text>
       <text class="b m" x="975" y="558">Gradium</text>
-      <text class="lbl m" x="975" y="573">STT · TTS über gradbot</text>
+      <text class="lbl m" x="975" y="573">STT · TTS via gradbot</text>
 
       <!-- External: Twilio -->
       <rect class="n-twi" x="870" y="610" width="210" height="72" rx="4"/>
@@ -809,33 +809,33 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <use href="#c-icon" x="208" y="448" />
       <text class="lbl m" x="130" y="466">«component»</text>
       <text class="b m" x="130" y="484">Dashboard · Next.js 15</text>
-      <text class="lbl m" x="130" y="504">Annas App · Freigabe</text>
-      <text class="lbl m" x="130" y="520">Protokoll</text>
-      <text class="lbl m" x="130" y="536">Dr. Kellers Übergabe</text>
-      <text class="m t-ok" x="130" y="553" style="font-size:10.5px;font-weight:700">✓ vorhanden</text>
+      <text class="lbl m" x="130" y="504">Anna's app · approval</text>
+      <text class="lbl m" x="130" y="520">log</text>
+      <text class="lbl m" x="130" y="536">Dr. Keller's handover</text>
+      <text class="m t-ok" x="130" y="553" style="font-size:10.5px;font-weight:700">✓ exists</text>
 
-      <!-- assembly connectors (consumer — socket ◖● ball — provider) -->
-      <!-- Vollmacht → Mail -->
+      <!-- assembly connectors (consumer: socket ◖, ball ●: provider) -->
+      <!-- mandate → Mail -->
       <path class="edge" d="M780,90 H849"/><path class="sock" d="M858,81 A9,9 0 0 0 858,99"/><circle class="ball" cx="858" cy="90" r="5"/><path class="edge" d="M863,90 H870"/>
       <text class="lbl m" x="815" y="82">PDF</text>
-      <!-- Vollmacht → Gemini -->
+      <!-- mandate → Gemini -->
       <path class="edge" d="M780,150 H849"/><path class="sock" d="M858,141 A9,9 0 0 0 858,159"/><circle class="ball" cx="858" cy="150" r="5"/><path class="edge" d="M863,150 H870"/>
-      <text class="lbl m" x="815" y="142">JSON-Schema</text>
+      <text class="lbl m" x="815" y="142">JSON schema</text>
       <!-- Orchestrator → Gemini -->
       <path class="edge" d="M780,250 H849"/><path class="sock" d="M858,241 A9,9 0 0 0 858,259"/><circle class="ball" cx="858" cy="250" r="5"/><path class="edge" d="M863,250 H870"/>
-      <text class="lbl m" x="815" y="242">Tool-Calls</text>
+      <text class="lbl m" x="815" y="242">tool calls</text>
       <!-- Docs → Gemini -->
       <path class="edge" d="M780,370 H849"/><path class="sock" d="M858,361 A9,9 0 0 0 858,379"/><circle class="ball" cx="858" cy="370" r="5"/><path class="edge" d="M863,370 H870"/>
-      <text class="lbl m" x="815" y="362">PDF · Foto</text>
+      <text class="lbl m" x="815" y="362">PDF · photo</text>
       <!-- Voice → Gemini -->
       <path class="edge" d="M780,470 H849"/><path class="sock" d="M858,461 A9,9 0 0 0 858,479"/><circle class="ball" cx="858" cy="470" r="5"/><path class="edge" d="M863,470 H870"/>
-      <text class="lbl m" x="815" y="462">Dialog</text>
+      <text class="lbl m" x="815" y="462">dialog</text>
       <!-- Voice → Gradium -->
       <path class="edge" d="M780,550 H849"/><path class="sock" d="M858,541 A9,9 0 0 0 858,559"/><circle class="ball" cx="858" cy="550" r="5"/><path class="edge" d="M863,550 H870"/>
       <text class="lbl m" x="815" y="542">WSS</text>
       <!-- Voice → Twilio REST -->
       <path class="edge" d="M700,570 V640 H849"/><path class="sock" d="M858,631 A9,9 0 0 0 858,649"/><circle class="ball" cx="858" cy="640" r="5"/><path class="edge" d="M863,640 H870"/>
-      <text class="lbl" x="708" y="606">REST: Anruf starten</text>
+      <text class="lbl" x="708" y="606">REST: start call</text>
       <!-- Twilio → ngrok -->
       <path class="edge" d="M870,668 H517"/><path class="sock" d="M508,659 A9,9 0 0 1 508,677"/><circle class="ball" cx="508" cy="668" r="5"/><path class="edge" d="M503,668 H500"/>
       <text class="lbl m" x="690" y="686">Webhook + Media Stream (WSS)</text>
@@ -845,37 +845,37 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
 
       <!-- ngrok → API -->
       <path class="edge" d="M400,630 V561" marker-end="url(#c-ar)"/>
-      <text class="lbl" x="408" y="602">leitet weiter</text>
+      <text class="lbl" x="408" y="602">forwards</text>
 
       <!-- internal «use» dependencies -->
       <path class="dep" d="M560,125 H400 V199" marker-end="url(#c-ar)"/>
-      <text class="lbl m" x="480" y="117">Vollmacht v1, v2 …</text>
+      <text class="lbl m" x="480" y="117">mandate v1, v2 …</text>
       <path class="dep" d="M560,245 H501" marker-end="url(#c-ar)"/>
       <text class="lbl m" x="530" y="238">check()</text>
       <path class="dep" d="M560,490 H530 V285 H501" marker-end="url(#c-ar)"/>
       <text class="lbl e" x="526" y="330">check()</text>
       <path class="dep" d="M400,300 V349" marker-end="url(#c-ar)"/>
-      <text class="lbl" x="408" y="330">Entscheide</text>
+      <text class="lbl" x="408" y="330">decisions</text>
       <path class="dep" d="M400,420 V449" marker-end="url(#c-ar)"/>
       <path class="dep" d="M670,320 V291" marker-end="url(#c-ar)"/>
-      <text class="lbl" x="678" y="310">Lücke: Name + Fach</text>
+      <text class="lbl" x="678" y="310">gap: name + specialty</text>
       <path class="dep" d="M500,540 H559" marker-end="url(#c-ar)"/>
       <text class="lbl m" x="530" y="560">Audio</text>
 
       <!-- dev-time -->
       <rect class="dev" x="20" y="720" width="1060" height="96" rx="10"/>
-      <text class="cap" x="36" y="740">ENTWICKLUNG · NICHT ZUR LAUFZEIT</text>
+      <text class="cap" x="36" y="740">DEVELOPMENT · NOT AT RUNTIME</text>
       <rect class="n-ext" x="120" y="752" width="220" height="48" rx="4"/>
       <use href="#i-code" class="ic ic-mut" x="130" y="765" width="20" height="20"/>
       <text class="b m" x="230" y="773">Claude Code / Antigravity</text>
-      <text class="lbl m" x="230" y="790">Coding-Agent</text>
+      <text class="lbl m" x="230" y="790">coding agent</text>
       <rect class="n-gem" x="440" y="752" width="220" height="48" rx="4"/>
       <text class="b m" x="550" y="773">Entire</text>
-      <text class="lbl m" x="550" y="790">«Partner» · Checkpoints</text>
+      <text class="lbl m" x="550" y="790">«Partner» · checkpoints</text>
       <rect class="n-ext" x="760" y="752" width="220" height="48" rx="4"/>
       <use href="#i-git" class="ic ic-mut" x="770" y="765" width="20" height="20"/>
       <text class="b m" x="870" y="773">GitHub</text>
-      <text class="lbl m" x="870" y="790">Repo · Checkpoint-Sync</text>
+      <text class="lbl m" x="870" y="790">repo · checkpoint sync</text>
       <path class="edge" d="M340,776 H439" marker-end="url(#c-ar)"/>
       <text class="lbl m" x="390" y="769">Hooks</text>
       <path class="edge" d="M660,776 H759" marker-end="url(#c-ar)"/>
@@ -887,44 +887,44 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <span><i class="sw gra"></i>Gradium</span>
       <span><i class="sw twi"></i>Twilio</span>
       <span><i class="sw ann"></i>Dashboard</span>
-      <span><i class="sw pol"></i>nur Code</span>
-      <span><i class="sw ext"></i>extern, kein Partner</span>
-      <span>○◖ Schnittstelle: Kreis = bietet an, Bogen = benötigt</span>
-      <span>- - → interne Abhängigkeit</span>
+      <span><i class="sw pol"></i>code only</span>
+      <span><i class="sw ext"></i>external, not a partner</span>
+      <span>○◖ interface: circle = provides, arc = requires</span>
+      <span>- - → internal dependency</span>
     </div>
-    <figcaption><b>Lesart:</b> Kreis und Bogen zeigen, wer eine Schnittstelle anbietet und wer sie nutzt. Gestrichelte Pfeile sind Aufrufe innerhalb des Backends. Vier Module sprechen mit Gemini, aber nur zwei schlagen Aktionen vor und laufen dafür durch <code>check()</code>: Orchestrator und Telefon-Agent.</figcaption>
+    <figcaption><b>How to read it:</b> circle and arc show who provides an interface and who uses it. Dashed arrows are calls within the backend. Four modules talk to Gemini, but only two propose actions and therefore go through <code>check()</code>: the orchestrator and the phone agent.</figcaption>
   </figure>
 
   <div class="tablewrap">
   <table>
-    <thead><tr><th>Dienst</th><th>Wofür</th><th>Schnittstelle</th><th>Env-Variablen</th><th>Stand · Fallback</th></tr></thead>
+    <thead><tr><th>Service</th><th>Purpose</th><th>Interface</th><th>Env variables</th><th>Status · fallback</th></tr></thead>
     <tbody>
-      <tr><td class="group" colspan="5">Laufzeit · extern</td></tr>
-      <tr><td><b>Gemini API</b> <span class="pill p">Partner</span></td><td>Vollmacht kompilieren, Orchestrator, Telefon-Dialog, Akten lesen, Kontaktsuche</td><td>HTTPS über <code>google-genai</code>; Telefon-Dialog über gradbot und die OpenAI-kompatible Schnittstelle</td><td><code>GEMINI_API_KEY</code>; für gradbot <code>LLM_BASE_URL</code>, <code>LLM_MODEL</code>, <code>OPENAI_API_KEY</code> (= Gemini-Key)</td><td>Modelle fix: <code>gemini-3.6-flash</code>, <code>gemini-3.8-flash</code>. Tool-Calls über die OpenAI-Schnittstelle zuerst testen</td></tr>
-      <tr><td><b>Gradium</b> <span class="pill p">Partner</span></td><td>Spracherkennung der MPA (de), Schweizer Stimme</td><td><code>gradbot.run()</code>, Audio μ-law von Twilio</td><td><code>GRADIUM_API_KEY</code>, <code>GRADIUM_VOICE_ID</code></td><td>Fallback: <code>sim_call</code> (Text)</td></tr>
-      <tr><td><b>Twilio</b></td><td>Telefonnummer, Anruf aufs Handy der „MPA“, Audio-Stream</td><td>REST <code>calls.create</code>, TwiML <code>&lt;Connect&gt;&lt;Stream&gt;</code>, Media Streams (WSS, 8 kHz μ-law)</td><td><code>TWILIO_ACCOUNT_SID</code>, <code>TWILIO_AUTH_TOKEN</code>, <code>TWILIO_FROM_NUMBER</code>, <code>DEMO_TO_NUMBER</code></td><td>Account upgraden, CH-Geo-Permission. Fallback: <code>sim_call</code> (Text)</td></tr>
-      <tr><td><b>ngrok</b></td><td>Öffentliche URL, damit Twilio den lokalen Server erreicht</td><td>HTTPS + WSS Tunnel</td><td><code>PUBLIC_URL</code></td><td><span class="pill ok">installiert</span> 3.3.1. Noch nötig: <code>ngrok config add-authtoken</code>, <code>ngrok update</code>. Alternative: cloudflared</td></tr>
-      <tr><td><b>Mail-Versand</b></td><td>Unterschriebene Vollmacht an die hinterlegte Adresse der Praxis (<code>send_mandate_letter</code>)</td><td>keine im MVP</td><td>keine</td><td><span class="pill ok">entschieden</span> Im MVP simuliert: PDF und Event im Dashboard, kein Versand. HIN nach dem Hack</td></tr>
-      <tr><td class="group" colspan="5">Laufzeit · eigene Komponenten</td></tr>
-      <tr><td><b>Backend</b></td><td>Policy Engine, Orchestrator, Telefon-Agent, Dokument-Pipeline, Event Log</td><td>FastAPI auf einem Port, alles in einem Prozess</td><td>siehe <code>.env.example</code></td><td><span class="pill open">noch nicht angelegt</span> Bibliotheken: <code>gradbot==0.1.9</code>, <code>twilio</code>, <code>google-genai</code>, <code>pydantic</code>, <code>pymupdf</code>, <code>reportlab</code></td></tr>
-      <tr><td><b>Dashboard</b></td><td>Annas App (Vollmacht, Fortschritt, Freigabe, Protokoll) und Dr. Kellers Übergabe (Fundstellen mit Zitat)</td><td><code>GET /state</code>, SSE <code>GET /events</code> (ganzer State), <code>POST /approvals/{id}</code>, <code>POST /reset</code></td><td><code>NEXT_PUBLIC_API_URL</code> in <code>dashboard/.env.local</code></td><td><span class="pill ok">vorhanden</span> Next.js 15.5.27, läuft ohne Backend auf Demo-Daten. Vertrag: <code>lib/types.ts</code></td></tr>
-      <tr><td class="group" colspan="5">Entwicklung</td></tr>
-      <tr><td><b>Entire</b> <span class="pill p">Partner</span></td><td>Checkpoints jeder Agent-Session: Prompt, Tool-Calls, Diff</td><td>Git-Hooks, Sync auf <code>origin</code></td><td>Login über <code>entire login</code></td><td><span class="pill ok">aktiv</span> für Claude Code und Antigravity</td></tr>
-      <tr><td><b>GitHub</b></td><td>Repo, Checkpoint-Sync, Nachweis „heute bei null begonnen“</td><td>git</td><td>keine</td><td><span class="pill ok">aktiv</span> <code>SuterGabriel/stafette</code></td></tr>
-      <tr><td><b>Claude Code / Antigravity</b></td><td>Coding-Agent</td><td>CLI</td><td>keine</td><td><span class="pill ok">Claude Code aktiv</span> Antigravity (<code>agy</code>) optional, nicht installiert</td></tr>
+      <tr><td class="group" colspan="5">Runtime · external</td></tr>
+      <tr><td><b>Gemini API</b> <span class="pill p">Partner</span></td><td>Compiling the mandate, orchestrator, phone dialog, reading records, contact search</td><td>HTTPS via <code>google-genai</code>; phone dialog via gradbot and the OpenAI-compatible interface</td><td><code>GEMINI_API_KEY</code>; for gradbot <code>LLM_BASE_URL</code>, <code>LLM_MODEL</code>, <code>OPENAI_API_KEY</code> (= Gemini key)</td><td>Models fixed: <code>gemini-3.6-flash</code>, <code>gemini-3.8-flash</code>. Test tool calls via the OpenAI interface first</td></tr>
+      <tr><td><b>Gradium</b> <span class="pill p">Partner</span></td><td>Speech recognition for the MPA (de), Swiss voice</td><td><code>gradbot.run()</code>, μ-law audio from Twilio</td><td><code>GRADIUM_API_KEY</code>, <code>GRADIUM_VOICE_ID</code></td><td>Fallback: <code>sim_call</code> (text)</td></tr>
+      <tr><td><b>Twilio</b></td><td>Phone number, call to the "MPA" mobile, audio stream</td><td>REST <code>calls.create</code>, TwiML <code>&lt;Connect&gt;&lt;Stream&gt;</code>, Media Streams (WSS, 8 kHz μ-law)</td><td><code>TWILIO_ACCOUNT_SID</code>, <code>TWILIO_AUTH_TOKEN</code>, <code>TWILIO_FROM_NUMBER</code>, <code>DEMO_TO_NUMBER</code></td><td>Upgrade account, CH geo permission. Fallback: <code>sim_call</code> (text)</td></tr>
+      <tr><td><b>ngrok</b></td><td>Public URL so Twilio can reach the local server</td><td>HTTPS + WSS tunnel</td><td><code>PUBLIC_URL</code></td><td><span class="pill ok">installed</span> 3.3.1. Still needed: <code>ngrok config add-authtoken</code>, <code>ngrok update</code>. Alternative: cloudflared</td></tr>
+      <tr><td><b>Mail sending</b></td><td>Signed mandate to the practice's address on file (<code>send_mandate_letter</code>)</td><td>none in the MVP</td><td>none</td><td><span class="pill ok">decided</span> Simulated in the MVP: PDF and event in the dashboard, nothing sent. HIN after the hack</td></tr>
+      <tr><td class="group" colspan="5">Runtime · own components</td></tr>
+      <tr><td><b>Backend</b></td><td>Policy Engine, orchestrator, phone agent, document pipeline, event log</td><td>FastAPI on one port, everything in one process</td><td>see <code>.env.example</code></td><td><span class="pill open">not created yet</span> Libraries: <code>gradbot==0.1.9</code>, <code>twilio</code>, <code>google-genai</code>, <code>pydantic</code>, <code>pymupdf</code>, <code>reportlab</code></td></tr>
+      <tr><td><b>Dashboard</b></td><td>Anna's app (mandate, progress, approval, log) and Dr. Keller's handover (sources with quotes)</td><td><code>GET /state</code>, SSE <code>GET /events</code> (full state), <code>POST /approvals/{id}</code>, <code>POST /reset</code></td><td><code>NEXT_PUBLIC_API_URL</code> in <code>dashboard/.env.local</code></td><td><span class="pill ok">exists</span> Next.js 15.5.27, runs on demo data without a backend. Contract: <code>lib/types.ts</code></td></tr>
+      <tr><td class="group" colspan="5">Development</td></tr>
+      <tr><td><b>Entire</b> <span class="pill p">Partner</span></td><td>Checkpoints of every agent session: prompt, tool calls, diff</td><td>Git hooks, sync to <code>origin</code></td><td>Login via <code>entire login</code></td><td><span class="pill ok">active</span> for Claude Code and Antigravity</td></tr>
+      <tr><td><b>GitHub</b></td><td>Repo, checkpoint sync, proof of "started from zero today"</td><td>git</td><td>none</td><td><span class="pill ok">active</span> <code>SuterGabriel/stafette</code></td></tr>
+      <tr><td><b>Claude Code / Antigravity</b></td><td>Coding agent</td><td>CLI</td><td>none</td><td><span class="pill ok">Claude Code active</span> Antigravity (<code>agy</code>) optional, not installed</td></tr>
     </tbody>
   </table>
   </div>
 </section>
 
-<!-- ============================ 5. EIN ANRUF ============================ -->
-<section id="anruf">
-  <p class="eyebrow">Sicht 5 · Telefonteil</p>
-  <h2>Ein Anruf, Schritt für Schritt</h2>
-  <p>Gleiche Mechanik wie in gradium-ai/digigrad (Twilio, Bridge, gradbot), mit zwei Unterschieden: Stafette ruft nur aus, und jeder Tool-Call des Gesprächs läuft durch die Policy Engine.</p>
+<!-- ============================ 5. ONE CALL ============================ -->
+<section id="call">
+  <p class="eyebrow">View 5 · Phone part</p>
+  <h2>One call, step by step</h2>
+  <p>Same mechanics as gradium-ai/digigrad (Twilio, bridge, gradbot), with two differences: Stafette only makes outgoing calls, and every tool call in the conversation goes through the Policy Engine.</p>
   <figure>
     <div class="canvas">
-    <svg viewBox="0 0 1000 1190" role="img" aria-label="Ablauf eines Anrufs: Der Orchestrator schlägt place_call vor, die Policy Engine erlaubt ihn, Twilio wählt das Handy der MPA. Nach dem Abheben ruft Twilio über ngrok die Bridge auf, die die Signatur prüft, die Quelle lädt und einen Audio-Stream öffnet. Im Gespräch spricht zuerst der feste Opener, dann laufen Gradium STT, Gemini und Gradium TTS im Kreis; jeder Tool-Call geht durch check(). Am Ende meldet end_call das Ergebnis an den Orchestrator.">
+    <svg viewBox="0 0 1000 1190" role="img" aria-label="Flow of one call: the orchestrator proposes place_call, the Policy Engine allows it, Twilio dials the MPA's mobile. After pickup, Twilio calls the bridge via ngrok, which checks the signature, loads the source and opens an audio stream. In the conversation the fixed opener plays first, then Gradium STT, Gemini and Gradium TTS run in a loop; every tool call goes through check(). At the end, end_call reports the outcome to the orchestrator.">
       <defs>
         <marker id="k-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0,0 L10,5 L0,10 z"/></marker>
         <marker id="k-ok" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="ah-ok" d="M0,0 L10,5 L0,10 z"/></marker>
@@ -934,7 +934,7 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <!-- 1 · decide -->
       <rect class="p-pol" x="20" y="14" width="960" height="140" rx="14"/>
       <circle class="num-pol" cx="48" cy="40" r="13"/><text class="m b inv" x="48" y="45" style="font-size:12.5px">1</text>
-      <text class="step" x="72" y="45">Der Agent will die Praxis anrufen</text>
+      <text class="step" x="72" y="45">The agent wants to call the practice</text>
 
       <rect class="n-gem" x="40" y="62" width="250" height="72" rx="10"/>
       <use href="#i-spark" class="ic ic-gem" x="54" y="85" width="26" height="26"/>
@@ -942,13 +942,13 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <text class="mono" x="92" y="112">place_call(praxis_seefeld)</text>
 
       <path class="edge" d="M290,98 H346" marker-end="url(#k-ar)"/>
-      <text class="lbl m" x="318" y="90">Vorschlag</text>
+      <text class="lbl m" x="318" y="90">proposal</text>
 
       <rect class="gate" x="348" y="62" width="272" height="72" rx="10"/>
       <use href="#i-shield" class="ic ic-pol" x="362" y="85" width="26" height="26"/>
       <text class="b" x="400" y="88">Policy Engine · check()</text>
-      <text class="lbl" x="400" y="106">in Vollmacht · weniger als 3 Anrufe</text>
-      <text class="lbl" x="400" y="121">innerhalb der Anrufzeit</text>
+      <text class="lbl" x="400" y="106">in mandate · fewer than 3 calls</text>
+      <text class="lbl" x="400" y="121">within call hours</text>
 
       <path class="edge-ok" d="M620,98 H676" marker-end="url(#k-ok)"/>
       <text class="mono m t-ok" x="648" y="90" style="font-size:10px">ALLOWED</text>
@@ -956,78 +956,79 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <rect class="n-twi" x="678" y="62" width="282" height="72" rx="10"/>
       <use href="#i-phone" class="ic ic-twi" x="692" y="85" width="26" height="26"/>
       <text class="b" x="730" y="92">Twilio · calls.create</text>
-      <text class="lbl" x="730" y="111">Nummer aus der Vollmacht,</text>
-      <text class="lbl" x="730" y="125">nie eine vom Telefon</text>
+      <text class="lbl" x="730" y="111">Number from the mandate,</text>
+      <text class="lbl" x="730" y="125">never one from the call</text>
 
       <!-- 2 · ring -->
       <rect class="p-twi" x="20" y="172" width="960" height="122" rx="14"/>
       <circle class="num-twi" cx="48" cy="198" r="13"/><text class="m b inv" x="48" y="203" style="font-size:12.5px">2</text>
-      <text class="step" x="72" y="203">Das Handy der „Praxis“ klingelt</text>
+      <text class="step" x="72" y="203">The "practice" phone rings</text>
 
       <rect class="n-ext" x="40" y="218" width="300" height="62" rx="10"/>
       <use href="#i-mobile" class="ic" x="54" y="236" width="26" height="26"/>
-      <text class="b" x="92" y="243">Handy der MPA</text>
-      <text class="lbl" x="92" y="262">Manuel spielt die Praxis, Handy am Ohr</text>
+      <text class="b" x="92" y="243">MPA's mobile</text>
+      <text class="lbl" x="92" y="262">Manuel plays the practice, phone at ear</text>
 
       <rect class="n-twi" x="678" y="218" width="282" height="62" rx="10"/>
       <use href="#i-cloud" class="ic ic-twi" x="692" y="236" width="26" height="26"/>
       <text class="b" x="730" y="243">Twilio</text>
-      <text class="lbl" x="730" y="262">wählt und wartet aufs Abheben</text>
+      <text class="lbl" x="730" y="262">dials and waits for pickup</text>
 
       <path class="edge" d="M819,134 V216" marker-end="url(#k-ar)"/>
       <path class="edge-twi" d="M678,249 H344" marker-end="url(#k-twi)"/>
-      <text class="lbl m" x="510" y="241">ruft an</text>
+      <text class="lbl m" x="510" y="241">calls</text>
 
       <path class="edge" d="M819,280 V326" marker-end="url(#k-ar)"/>
-      <text class="lbl e" x="808" y="306">nach dem Abheben:</text>
-      <text class="mono e" x="808" y="321" style="font-size:10px">POST /twilio/twiml (über ngrok)</text>
+      <text class="lbl e" x="808" y="306">after pickup:</text>
+      <text class="mono e" x="808" y="321" style="font-size:10px">POST /twilio/twiml (via ngrok)</text>
 
       <!-- 3 · bridge -->
       <rect class="p-gra" x="20" y="330" width="960" height="192" rx="14"/>
       <circle class="num-gra" cx="48" cy="358" r="13"/><text class="m b inv" x="48" y="363" style="font-size:12.5px">3</text>
       <use href="#i-laptop" class="ic ic-gra" x="70" y="346" width="24" height="24"/>
       <text class="step" x="102" y="363">bridge.py</text>
-      <text class="lbl" x="184" y="363">läuft auf dem Laptop · FastAPI Port 8000</text>
+      <text class="lbl" x="184" y="363">runs on the laptop · FastAPI port 8000</text>
 
       <circle class="b-gra badge" cx="88" cy="396" r="10"/><text class="m b" x="88" y="400" style="font-size:11px">1</text>
-      <text class="b" x="108" y="400">Ist es wirklich Twilio?</text>
-      <text x="300" y="400">Signatur prüfen (HMAC mit TWILIO_AUTH_TOKEN), sonst abweisen</text>
+      <text class="b" x="108" y="400">Is it really Twilio?</text>
+      <text x="300" y="400">Check signature (HMAC with TWILIO_AUTH_TOKEN), otherwise reject</text>
 
       <circle class="b-gra badge" cx="88" cy="428" r="10"/><text class="m b" x="88" y="432" style="font-size:11px">2</text>
-      <text class="b" x="108" y="432">Welcher Anruf?</text>
-      <text x="300" y="432">Parameter <tspan class="mono">room</tspan> → Quelle, Vollmacht v1 und Ziel des Gesprächs laden</text>
-      <text class="lbl" x="300" y="451">Keine Caller-ID-Weiche wie in digigrad: Stafette ruft nur aus, eingehende Anrufe werden abgewiesen.</text>
+      <text class="b" x="108" y="432">Which call?</text>
+      <text x="300" y="432">Parameter <tspan class="mono">room</tspan> → load source, mandate v1 and goal of the call</text>
+      <text class="lbl" x="300" y="451">No caller-ID routing as in digigrad: Stafette only calls out, incoming calls are rejected.</text>
 
       <circle class="b-gra badge" cx="88" cy="481" r="10"/><text class="m b" x="88" y="485" style="font-size:11px">3</text>
-      <text class="b" x="108" y="485">Audio verbinden</text>
+      <text class="b" x="108" y="485">Connect audio</text>
       <text class="mono" x="300" y="485">&lt;Connect&gt;&lt;Stream url="wss://…/twilio/stream"&gt;</text>
-      <text class="lbl" x="300" y="503">zurückgeben → Twilio öffnet die Audio-Leitung</text>
+      <text class="lbl" x="300" y="503">return it → Twilio opens the audio line</text>
 
       <path class="edge" d="M500,522 V566" marker-end="url(#k-ar)"/>
       <use href="#i-wave" class="ic ic-gra" x="514" y="532" width="22" height="22"/>
-      <text class="b" x="544" y="548">Zweiweg-Audio</text>
+      <text class="b" x="544" y="548">Two-way audio</text>
       <text class="mono sub" x="644" y="548">WS /twilio/stream · 8 kHz μ-law</text>
 
       <!-- 4 · live loop -->
       <rect class="p-doc" x="20" y="570" width="960" height="420" rx="14"/>
       <circle class="num-doc" cx="48" cy="598" r="13"/><text class="m b inv" x="48" y="603" style="font-size:12.5px">4</text>
-      <text class="step" x="72" y="603">Das Gespräch</text>
-      <text class="mono sub" x="188" y="603">gradbot.run()</text>
+      <text class="step" x="72" y="603">The conversation</text>
+      <text class="mono sub" x="212" y="603">gradbot.run()</text>
 
-      <rect class="note" x="54" y="620" width="892" height="52" rx="8"/>
+      <rect class="note" x="54" y="620" width="892" height="56" rx="8"/>
       <use href="#i-speaker" class="ic ic-gra" x="66" y="633" width="26" height="26"/>
-      <text class="lbl b" x="104" y="640">Zuerst, fix und vorgerendert (nicht vom LLM formuliert):</text>
-      <text class="it" x="104" y="660">«Grüezi, hier ist ein KI-Assistent der Firma Stafette. Ich rufe im Auftrag von Anna Muster an … Darf ich transkribieren?»</text>
+      <text class="lbl b" x="104" y="636">First, fixed and pre-rendered (not worded by the LLM):</text>
+      <text class="it" x="104" y="653">«Grüezi, hier ist ein KI-Assistent der Firma Stafette. Ich rufe im Auftrag von Anna Muster an … Darf ich transkribieren?»</text>
+      <text class="lbl it" x="104" y="669">"Hello, this is an AI assistant from the company Stafette. I'm calling on behalf of Anna Muster ... May I transcribe?"</text>
 
       <rect class="n-ext" x="54" y="694" width="130" height="70" rx="10"/>
       <use href="#i-user" class="ic" x="106" y="702" width="26" height="26"/>
-      <text class="b m" x="119" y="746">MPA spricht</text>
+      <text class="b m" x="119" y="746">MPA speaks</text>
       <path class="edge" d="M184,729 H212" marker-end="url(#k-ar)"/>
 
       <rect class="n-gra" x="214" y="694" width="160" height="70" rx="10"/>
       <use href="#i-mic" class="ic ic-gra" x="281" y="702" width="26" height="26"/>
       <text class="b m" x="294" y="744">Gradium STT</text>
-      <text class="lbl m" x="294" y="758">Sprache → Text (de)</text>
+      <text class="lbl m" x="294" y="758">speech → text (de)</text>
       <path class="edge" d="M374,729 H402" marker-end="url(#k-ar)"/>
 
       <rect class="n-gem" x="404" y="694" width="180" height="70" rx="10"/>
@@ -1039,24 +1040,24 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <rect class="n-gra" x="614" y="694" width="160" height="70" rx="10"/>
       <use href="#i-speaker" class="ic ic-gra" x="681" y="702" width="26" height="26"/>
       <text class="b m" x="694" y="744">Gradium TTS</text>
-      <text class="lbl m" x="694" y="758">Schweizer Stimme</text>
+      <text class="lbl m" x="694" y="758">Swiss voice</text>
       <path class="edge" d="M774,729 H802" marker-end="url(#k-ar)"/>
 
       <rect class="n-ext" x="804" y="694" width="142" height="70" rx="10"/>
       <use href="#i-phone" class="ic" x="862" y="702" width="26" height="26"/>
-      <text class="b m" x="875" y="746">zurück ans Telefon</text>
+      <text class="b m" x="875" y="746">back to the phone</text>
 
       <path class="edge" d="M494,766 V808" marker-start="url(#k-ar)" marker-end="url(#k-ar)"/>
-      <text class="lbl" x="502" y="791">Tool-Call · Ergebnis</text>
+      <text class="lbl" x="502" y="791">tool call · result</text>
 
       <rect class="n-ext" x="54" y="810" width="250" height="160" rx="10"/>
       <use href="#i-lock" class="ic ic-mut" x="68" y="822" width="22" height="22"/>
-      <text class="b" x="98" y="838">Was er nicht weiss</text>
-      <text class="lbl" x="70" y="864">Diagnosen, Befunde, Akten.</text>
-      <text class="lbl" x="70" y="880">Kein Tool liefert sie.</text>
-      <text class="b" x="70" y="908" style="font-size:11.5px">Was er sagen darf</text>
-      <text class="lbl" x="70" y="926">Name und Geburtsdatum von Anna,</text>
-      <text class="lbl" x="70" y="942">Empfängerin Dr. Keller</text>
+      <text class="b" x="98" y="838">What it doesn't know</text>
+      <text class="lbl" x="70" y="864">Diagnoses, findings, records.</text>
+      <text class="lbl" x="70" y="880">No tool provides them.</text>
+      <text class="b" x="70" y="908" style="font-size:11.5px">What it may say</text>
+      <text class="lbl" x="70" y="926">Anna's name and date of birth,</text>
+      <text class="lbl" x="70" y="942">recipient: Dr. Keller</text>
       <text class="mono sub" x="70" y="960" style="font-size:9.5px">may_disclose_on_call</text>
 
       <rect class="n-tool" x="330" y="810" width="330" height="160" rx="10"/>
@@ -1069,67 +1070,67 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
       <text class="mono" x="510" y="866">set_recipient</text>
       <text class="mono" x="510" y="886">accept_fee</text>
       <text class="mono" x="510" y="906">end_call(outcome)</text>
-      <text class="lbl" x="346" y="956">jedes Tool nur mit erlaubten Argumenten</text>
+      <text class="lbl" x="346" y="956">each tool only with allowed arguments</text>
 
       <path class="edge" d="M660,890 H698" marker-end="url(#k-ar)"/>
-      <text class="lbl m" x="679" y="882">jeder</text>
+      <text class="lbl m" x="679" y="882">each</text>
 
       <rect class="gate" x="700" y="810" width="246" height="160" rx="10"/>
       <use href="#i-shield" class="ic ic-pol" x="714" y="822" width="22" height="22"/>
       <text class="b" x="744" y="838">Policy Engine · check()</text>
       <text class="mono t-ok" x="716" y="868" style="font-size:11px">ALLOWED</text>
-      <text class="lbl" x="800" y="868">Tool läuft</text>
+      <text class="lbl" x="800" y="868">tool runs</text>
       <text class="mono t-bad" x="716" y="896" style="font-size:11px">BLOCKED</text>
-      <text class="lbl" x="800" y="896">Grund an Gemini,</text>
-      <text class="lbl" x="800" y="910">es lehnt höflich ab</text>
+      <text class="lbl" x="800" y="896">reason to Gemini,</text>
+      <text class="lbl" x="800" y="910">it declines politely</text>
       <text class="mono t-warn" x="716" y="938" style="font-size:11px">APPROVAL</text>
-      <text class="lbl" x="800" y="938">Anna wird gefragt</text>
-      <text class="lbl" x="716" y="960">jeder Entscheid → Protokoll</text>
+      <text class="lbl" x="800" y="938">Anna is asked</text>
+      <text class="lbl" x="716" y="960">every decision → log</text>
 
       <path class="edge" d="M500,990 V1028" marker-end="url(#k-ar)"/>
 
       <!-- 5 · after -->
       <rect class="p-gem" x="20" y="1030" width="960" height="146" rx="14"/>
       <circle class="num-gem" cx="48" cy="1058" r="13"/><text class="m b inv" x="48" y="1063" style="font-size:12.5px">5</text>
-      <text class="step" x="72" y="1063">Wenn der Anruf endet</text>
+      <text class="step" x="72" y="1063">When the call ends</text>
 
       <use href="#i-phone" class="ic ic-gem" x="50" y="1088" width="26" height="26"/>
       <text class="mono b" x="86" y="1100">end_call(outcome)</text>
       <text class="lbl" x="86" y="1118">requested · needs_consent · closed</text>
       <text class="lbl" x="86" y="1134">refused · callback</text>
-      <text class="lbl" x="86" y="1150">→ Orchestrator plant weiter</text>
+      <text class="lbl" x="86" y="1150">→ orchestrator plans next</text>
 
       <use href="#i-doc" class="ic ic-gem" x="290" y="1088" width="26" height="26"/>
-      <text class="b" x="326" y="1100">Transkript</text>
-      <text class="lbl" x="326" y="1118">nur wenn die MPA zustimmt,</text>
-      <text class="lbl" x="326" y="1134">in-memory mit Ablaufzeit</text>
+      <text class="b" x="326" y="1100">Transcript</text>
+      <text class="lbl" x="326" y="1118">only if the MPA agrees,</text>
+      <text class="lbl" x="326" y="1134">in-memory with expiry</text>
 
       <use href="#i-lock" class="ic ic-gem" x="530" y="1088" width="26" height="26"/>
-      <text class="b" x="566" y="1100">Keine Aufnahme</text>
-      <text class="lbl" x="566" y="1118">kein WAV, kein Memory,</text>
-      <text class="lbl" x="566" y="1134">nichts auf der Festplatte</text>
+      <text class="b" x="566" y="1100">No recording</text>
+      <text class="lbl" x="566" y="1118">no WAV, no memory,</text>
+      <text class="lbl" x="566" y="1134">nothing on disk</text>
 
       <use href="#i-screen" class="ic ic-gem" x="760" y="1088" width="26" height="26"/>
-      <text class="b" x="796" y="1100">Annas App</text>
-      <text class="lbl" x="796" y="1118">Station aktualisiert, Hinweis</text>
-      <text class="lbl" x="796" y="1134">bei BLOCKED, Event im</text>
-      <text class="lbl" x="796" y="1150">Protokoll</text>
+      <text class="b" x="796" y="1100">Anna's app</text>
+      <text class="lbl" x="796" y="1118">step updated, notice</text>
+      <text class="lbl" x="796" y="1134">on BLOCKED, event in</text>
+      <text class="lbl" x="796" y="1150">the log</text>
     </svg>
     </div>
-    <figcaption><b>Lesart:</b> Schritte 2 bis 4 entsprechen dem Ablauf in digigrad. Neu sind Schritt 1 (der Anruf selbst ist ein Tool-Call, den die Policy Engine erlauben muss) und das Tor rechts in Schritt 4: Gemini kann am Telefon nur über die gelben Tools handeln, und jedes geht durch <code>check()</code>.</figcaption>
+    <figcaption><b>How to read it:</b> steps 2 to 4 match the flow in digigrad. New are step 1 (the call itself is a tool call that the Policy Engine has to allow) and the gate on the right in step 4: on the phone, Gemini can only act through the yellow tools, and each one goes through <code>check()</code>.</figcaption>
   </figure>
 
   <div class="tablewrap">
   <table>
-    <thead><tr><th>Thema</th><th>digigrad (Vorlage)</th><th>Stafette</th></tr></thead>
+    <thead><tr><th>Topic</th><th>digigrad (template)</th><th>Stafette</th></tr></thead>
     <tbody>
-      <tr><td><b>Richtung</b></td><td>Ein- und ausgehend</td><td>Nur ausgehend; eingehende Anrufe werden abgewiesen</td></tr>
-      <tr><td><b>Wer ist dran?</b></td><td>Caller-ID entscheidet: Besitzer → Assistent, Fremde → Rezeption</td><td>Entfällt. Der <code>room</code>-Parameter bestimmt Quelle und Vollmacht</td></tr>
-      <tr><td><b>Sprachmodell</b></td><td>OpenAI (<code>gpt-4o-mini</code>)</td><td>Gemini <code>gemini-3.6-flash</code> über die OpenAI-kompatible Schnittstelle</td></tr>
-      <tr><td><b>Stimme</b></td><td>Geklonte Stimme des Besitzers</td><td>Schweizer Standardstimme von Gradium, kein Cloning</td></tr>
-      <tr><td><b>Gesprächsbeginn</b></td><td>Vorgerenderter Opener im Modus <code>business</code></td><td>Übernommen, mit KI-Offenlegung und Frage nach Transkription</td></tr>
-      <tr><td><b>Tools</b></td><td>Memory, Websuche, Mail, Business-Suche, Auflegen</td><td>Sieben Vollmacht-Tools, jedes durch <code>check()</code></td></tr>
-      <tr><td><b>Nach dem Anruf</b></td><td>Transkript, Aufnahme, neue Memories, Telegram-Zusammenfassung</td><td>Nur <code>end_call(outcome)</code>, Event und, mit Zustimmung, Transkript in-memory</td></tr>
+      <tr><td><b>Direction</b></td><td>Incoming and outgoing</td><td>Outgoing only; incoming calls are rejected</td></tr>
+      <tr><td><b>Who is calling?</b></td><td>Caller ID decides: owner → assistant, others → reception</td><td>Not needed. The <code>room</code> parameter determines source and mandate</td></tr>
+      <tr><td><b>Language model</b></td><td>OpenAI (<code>gpt-4o-mini</code>)</td><td>Gemini <code>gemini-3.6-flash</code> via the OpenAI-compatible interface</td></tr>
+      <tr><td><b>Voice</b></td><td>Cloned voice of the owner</td><td>Standard Swiss voice from Gradium, no cloning</td></tr>
+      <tr><td><b>Call opening</b></td><td>Pre-rendered opener in <code>business</code> mode</td><td>Adopted, with AI disclosure and a request to transcribe</td></tr>
+      <tr><td><b>Tools</b></td><td>Memory, web search, mail, business search, hang up</td><td>Seven mandate tools, each through <code>check()</code></td></tr>
+      <tr><td><b>After the call</b></td><td>Transcript, recording, new memories, Telegram summary</td><td>Only <code>end_call(outcome)</code>, event and, with consent, transcript in-memory</td></tr>
     </tbody>
   </table>
   </div>
@@ -1138,30 +1139,30 @@ td.group { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; c
 <!-- ============================ TEAM ============================ -->
 <section id="team">
   <p class="eyebrow">Team</p>
-  <h2>Wer baut was</h2>
+  <h2>Who builds what</h2>
   <div class="team">
     <div class="member">
       <div class="avatar" aria-hidden="true">GS</div>
       <h3>Gabriel Suter</h3>
-      <span class="role">Idee · Konzept · Bau</span>
+      <span class="role">Idea · concept · build</span>
       <ul>
-        <li>Idee, Konzept, Recherche, Docs, Pitch, Diagramme</li>
-        <li>Brand, Testdokumente, Dashboard</li>
-        <li>Backend, Policy Engine, Telefonteil (Twilio, gradbot, Gemini)</li>
-        <li>Demo: spricht den Pitch</li>
+        <li>Idea, concept, research, docs, pitch, diagrams</li>
+        <li>Brand, test documents, dashboard</li>
+        <li>Backend, Policy Engine, phone part (Twilio, gradbot, Gemini)</li>
+        <li>Demo: delivers the pitch</li>
       </ul>
     </div>
     <div class="member">
       <div class="avatar m" aria-hidden="true">MF</div>
       <h3>Manuel Fitz</h3>
-      <span class="role">Hosting · Deployment</span>
+      <span class="role">Hosting · deployment</span>
       <ul>
-        <li>Frontend auf Vercel</li>
-        <li>Tunnel und Domain fürs Backend</li>
+        <li>Frontend on Vercel</li>
+        <li>Tunnel and domain for the backend</li>
       </ul>
     </div>
   </div>
 </section>
 
-<footer>Stafette · Gabriel Suter und Manuel Fitz · {Tech: Europe} Agentic AI Hack, Zürich, 10. Oktober 2026 · Grundlage: ARCHITECTURE.md, POLICY.md, STACK.md und gradium-ai/digigrad</footer>
+<footer>Stafette · Gabriel Suter and Manuel Fitz · {Tech: Europe} Agentic AI Hack, Zurich, 10 October 2026 · Based on: ARCHITECTURE.md, POLICY.md, STACK.md and gradium-ai/digigrad</footer>
 </div>

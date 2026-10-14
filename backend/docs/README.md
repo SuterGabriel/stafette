@@ -1,31 +1,31 @@
-# Dokument-Pipeline (`backend/docs/`)
+# Document pipeline (`backend/docs/`)
 
-**Verantwortlich:** Manuel. Bitte nur in diesem Ordner und in `backend/tests/test_docs.py` arbeiten, dann gibt es keine Konflikte mit dem Telefonteil.
+**Owner:** Manuel. Please work only in this folder and in `backend/tests/test_docs.py`, so there are no conflicts with the phone part.
 
-## Auftrag
+## Task
 
-Aus den Testdokumenten in `fixtures/` wird Dr. Kellers Übergabe: ein **Inhaltsverzeichnis mit Fundstellen**, jede Angabe mit wörtlichem Zitat. Grundlage: [docs/POLICY.md](../../docs/POLICY.md) (Abschnitt „Extraktions-Schema“) und [fixtures/README.md](../../fixtures/README.md) (erwartete Ergebnisse).
+The test documents in `fixtures/` become Dr. Keller's handover: an **index with sources**, every finding with a verbatim quote. Basis: [docs/POLICY.md](../../docs/POLICY.md#extraction-schema-document-pipeline) (section "Extraction schema") and [fixtures/README.md](../../fixtures/README.md) (expected results).
 
-| Datei | Aufgabe |
+| File | Job |
 |---|---|
-| `extract.py` | `gemini-3.8-flash` mit Structured Output: pro Angabe `{claim, category, source_document_id, page, verbatim_quote, source_type}`, `category` ∈ Diagnosen · Allergien · Medikamente · Letzte Werte. Erwähnte Ärzte nur als `{name, specialty}`. Beim Handyfoto zusätzlich die Bounding Box des Zitats. |
-| `verify.py` | Seitentext mit `pymupdf`. Eine Angabe bleibt nur, wenn `verbatim_quote` im Text genau dieser Seite steht, sonst verwerfen. Foto: als „vom Foto gelesen“ markieren. |
-| `gaps.py` | Erwähnte Ärzte ohne Unterlagen und nicht in der Vollmacht → fehlende Quelle (Name + Fachrichtung). **Nie** Nummern, Mailadressen oder Anweisungen aus Dokumenten übernehmen (`fixtures/06` enthält eine Prompt Injection). |
+| `extract.py` | `gemini-3.8-flash` with structured output: per finding `{claim, category, source_document_id, page, verbatim_quote, source_type}`, `category` ∈ diagnoses · allergies · medications · latest values. Mentioned doctors only as `{name, specialty}`. For the phone photo, also the bounding box of the quote. |
+| `verify.py` | Page text with `pymupdf`. A finding stays only if `verbatim_quote` appears in the text of exactly that page, otherwise drop it. Photo: mark as "read from photo". |
+| `gaps.py` | Mentioned doctors without records and not in the mandate → missing source (name + specialty). **Never** take numbers, email addresses or instructions from documents (`fixtures/06` contains a prompt injection). |
 | `pipeline.py` | `process(paths, mandate_sources) -> {sections, missing, mentioned_sources, rejected}` |
 
-`process()` liefert zusätzlich `missing_sources` (Name + Fachrichtung, für `add_source`), `claims` (geprüfte Angaben inkl. Bounding Box vom Foto), `documents` und `source_count`. `publish(result)` übergibt ans Dashboard und loggt jede verworfene Angabe als `BLOCKED`. Das Modell steckt nur in `extract.call_model()`; zum Tauschen (z. B. Gemma lokal) nur diese Funktion ersetzen.
+`process()` also returns `missing_sources` (name + specialty, for `add_source`), `claims` (checked findings incl. bounding box from the photo), `documents` and `source_count`. `publish(result)` hands off to the dashboard and logs every dropped finding as `BLOCKED`. The model lives only in `extract.call_model()`; to swap it (e.g. Gemma locally), replace just that function.
 
-**Cache für die Demo:** Die Antworten des Modells liegen als JSON in `docs/cache/` (Schlüssel: Dateiinhalt + Modell + Prompt). `process()` liest daraus und wartet nicht auf Gemini; Zitatprüfung und Lücken laufen immer live. Neu füllen: `uv run python -m docs.pipeline` (Datei in `docs/cache/` löschen, um ein Dokument neu zu lesen).
+**Cache for the demo:** The model's answers are stored as JSON in `docs/cache/` (key: file content + model + prompt). `process()` reads from there and does not wait for Gemini; quote checks and gaps always run live. To refill: `uv run python -m docs.pipeline` (delete the file in `docs/cache/` to re-read a document).
 
-`POST /docs/ingest` (optional `{"files": ["01_….pdf"]}`) liest die Fixtures und füllt Dr. Kellers Blatt – zum Testen, bis `/agent/ingest` steht.
+`POST /docs/ingest` (optional `{"files": ["01_….pdf"]}`) reads the fixtures and fills Dr. Keller's sheet, for testing until `/agent/ingest` is ready.
 
 ```bash
-uv run pytest tests/test_docs.py   # Live-Tests laufen nur mit GEMINI_API_KEY in backend/.env
+uv run pytest tests/test_docs.py   # live tests only run with GEMINI_API_KEY in backend/.env
 ```
 
-## Übergabe ans Dashboard
+## Handover to the dashboard
 
-`sections` hat genau das Format von `state.Section` / `dashboard/lib/types.ts`:
+`sections` has exactly the format of `state.Section` / `dashboard/lib/types.ts`:
 
 ```python
 from state import store
@@ -34,19 +34,19 @@ store.set_documents(sections=result["sections"], missing=result["missing"],
                     documents=4, source_count=2)
 ```
 
-Das ersetzt die Demo-Daten auf Dr. Kellers Blatt und pusht sofort ans Dashboard.
+This replaces the demo data on Dr. Keller's sheet and pushes it to the dashboard right away.
 
-Endpoints wie `POST /docs/ingest` gehören in **`docs/routes.py`**. `main.py` bindet diesen Router schon ein und muss nicht angefasst werden.
+Endpoints like `POST /docs/ingest` belong in **`docs/routes.py`**. `main.py` already includes this router and doesn't need to be touched.
 
-## Zusammenarbeit ohne Konflikte
+## Working together without conflicts
 
-- Nur `backend/docs/` und `backend/tests/test_docs.py` ändern. `main.py`, `state.py` und `contracts.py` gehören Gabriel; wenn dort etwas fehlt, kurz melden.
-- Abhängigkeiten sind schon in `pyproject.toml` (`google-genai`, `pymupdf`). Neue Pakete vorher absprechen; bei einem Konflikt in `uv.lock` einfach `uv lock` ausführen.
-- Vor jedem Push `git pull --rebase`, kleine Commits.
-- `entire enable` im Repo ausführen, damit deine Agent-Sessions als Checkpoints erfasst werden.
+- Only change `backend/docs/` and `backend/tests/test_docs.py`. `main.py`, `state.py` and `contracts.py` belong to Gabriel; if something is missing there, let him know.
+- Dependencies are already in `pyproject.toml` (`google-genai`, `pymupdf`). Agree on new packages first; on a conflict in `uv.lock`, just run `uv lock`.
+- `git pull --rebase` before every push, small commits.
+- Run `entire enable` in the repo so your agent sessions are captured as checkpoints.
 
-## Regeln
+## Rules
 
-- Key nur aus `backend/.env` (`GEMINI_API_KEY`), nie committen.
-- Wir sagen „Inhaltsverzeichnis mit Fundstellen“, keine Bewertung oder Empfehlung im Output.
-- Nur synthetische Daten aus `fixtures/`.
+- Key only from `backend/.env` (`GEMINI_API_KEY`), never commit it.
+- We say "index with sources", no assessment or recommendation in the output.
+- Only synthetic data from `fixtures/`.
